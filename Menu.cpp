@@ -1,0 +1,216 @@
+#include "Menu.hpp"
+
+	Menu::Menu(RenderWindow* window){
+	    Window=window;
+
+        csiga_b.LoadFromFile("csiguszbody.png");
+        Csiga_b.SetImage(csiga_b);
+        Csiga_b.SetPosition(0+100,-5+30);
+        csiga_l.LoadFromFile("csiga_l.png");
+        Csiga_l.SetImage(csiga_l);
+        Csiga_l.SetCenter(8,80);
+        Csiga_l.SetPosition(385+8+100,350+80+30);
+        csiga_r.LoadFromFile("csiga_r.png");
+        Csiga_r.SetImage(csiga_r);
+        Csiga_r.SetPosition(277+100,445+30);
+        gun.LoadFromFile("menugun.png");
+        Gun.SetImage(gun);
+        Gun.SetCenter(36,195);
+        Gun.SetPosition(270+36+100,299+195+30);
+        laser.LoadFromFile("laser2.png");
+        Laser.SetImage(laser);
+        Laser.SetCenter(-65,71);
+        Laser.SetPosition(Gun.GetPosition().x,Gun.GetPosition().y);
+
+        Gun.SetRotation(9);
+        Laser.SetRotation(56);
+        Csiga_l.SetRotation(31);
+
+        NewGame=new Button();
+        NewGame->Setup(Window,this,Window->GetWidth()-250,30,200,20,"New Game");
+        NewGame->SetTextPosition(50,-3);
+        Connect=new Button();
+        Connect->Setup(Window,this,Window->GetWidth()-250,70,200,20,"Connect");
+        Connect->SetTextPosition(55,-3);
+        HighScores=new Button();
+        HighScores->Setup(Window,this,Window->GetWidth()-250,110,200,20,"High Scores");
+        HighScores->SetTextPosition(35,-3);
+        Description=new Button();
+        Description->Setup(Window,this,Window->GetWidth()-250,150,200,20,"Description");
+        Description->SetTextPosition(33,-3);
+        Exit=new Button();
+        Exit->Setup(Window,this,Window->GetWidth()-250,190,200,20,"Exit");
+        Exit->SetTextPosition(77,-3);
+
+        MenuFont.LoadFromFile("Army.ttf");
+
+        ConnectionText= new String("Under construction...",MenuFont,20);
+        ConnectionText->SetPosition(40, 40);
+        ShowConnection=false;
+
+        players=new vector<player>();
+        player p;
+        ifstream file("Scores.txt");
+        while(!file.eof()){
+            file >> p.name;
+            file >> p.score;
+            players->push_back(p);
+        }
+        ScoresText= new String("...",MenuFont,20);
+        ScoresText->SetPosition(150, 40);
+        ShowHighScores=false;
+
+        DescriptionText= new String("A játék célja hogy kellemes hangulatban\naranyos kis erdei állatkák bõrébe bújva\n       halomragyilkolásszuk egymást a\n     barátokkal vagy a családtagokkal.\n\n                              fegyverbe!!!",MenuFont,20);
+        DescriptionText->SetPosition(40, 40);
+        ShowDescription=false;
+
+        Window2=new RenderWindow(VideoMode(200,100,32), "Exit???...",Style::Close);
+        Window2->Show(false);
+        ShowExitWindow=false;
+        ExitText= new String("     Are you sure,\nyou want to quit?",MenuFont,20);
+        ExitText->SetPosition(5, 10);
+        yes=new Button();
+        yes->Setup(Window2,this,20,65,60,20,"yes");
+        yes->SetTextPosition(10,-3);
+        yes->SetStandardColor(Color(0,0,200));
+        //yes->SetInFocusColor(Color(0,0,255));
+        no=new Button();
+        no->Setup(Window2,this,120,65,60,20,"no");
+        no->SetTextPosition(15,-3);
+        no->SetStandardColor(Color(0,0,200));
+        no->SetInFocusColor(Color(0,0,255));
+
+	}
+
+	void Menu::Show(){
+        Window->Draw(Csiga_b);
+        Window->Draw(Gun);
+        Window->Draw(Csiga_l);
+        Window->Draw(Csiga_r);
+        Window->Draw(*NewGame);
+        Window->Draw(*NewGame->Text);
+        Window->Draw(*Connect);
+        Window->Draw(*Connect->Text);
+        Window->Draw(*HighScores);
+        Window->Draw(*HighScores->Text);
+        Window->Draw(*Description);
+        Window->Draw(*Description->Text);
+        Window->Draw(*Exit);
+        Window->Draw(*Exit->Text);
+        Window->Draw(Laser);
+        if(ShowConnection){
+            Window->Draw(*ConnectionText);
+        }
+        if(ShowHighScores){
+            Window->Draw(*ScoresText);
+        }
+        if(ShowDescription){
+            Window->Draw(*DescriptionText);
+        }
+        if(ShowExitWindow){
+            Event Event;
+            while (Window2->GetEvent(Event)){
+                yes->EventHandle(Event);
+                no->EventHandle(Event);
+                if (Event.Type == Event::Closed){
+                    ShowExitWindow=false;
+                    Window2->Show(false);
+                }
+
+                if (Event.Type == Event::KeyPressed){
+                    if (Event.Key.Code == Key::Escape){
+                        ShowExitWindow=false;
+                        Window2->Show(false);
+                    }
+                }
+            }
+
+            Window2->Clear();
+            Window2->Draw(*ExitText);
+            Window2->Draw(*yes);
+            Window2->Draw(*yes->Text);
+            Window2->Draw(*no);
+            Window2->Draw(*no->Text);
+            Window2->Display();
+        }
+    }
+
+	void Menu::EventHandle(Event ev){
+	    NewGame->EventHandle(ev);
+	    Connect->EventHandle(ev);
+        HighScores->EventHandle(ev);
+        Description->EventHandle(ev);
+        Exit->EventHandle(ev);
+
+        if(Window->GetInput().GetMouseX() > Window->GetWidth()-260 && Window->GetInput().GetMouseY() < 230){
+            float tav_x=Window->GetInput().GetMouseX()-Gun.GetPosition().x;
+            float tav_y=Window->GetInput().GetMouseY()-Gun.GetPosition().y+33;
+            if(tav_x<0){
+                Gun.FlipX(true);
+            }else{
+                Gun.FlipX(false);
+            }
+            float lim=((-atan(tav_y/tav_x))*56);
+            if(lim>38 && lim<72){
+                Gun.SetRotation((-atan(tav_y/tav_x)*55.215)-47);
+                Laser.SetRotation((-atan(tav_y/tav_x)*55.215));
+                Csiga_l.SetRotation((-atan(tav_y/tav_x)*170)-140);
+                float tav=pow(pow(Window->GetInput().GetMouseX()-Laser.GetPosition().x,2)+pow(Window->GetInput().GetMouseY()-Laser.GetPosition().y,2),(float)0.5);
+                Laser.Resize((tav/1.001)-30,Laser.GetSize().y);
+            }
+        }
+	}
+
+	void Menu::Action(string& from){
+        if(ShowConnection)ShowConnection=false;
+        if(ShowHighScores)ShowHighScores=false;
+        if(ShowDescription)ShowDescription=false;
+        if(ShowExitWindow){
+            ShowExitWindow=false;
+            Window2->Show(false);
+        }
+        if(from=="New Game"){
+            cout<<"New Game"<<endl;
+            MyGame=new Game(Window);
+            MyGame->InGame=true;
+            MyGame->GameLoop();
+        }
+        if(from=="Connect"){
+            cout<<"Connect"<<endl;
+            ShowConnection=true;
+        }
+        if(from=="High Scores"){
+            cout<<"High Scores"<<endl;
+            string highscores="   * high scores *\n\n";
+            player p;
+            for(unsigned int i=0;i<players->size();i++){
+                p=players->at(i);
+                highscores.append(p.name);
+                highscores.append("..............");
+                stringstream ss;
+                ss << p.score;
+                string c_string(ss.str());
+                highscores.append(c_string);
+                highscores.append("\n");
+            }
+            //cout<<highscores<<endl;
+            ScoresText->SetText(highscores);
+            ShowHighScores=true;
+        }
+        if(from=="Description"){
+            cout<<"Description"<<endl;
+            ShowDescription=true;
+        }
+        if(from=="Exit"){
+            cout<<"Exit"<<endl;
+            Window2->Show(true);
+            ShowExitWindow=true;
+        }
+        if(from=="yes"){
+            Window->Close();
+        }
+        if(from=="no"){
+            Window2->Show(false);
+            ShowExitWindow=false;
+        }
+    }

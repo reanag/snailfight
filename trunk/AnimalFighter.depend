@@ -1,0 +1,373 @@
+# depslib dependency file v1.0
+1257953929 source:c:\dokumentumok\pázmány itk\5.félév\haladó c++\sfml\animal_fighter\main.cpp
+	"Application.hpp"
+
+1258004325 c:\dokumentumok\pázmány itk\5.félév\haladó c++\sfml\animal_fighter\application.hpp
+	<SFML/Graphics.hpp>
+	<iostream>
+	"Menu.hpp"
+
+1258001203 source:c:\dokumentumok\pázmány itk\5.félév\haladó c++\sfml\animal_fighter\application.cpp
+	"Application.hpp"
+
+1258014027 source:c:\dokumentumok\pázmány itk\5.félév\haladó c++\sfml\animal_fighter\menu.cpp
+	"Menu.hpp"
+
+1258006704 c:\dokumentumok\pázmány itk\5.félév\haladó c++\sfml\animal_fighter\menu.hpp
+	<SFML/Graphics.hpp>
+	<iostream>
+	<math.h>
+	<fstream>
+	<vector>
+	<sstream>
+	"Button.hpp"
+
+1258000201 source:c:\dokumentumok\pázmány itk\5.félév\haladó c++\sfml\animal_fighter\button.cpp
+	"Button.hpp"
+	<SFML/Graphics.hpp>
+
+1258000047 c:\dokumentumok\pázmány itk\5.félév\haladó c++\sfml\animal_fighter\button.hpp
+	<SFML/Graphics.hpp>
+	<iostream>
+	"SFML/Graphics/Sprite.hpp"
+	"Menu.hpp"
+
+1258000201 source:c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\button.cpp
+	"Button.hpp"
+	<SFML/Graphics.hpp>
+
+1258000047 c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\button.hpp
+	<SFML/Graphics.hpp>
+	<iostream>
+	"SFML/Graphics/Sprite.hpp"
+	"Menu.hpp"
+
+1258728419 c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\menu.hpp
+	<SFML/Graphics.hpp>
+	<iostream>
+	<math.h>
+	<fstream>
+	<vector>
+	<sstream>
+	"Button.hpp"
+	"Game.hpp"
+
+1258728883 source:c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\menu.cpp
+	"Menu.hpp"
+
+1257953929 source:c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\main.cpp
+	"Application.hpp"
+
+1258004325 c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\application.hpp
+	<SFML/Graphics.hpp>
+	<iostream>
+	"Menu.hpp"
+
+1258725172 source:c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\application.cpp
+	"Application.hpp"
+
+1258723820 c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\game.hpp
+	"..\Box2D_v2.0.1\Box2D\Include\Box2D.h"
+	<SFML/Graphics.hpp>
+	<iostream>
+	<math.h>
+	"Snail.hpp"
+
+1198623660 c:\dokumentumok\pázmány itk\5.félév\haladó c++\box2d_v2.0.1\box2d\include\box2d.h
+	"../Source/Common/b2Settings.h"
+	"../Source/Collision/Shapes/b2CircleShape.h"
+	"../Source/Collision/Shapes/b2PolygonShape.h"
+	"../Source/Collision/b2BroadPhase.h"
+	"../Source/Dynamics/b2WorldCallbacks.h"
+	"../Source/Dynamics/b2World.h"
+	"../Source/Dynamics/b2Body.h"
+	"../Source/Dynamics/Contacts/b2Contact.h"
+	"../Source/Dynamics/Joints/b2DistanceJoint.h"
+	"../Source/Dynamics/Joints/b2MouseJoint.h"
+	"../Source/Dynamics/Joints/b2PrismaticJoint.h"
+	"../Source/Dynamics/Joints/b2RevoluteJoint.h"
+	"../Source/Dynamics/Joints/b2PulleyJoint.h"
+	"../Source/Dynamics/Joints/b2GearJoint.h"
+
+1207863846 c:\dokumentumok\pázmány itk\5.félév\haladó c++\box2d_v2.0.1\box2d\source\common\b2settings.h
+	<assert.h>
+	<math.h>
+	"jtypes.h"
+	"Fixed.h"
+
+1205185848 c:\dokumentumok\pázmány itk\5.félév\haladó c++\box2d_v2.0.1\box2d\source\common\jtypes.h
+	<stdint.h>
+
+1205789774 c:\dokumentumok\pázmány itk\5.félév\haladó c++\box2d_v2.0.1\box2d\source\common\fixed.h
+	<stdio.h>
+	"nds.h"
+	<execinfo.h>
+	<signal.h>
+	<exception>
+
+1207861258 c:\dokumentumok\pázmány itk\5.félév\haladó c++\box2d_v2.0.1\box2d\source\collision\shapes\b2circleshape.h
+	"b2Shape.h"
+
+1207993494 c:\dokumentumok\pázmány itk\5.félév\haladó c++\box2d_v2.0.1\box2d\source\collision\shapes\b2shape.h
+	"../../Common/b2Math.h"
+	"../b2Collision.h"
+
+1207604104 c:\dokumentumok\pázmány itk\5.félév\haladó c++\box2d_v2.0.1\box2d\source\common\b2math.h
+	"b2Settings.h"
+	<cmath>
+	<cfloat>
+	<cstdlib>
+	<stdio.h>
+
+1207001076 c:\dokumentumok\pázmány itk\5.félév\haladó c++\box2d_v2.0.1\box2d\source\collision\b2collision.h
+	"../Common/b2Math.h"
+	<climits>
+
+1207862458 c:\dokumentumok\pázmány itk\5.félév\haladó c++\box2d_v2.0.1\box2d\source\collision\shapes\b2polygonshape.h
+	"b2Shape.h"
+
+1205181756 c:\dokumentumok\pázmány itk\5.félév\haladó c++\box2d_v2.0.1\box2d\source\collision\b2broadphase.h
+	"../Common/b2Settings.h"
+	"b2Collision.h"
+	"b2PairManager.h"
+	<climits>
+
+1206647518 c:\dokumentumok\pázmány itk\5.félév\haladó c++\box2d_v2.0.1\box2d\source\collision\b2pairmanager.h
+	"../Common/b2Settings.h"
+	"../Common/b2Math.h"
+	<climits>
+
+1207952446 c:\dokumentumok\pázmány itk\5.félév\haladó c++\box2d_v2.0.1\box2d\source\dynamics\b2worldcallbacks.h
+	"../Common/b2Settings.h"
+
+1207863474 c:\dokumentumok\pázmány itk\5.félév\haladó c++\box2d_v2.0.1\box2d\source\dynamics\b2world.h
+	"../Common/b2Math.h"
+	"../Common/b2BlockAllocator.h"
+	"../Common/b2StackAllocator.h"
+	"b2ContactManager.h"
+	"b2WorldCallbacks.h"
+
+1206647496 c:\dokumentumok\pázmány itk\5.félév\haladó c++\box2d_v2.0.1\box2d\source\common\b2blockallocator.h
+	"b2Settings.h"
+
+1195765918 c:\dokumentumok\pázmány itk\5.félév\haladó c++\box2d_v2.0.1\box2d\source\common\b2stackallocator.h
+	"b2Settings.h"
+
+1200959456 c:\dokumentumok\pázmány itk\5.félév\haladó c++\box2d_v2.0.1\box2d\source\dynamics\b2contactmanager.h
+	"../Collision/b2BroadPhase.h"
+	"../Dynamics/Contacts/b2NullContact.h"
+
+1201127870 c:\dokumentumok\pázmány itk\5.félév\haladó c++\box2d_v2.0.1\box2d\source\dynamics\contacts\b2nullcontact.h
+	"../../Common/b2Math.h"
+	"b2Contact.h"
+
+1207001076 c:\dokumentumok\pázmány itk\5.félév\haladó c++\box2d_v2.0.1\box2d\source\dynamics\contacts\b2contact.h
+	"../../Common/b2Math.h"
+	"../../Collision/b2Collision.h"
+	"../../Collision/Shapes/b2Shape.h"
+
+1207993876 c:\dokumentumok\pázmány itk\5.félév\haladó c++\box2d_v2.0.1\box2d\source\dynamics\b2body.h
+	"../Common/b2Math.h"
+	"../Collision/Shapes/b2Shape.h"
+	"Joints/b2Joint.h"
+	<memory>
+
+1207993944 c:\dokumentumok\pázmány itk\5.félév\haladó c++\box2d_v2.0.1\box2d\source\dynamics\joints\b2joint.h
+	"../../Common/b2Math.h"
+
+1206656922 c:\dokumentumok\pázmány itk\5.félév\haladó c++\box2d_v2.0.1\box2d\source\dynamics\joints\b2distancejoint.h
+	"b2Joint.h"
+
+1206654762 c:\dokumentumok\pázmány itk\5.félév\haladó c++\box2d_v2.0.1\box2d\source\dynamics\joints\b2mousejoint.h
+	"b2Joint.h"
+
+1206654762 c:\dokumentumok\pázmány itk\5.félév\haladó c++\box2d_v2.0.1\box2d\source\dynamics\joints\b2prismaticjoint.h
+	"b2Joint.h"
+
+1206882064 c:\dokumentumok\pázmány itk\5.félév\haladó c++\box2d_v2.0.1\box2d\source\dynamics\joints\b2revolutejoint.h
+	"b2Joint.h"
+
+1206654762 c:\dokumentumok\pázmány itk\5.félév\haladó c++\box2d_v2.0.1\box2d\source\dynamics\joints\b2pulleyjoint.h
+	"b2Joint.h"
+
+1206654762 c:\dokumentumok\pázmány itk\5.félév\haladó c++\box2d_v2.0.1\box2d\source\dynamics\joints\b2gearjoint.h
+	"b2Joint.h"
+
+1258656315 c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\snail.hpp
+	"..\Box2D_v2.0.1\Box2D\Include\Box2D.h"
+	<SFML/Graphics.hpp>
+	<iostream>
+	<math.h>
+	"Rifle.hpp"
+	"Granade.hpp"
+
+1258656588 c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\rifle.hpp
+	"..\Box2D_v2.0.1\Box2D\Include\Box2D.h"
+	<SFML/Graphics.hpp>
+	<iostream>
+	<math.h>
+
+1258656315 c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\granade.hpp
+	"..\Box2D_v2.0.1\Box2D\Include\Box2D.h"
+	<SFML/Graphics.hpp>
+	<iostream>
+	<math.h>
+
+1258741401 source:c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\game.cpp
+	"Game.hpp"
+
+1258656315 source:c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\granade.cpp
+	"Granade.hpp"
+
+1258728676 source:c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\rifle.cpp
+	"Rifle.hpp"
+
+1258656315 source:c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\snail.cpp
+	"Snail.hpp"
+
+1258000200 source:c:\documents and settings\andika\desktop\animal fighter\button.cpp
+	"Button.hpp"
+	<SFML/Graphics.hpp>
+
+1258000046 c:\documents and settings\andika\desktop\animal fighter\button.hpp
+	<SFML/Graphics.hpp>
+	<iostream>
+	"SFML/Graphics/Sprite.hpp"
+	"Menu.hpp"
+
+1258728418 c:\documents and settings\andika\desktop\animal fighter\menu.hpp
+	<SFML/Graphics.hpp>
+	<iostream>
+	<math.h>
+	<fstream>
+	<vector>
+	<sstream>
+	"Button.hpp"
+	"Game.hpp"
+
+1258723820 c:\documents and settings\andika\desktop\animal fighter\game.hpp
+	"..\Box2D_v2.0.1\Box2D\Include\Box2D.h"
+	<SFML/Graphics.hpp>
+	<iostream>
+	<math.h>
+	"Snail.hpp"
+
+1258656314 c:\documents and settings\andika\desktop\animal fighter\snail.hpp
+	"..\Box2D_v2.0.1\Box2D\Include\Box2D.h"
+	<SFML/Graphics.hpp>
+	<iostream>
+	<math.h>
+	"Rifle.hpp"
+	"Granade.hpp"
+
+1258656588 c:\documents and settings\andika\desktop\animal fighter\rifle.hpp
+	"..\Box2D_v2.0.1\Box2D\Include\Box2D.h"
+	<SFML/Graphics.hpp>
+	<iostream>
+	<math.h>
+
+1258656314 c:\documents and settings\andika\desktop\animal fighter\granade.hpp
+	"..\Box2D_v2.0.1\Box2D\Include\Box2D.h"
+	<SFML/Graphics.hpp>
+	<iostream>
+	<math.h>
+
+1258741400 source:c:\documents and settings\andika\desktop\animal fighter\game.cpp
+	"Game.hpp"
+
+1258656314 source:c:\documents and settings\andika\desktop\animal fighter\granade.cpp
+	"Granade.hpp"
+
+1258728882 source:c:\documents and settings\andika\desktop\animal fighter\menu.cpp
+	"Menu.hpp"
+
+1258728676 source:c:\documents and settings\andika\desktop\animal fighter\rifle.cpp
+	"Rifle.hpp"
+
+1258656314 source:c:\documents and settings\andika\desktop\animal fighter\snail.cpp
+	"Snail.hpp"
+
+1257953928 source:c:\documents and settings\andika\desktop\animal fighter\main.cpp
+	"Application.hpp"
+
+1258004324 c:\documents and settings\andika\desktop\animal fighter\application.hpp
+	<SFML/Graphics.hpp>
+	<iostream>
+	"Menu.hpp"
+
+1258725172 source:c:\documents and settings\andika\desktop\animal fighter\application.cpp
+	"Application.hpp"
+
+1258000200 source:c:\documents and settings\andika\my documents\snailfight\snailfight\button.cpp
+	"Button.hpp"
+	<SFML/Graphics.hpp>
+
+1258000046 c:\documents and settings\andika\my documents\snailfight\snailfight\button.hpp
+	<SFML/Graphics.hpp>
+	<iostream>
+	"SFML/Graphics/Sprite.hpp"
+	"Menu.hpp"
+
+1258728418 c:\documents and settings\andika\my documents\snailfight\snailfight\menu.hpp
+	<SFML/Graphics.hpp>
+	<iostream>
+	<math.h>
+	<fstream>
+	<vector>
+	<sstream>
+	"Button.hpp"
+	"Game.hpp"
+
+1258723820 c:\documents and settings\andika\my documents\snailfight\snailfight\game.hpp
+	"..\Box2D_v2.0.1\Box2D\Include\Box2D.h"
+	<SFML/Graphics.hpp>
+	<iostream>
+	<math.h>
+	"Snail.hpp"
+
+1258656314 c:\documents and settings\andika\my documents\snailfight\snailfight\snail.hpp
+	"..\Box2D_v2.0.1\Box2D\Include\Box2D.h"
+	<SFML/Graphics.hpp>
+	<iostream>
+	<math.h>
+	"Rifle.hpp"
+	"Granade.hpp"
+
+1258656588 c:\documents and settings\andika\my documents\snailfight\snailfight\rifle.hpp
+	"..\Box2D_v2.0.1\Box2D\Include\Box2D.h"
+	<SFML/Graphics.hpp>
+	<iostream>
+	<math.h>
+
+1258656314 c:\documents and settings\andika\my documents\snailfight\snailfight\granade.hpp
+	"..\Box2D_v2.0.1\Box2D\Include\Box2D.h"
+	<SFML/Graphics.hpp>
+	<iostream>
+	<math.h>
+
+1258741400 source:c:\documents and settings\andika\my documents\snailfight\snailfight\game.cpp
+	"Game.hpp"
+
+1258656314 source:c:\documents and settings\andika\my documents\snailfight\snailfight\granade.cpp
+	"Granade.hpp"
+
+1258728882 source:c:\documents and settings\andika\my documents\snailfight\snailfight\menu.cpp
+	"Menu.hpp"
+
+1258728676 source:c:\documents and settings\andika\my documents\snailfight\snailfight\rifle.cpp
+	"Rifle.hpp"
+
+1258656314 source:c:\documents and settings\andika\my documents\snailfight\snailfight\snail.cpp
+	"Snail.hpp"
+
+1257953928 source:c:\documents and settings\andika\my documents\snailfight\snailfight\main.cpp
+	"Application.hpp"
+
+1258004324 c:\documents and settings\andika\my documents\snailfight\snailfight\application.hpp
+	<SFML/Graphics.hpp>
+	<iostream>
+	"Menu.hpp"
+
+1258725172 source:c:\documents and settings\andika\my documents\snailfight\snailfight\application.cpp
+	"Application.hpp"
+

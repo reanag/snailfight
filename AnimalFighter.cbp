@@ -31,18 +31,28 @@
 		</Linker>
 		<Unit filename="Application.cpp" />
 		<Unit filename="Application.hpp" />
+		<Unit filename="Bullet.cpp" />
+		<Unit filename="Bullet.hpp" />
 		<Unit filename="Button.cpp" />
 		<Unit filename="Button.hpp" />
+		<Unit filename="ContactListener.cpp" />
+		<Unit filename="ContactListener.hpp" />
 		<Unit filename="Game.cpp" />
 		<Unit filename="Game.hpp" />
-		<Unit filename="Granade.cpp" />
-		<Unit filename="Granade.hpp" />
+		<Unit filename="GameLogic.cpp" />
+		<Unit filename="GameLogic.hpp" />
+		<Unit filename="Grenade.cpp" />
+		<Unit filename="Grenade.hpp" />
 		<Unit filename="Menu.cpp" />
 		<Unit filename="Menu.hpp" />
 		<Unit filename="Rifle.cpp" />
 		<Unit filename="Rifle.hpp" />
 		<Unit filename="Snail.cpp" />
 		<Unit filename="Snail.hpp" />
+		<Unit filename="TempObjectHandler.cpp" />
+		<Unit filename="TempObjectHandler.hpp" />
+		<Unit filename="Weapon.cpp" />
+		<Unit filename="Weapon.hpp" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

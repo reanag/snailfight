@@ -4,41 +4,36 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <math.h>
+#include "TempObjectHandler.hpp"
+#include "Bullet.hpp"
 
 using namespace std;
 using namespace sf;
 
-class Rifle{
+class Weapon;
+#include "Weapon.hpp"
+class TempObjectHandler;
+
+class Rifle : public Weapon{
 
 	public:
-        RenderWindow* Window;
-        b2World* world;
+        float firespeed;
+        float timer;
+        bool MouseTargeting;
 
-        b2BodyDef riflebodyDef;
-        b2Body* riflebody;
-        b2PolygonDef rifleshapeDef;
+        bool showmuzzle;
+        Image muzzleImg;
+        Sprite MuzzleSp;
 
-        Shape Body;
+        SoundBuffer Buffer;
+        Sound WeaponFireSound;
 
-        Image rifleImg;
-        Sprite RifleSp;
+        Rifle(RenderWindow* window, b2World* World, TempObjectHandler* toh, float PositionX, float PositionY);
 
-        b2MouseJointDef md;
-        b2MouseJoint* mouseJoint;
-
-        b2BodyDef bd;
-        b2Body* bullet;
-        b2CircleDef bullcd;
-        Shape Bullet;
-
-
-        bool fliped;
-
-        Rifle(RenderWindow* window, b2World* World, float PositionX, float PositionY);
-
-        void FlipX(bool flip);
+        //void FlipX(bool flip);
         void Show();
         void InputHandling(Event ev);
+        void Shot();
 
 };
 

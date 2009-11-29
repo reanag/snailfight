@@ -32,7 +32,7 @@
 	"SFML/Graphics/Sprite.hpp"
 	"Menu.hpp"
 
-1258000201 source:c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\button.cpp
+1259100589 source:c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\button.cpp
 	"Button.hpp"
 	<SFML/Graphics.hpp>
 
@@ -42,8 +42,9 @@
 	"SFML/Graphics/Sprite.hpp"
 	"Menu.hpp"
 
-1258728419 c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\menu.hpp
+1259112431 c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\menu.hpp
 	<SFML/Graphics.hpp>
+	<SFML/Audio.hpp>
 	<iostream>
 	<math.h>
 	<fstream>
@@ -52,7 +53,7 @@
 	"Button.hpp"
 	"Game.hpp"
 
-1258728883 source:c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\menu.cpp
+1259233601 source:c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\menu.cpp
 	"Menu.hpp"
 
 1257953929 source:c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\main.cpp
@@ -66,11 +67,14 @@
 1258725172 source:c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\application.cpp
 	"Application.hpp"
 
-1258723820 c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\game.hpp
+1259117497 c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\game.hpp
 	"..\Box2D_v2.0.1\Box2D\Include\Box2D.h"
 	<SFML/Graphics.hpp>
 	<iostream>
 	<math.h>
+	<vector>
+	"GameLogic.hpp"
+	"TempObjectHandler.hpp"
 	"Snail.hpp"
 
 1198623660 c:\dokumentumok\pázmány itk\5.félév\haladó c++\box2d_v2.0.1\box2d\include\box2d.h
@@ -193,181 +197,102 @@
 1206654762 c:\dokumentumok\pázmány itk\5.félév\haladó c++\box2d_v2.0.1\box2d\source\dynamics\joints\b2gearjoint.h
 	"b2Joint.h"
 
-1258656315 c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\snail.hpp
+1259421644 c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\snail.hpp
 	"..\Box2D_v2.0.1\Box2D\Include\Box2D.h"
 	<SFML/Graphics.hpp>
 	<iostream>
 	<math.h>
+	"TempObjectHandler.hpp"
 	"Rifle.hpp"
-	"Granade.hpp"
+	"Grenade.hpp"
 
-1258656588 c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\rifle.hpp
+1259412780 c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\rifle.hpp
+	"..\Box2D_v2.0.1\Box2D\Include\Box2D.h"
+	<SFML/Graphics.hpp>
+	<iostream>
+	<math.h>
+	"TempObjectHandler.hpp"
+	"Bullet.hpp"
+	"Weapon.hpp"
+
+1259081607 c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\granade.hpp
 	"..\Box2D_v2.0.1\Box2D\Include\Box2D.h"
 	<SFML/Graphics.hpp>
 	<iostream>
 	<math.h>
 
-1258656315 c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\granade.hpp
-	"..\Box2D_v2.0.1\Box2D\Include\Box2D.h"
-	<SFML/Graphics.hpp>
-	<iostream>
-	<math.h>
-
-1258741401 source:c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\game.cpp
+1259426305 source:c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\game.cpp
 	"Game.hpp"
 
-1258656315 source:c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\granade.cpp
+1258923614 source:c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\granade.cpp
 	"Granade.hpp"
 
-1258728676 source:c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\rifle.cpp
+1259413419 source:c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\rifle.cpp
 	"Rifle.hpp"
 
-1258656315 source:c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\snail.cpp
+1259421644 source:c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\snail.cpp
 	"Snail.hpp"
 
-1258000200 source:c:\documents and settings\andika\desktop\animal fighter\button.cpp
-	"Button.hpp"
-	<SFML/Graphics.hpp>
-
-1258000046 c:\documents and settings\andika\desktop\animal fighter\button.hpp
-	<SFML/Graphics.hpp>
-	<iostream>
-	"SFML/Graphics/Sprite.hpp"
-	"Menu.hpp"
-
-1258728418 c:\documents and settings\andika\desktop\animal fighter\menu.hpp
+1259422188 c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\gamelogic.hpp
+	"..\Box2D_v2.0.1\Box2D\Include\Box2D.h"
 	<SFML/Graphics.hpp>
 	<iostream>
 	<math.h>
-	<fstream>
 	<vector>
-	<sstream>
-	"Button.hpp"
+	"ContactListener.hpp"
 	"Game.hpp"
-
-1258723820 c:\documents and settings\andika\desktop\animal fighter\game.hpp
-	"..\Box2D_v2.0.1\Box2D\Include\Box2D.h"
-	<SFML/Graphics.hpp>
-	<iostream>
-	<math.h>
 	"Snail.hpp"
-
-1258656314 c:\documents and settings\andika\desktop\animal fighter\snail.hpp
-	"..\Box2D_v2.0.1\Box2D\Include\Box2D.h"
-	<SFML/Graphics.hpp>
-	<iostream>
-	<math.h>
 	"Rifle.hpp"
-	"Granade.hpp"
+	"Grenade.hpp"
+	"Bullet.hpp"
 
-1258656588 c:\documents and settings\andika\desktop\animal fighter\rifle.hpp
+1258891663 c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\contactlistener.hpp
+	"..\Box2D_v2.0.1\Box2D\Include\Box2D.h"
+
+1258890759 source:c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\contactlistener.cpp
+	"ContactListener.hpp"
+
+1259422210 source:c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\gamelogic.cpp
+	"GameLogic.hpp"
+
+1259113489 source:c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\weapon.cpp
+	"Weapon.hpp"
+
+1259113489 c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\weapon.hpp
 	"..\Box2D_v2.0.1\Box2D\Include\Box2D.h"
 	<SFML/Graphics.hpp>
-	<iostream>
-	<math.h>
+	"TempObjectHandler.hpp"
 
-1258656314 c:\documents and settings\andika\desktop\animal fighter\granade.hpp
+1259228142 c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\grenade.hpp
 	"..\Box2D_v2.0.1\Box2D\Include\Box2D.h"
 	<SFML/Graphics.hpp>
+	<SFML/Audio.hpp>
 	<iostream>
 	<math.h>
+	"TempObjectHandler.hpp"
 
-1258741400 source:c:\documents and settings\andika\desktop\animal fighter\game.cpp
-	"Game.hpp"
+1259413872 source:c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\bullet.cpp
+	"Bullet.hpp"
 
-1258656314 source:c:\documents and settings\andika\desktop\animal fighter\granade.cpp
-	"Granade.hpp"
+1259233601 source:c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\grenade.cpp
+	"Grenade.hpp"
 
-1258728882 source:c:\documents and settings\andika\desktop\animal fighter\menu.cpp
-	"Menu.hpp"
-
-1258728676 source:c:\documents and settings\andika\desktop\animal fighter\rifle.cpp
-	"Rifle.hpp"
-
-1258656314 source:c:\documents and settings\andika\desktop\animal fighter\snail.cpp
-	"Snail.hpp"
-
-1257953928 source:c:\documents and settings\andika\desktop\animal fighter\main.cpp
-	"Application.hpp"
-
-1258004324 c:\documents and settings\andika\desktop\animal fighter\application.hpp
+1259426305 c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\tempobjecthandler.hpp
 	<SFML/Graphics.hpp>
+	<SFML/Audio.hpp>
 	<iostream>
-	"Menu.hpp"
-
-1258725172 source:c:\documents and settings\andika\desktop\animal fighter\application.cpp
-	"Application.hpp"
-
-1258000200 source:c:\documents and settings\andika\my documents\snailfight\snailfight\button.cpp
-	"Button.hpp"
-	<SFML/Graphics.hpp>
-
-1258000046 c:\documents and settings\andika\my documents\snailfight\snailfight\button.hpp
-	<SFML/Graphics.hpp>
-	<iostream>
-	"SFML/Graphics/Sprite.hpp"
-	"Menu.hpp"
-
-1258728418 c:\documents and settings\andika\my documents\snailfight\snailfight\menu.hpp
-	<SFML/Graphics.hpp>
-	<iostream>
-	<math.h>
-	<fstream>
 	<vector>
-	<sstream>
-	"Button.hpp"
-	"Game.hpp"
+	"Grenade.hpp"
+	"Bullet.hpp"
 
-1258723820 c:\documents and settings\andika\my documents\snailfight\snailfight\game.hpp
+1259162661 source:c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\tempobjecthandler.cpp
+	"TempObjectHandler.hpp"
+
+1259114027 c:\dokumentumok\pázmány itk\5.félév\haladó c++\animal fighter\bullet.hpp
 	"..\Box2D_v2.0.1\Box2D\Include\Box2D.h"
 	<SFML/Graphics.hpp>
+	<SFML/Audio.hpp>
 	<iostream>
 	<math.h>
-	"Snail.hpp"
-
-1258656314 c:\documents and settings\andika\my documents\snailfight\snailfight\snail.hpp
-	"..\Box2D_v2.0.1\Box2D\Include\Box2D.h"
-	<SFML/Graphics.hpp>
-	<iostream>
-	<math.h>
-	"Rifle.hpp"
-	"Granade.hpp"
-
-1258656588 c:\documents and settings\andika\my documents\snailfight\snailfight\rifle.hpp
-	"..\Box2D_v2.0.1\Box2D\Include\Box2D.h"
-	<SFML/Graphics.hpp>
-	<iostream>
-	<math.h>
-
-1258656314 c:\documents and settings\andika\my documents\snailfight\snailfight\granade.hpp
-	"..\Box2D_v2.0.1\Box2D\Include\Box2D.h"
-	<SFML/Graphics.hpp>
-	<iostream>
-	<math.h>
-
-1258741400 source:c:\documents and settings\andika\my documents\snailfight\snailfight\game.cpp
-	"Game.hpp"
-
-1258656314 source:c:\documents and settings\andika\my documents\snailfight\snailfight\granade.cpp
-	"Granade.hpp"
-
-1258728882 source:c:\documents and settings\andika\my documents\snailfight\snailfight\menu.cpp
-	"Menu.hpp"
-
-1258728676 source:c:\documents and settings\andika\my documents\snailfight\snailfight\rifle.cpp
-	"Rifle.hpp"
-
-1258656314 source:c:\documents and settings\andika\my documents\snailfight\snailfight\snail.cpp
-	"Snail.hpp"
-
-1257953928 source:c:\documents and settings\andika\my documents\snailfight\snailfight\main.cpp
-	"Application.hpp"
-
-1258004324 c:\documents and settings\andika\my documents\snailfight\snailfight\application.hpp
-	<SFML/Graphics.hpp>
-	<iostream>
-	"Menu.hpp"
-
-1258725172 source:c:\documents and settings\andika\my documents\snailfight\snailfight\application.cpp
-	"Application.hpp"
+	"TempObjectHandler.hpp"
 

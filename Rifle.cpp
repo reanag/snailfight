@@ -1,87 +1,95 @@
 #include "Rifle.hpp"
 
-	Rifle::Rifle(RenderWindow* window, b2World* World, float PositionX, float PositionY){
+	Rifle::Rifle(RenderWindow* window, b2World* World, TempObjectHandler* toh, float PositionX, float PositionY)/*:Weapon(RenderWindow* window, b2World* World, float PositionX, float PositionY)*/{
 	    Window=window;
 	    world=World;
+	    TOH=toh;
+
+	    timer=0;
+	    firespeed=0.1;
 
 	    fliped=false;
 
-	    riflebodyDef.position.Set(PositionX, PositionY);
-        riflebody = world->CreateBody(&riflebodyDef);
-        rifleshapeDef.SetAsBox(62.5f, 5.0f);
-        rifleshapeDef.density = 0.01f;
-        rifleshapeDef.friction = 1.0f;
-        riflebody->CreateShape(&rifleshapeDef);
+	    weaponbodyDef.position.Set(PositionX, PositionY);
+        weaponbody = world->CreateBody(&weaponbodyDef);
+        weaponshapeDef.SetAsBox(62.5f, 5.0f);
+        weaponshapeDef.density = 0.01f;
+        weaponshapeDef.friction = 1.0f;
+        weaponbody->CreateShape(&weaponshapeDef);
+        weaponbody->SetMassFromShapes();
+        weapondata.label="rifle";
+        weapondata.object=this;
+        weaponbody->SetUserData(&weapondata);
 
-        riflebody->SetMassFromShapes();
+	    weaponImg.LoadFromFile("contents/Rifle1.2.png");
+        WeaponSp.SetImage(weaponImg);
+        WeaponSp.SetPosition(PositionX,PositionY);
+        WeaponSp.SetCenter(weaponshapeDef.vertices[2].x+1,weaponshapeDef.vertices[2].y);
 
-        /*Body=Shape::Rectangle(0,0,rifleshapeDef.vertices[2].x*2,rifleshapeDef.vertices[2].y*2,Color(255,0,0));
-        Body.SetPosition(riflebody->GetPosition().x,riflebody->GetPosition().y);
-        Body.SetCenter(rifleshapeDef.vertices[2].x,rifleshapeDef.vertices[2].y);*/
+        muzzleImg.LoadFromFile("contents/tt2.png");
+        MuzzleSp.SetImage(muzzleImg);
+        //MuzzleSp.SetPosition(PositionX,PositionY);
+        MuzzleSp.SetCenter(3,87);
+        MuzzleSp.SetScale(0.5,0.5);
+        showmuzzle=false;
 
+        Buffer.LoadFromFile("contents/Gun_Silencer.wav");
+        WeaponFireSound.SetBuffer(Buffer);
+        WeaponFireSound.SetVolume(100);
 
-	    rifleImg.LoadFromFile("Rifle1.2.png");
-        RifleSp.SetImage(rifleImg);
-        RifleSp.SetPosition(PositionX,PositionY);
-        RifleSp.SetCenter(rifleshapeDef.vertices[2].x+1,rifleshapeDef.vertices[2].y);
-
-        bullcd.density = 20.0f;
-        bullcd.radius = 2.0f;
-        bullcd.restitution = 0.05f;
-        Bullet=Shape::Circle(0,0,2.0,Color(255,255,255));
-        bullet=NULL;
+        MouseTargeting=false;
 	}
 
-	void Rifle::FlipX(bool flip){
+	/*void Rifle::FlipX(bool flip){
         if(flip){
             fliped=true;
-            RifleSp.FlipX(true);
+            WeaponSp.FlipX(true);
         }else{
             fliped=false;
-            RifleSp.FlipX(false);
+            WeaponSp.FlipX(false);
         }
-    }
+    }*/
 
 	void Rifle::Show(){
-	    Window->Draw(Bullet);
-	    Window->Draw(RifleSp);
-	    //Window->Draw(Body);
+	    Window->Draw(WeaponSp);
+	    if(showmuzzle){
+	        Window->Draw(MuzzleSp);
+	        showmuzzle=false;
+        }
     }
 
 	void Rifle::InputHandling(Event ev){
-
-            if(ev.Type == Event::MouseButtonPressed){
-                if(ev.Key.Code == 0){
-                    if(bullet != NULL){
-                        world->DestroyBody(bullet);
-                        bullet = NULL;
-                    }
-                    bd.isBullet = true;
-                    bd.allowSleep = false;
-                    bd.position.Set(riflebody->GetPosition().x,riflebody->GetPosition().y);
-
-                    bullet = world->CreateBody(&bd);
-                    bullet->CreateShape(&bullcd);
-                    bullet->SetMassFromShapes();
-
-                    bullet->SetLinearVelocity(b2Vec2((Window->GetInput().GetMouseX()-riflebody->GetPosition().x),(Window->GetInput().GetMouseY()-riflebody->GetPosition().y)));
-
-                    Bullet.SetPosition(bullet->GetPosition().x,bullet->GetPosition().y);
-                }
-            }
-
-        float tav_x=Window->GetInput().GetMouseX()-riflebody->GetPosition().x;
-        float tav_y=Window->GetInput().GetMouseY()-riflebody->GetPosition().y;
-        riflebody->SetXForm(riflebody->GetPosition(),(atan(tav_y/tav_x)/**57.29577951308232*/));
-	    Body.SetPosition(riflebody->GetPosition().x,riflebody->GetPosition().y);
-        Body.SetRotation(riflebody->GetAngle()*-57.29577951308232);
-        RifleSp.SetPosition(riflebody->GetPosition().x,riflebody->GetPosition().y);
-        RifleSp.SetRotation(riflebody->GetAngle()*-57.29577951308232);
-        if(bullet != NULL){
-            Bullet.SetPosition(bullet->GetPosition().x,bullet->GetPosition().y);
-        }
-
-
-
+	    timer+=Window->GetFrameTime();
+	    if(MouseTargeting){
+            float tav_x=Window->GetInput().GetMouseX()-weaponbody->GetPosition().x;
+            float tav_y=Window->GetInput().GetMouseY()-weaponbody->GetPosition().y;
+            weaponbody->SetXForm(weaponbody->GetPosition(),(atan(tav_y/tav_x)));
+	    }
+        WeaponSp.SetPosition(weaponbody->GetPosition().x,weaponbody->GetPosition().y);
+        WeaponSp.SetRotation(weaponbody->GetAngle()*-57.29577951308232);
 
 	}
+
+	void Rifle::Shot(){
+	    if(timer>firespeed){
+            float Vx=(Window->GetInput().GetMouseX()-weaponbody->GetPosition().x)*10;
+            float Vy=(Window->GetInput().GetMouseY()-weaponbody->GetPosition().y)*10;
+            float modx=cos(weaponbody->GetAngle())*62.5;
+            float mody=sin(weaponbody->GetAngle())*62.5;
+            Bullet* b;
+            if(fliped){
+                b=new Bullet(Window, world, TOH, weaponbody->GetPosition().x-modx, weaponbody->GetPosition().y-mody, Vx, Vy);
+                MuzzleSp.FlipX(fliped);
+                MuzzleSp.SetPosition(weaponbody->GetPosition().x-modx*2.65, weaponbody->GetPosition().y-mody*2.65);
+            }else{
+                b=new Bullet(Window, world, TOH, weaponbody->GetPosition().x+modx, weaponbody->GetPosition().y+mody, Vx, Vy);
+                MuzzleSp.FlipX(fliped);
+                MuzzleSp.SetPosition(weaponbody->GetPosition().x+modx, weaponbody->GetPosition().y+mody);
+            }
+            TOH->Add(b);
+            MuzzleSp.SetRotation(weaponbody->GetAngle()*-57.29577951308232);
+            showmuzzle=true;
+            WeaponFireSound.Play();
+            timer=0;
+	    }
+    }

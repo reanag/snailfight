@@ -4,19 +4,30 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <math.h>
+#include "TempObjectHandler.hpp"
 #include "Rifle.hpp"
-#include "Granade.hpp"
+#include "Grenade.hpp"
 
 using namespace std;
 using namespace sf;
 
 class Snail{
+    struct data{
+        string label;
+        void* object;
+    };
 
 	public:
         RenderWindow* Window;
         b2World* world;
+        TempObjectHandler* TOH;
+
+        float grenadethrowspeed;
+        float timer;
 
         bool fliped;
+        bool jump;
+        bool controlled;
         float mx;
         float my;
 
@@ -26,6 +37,7 @@ class Snail{
         b2CircleDef houseshapeDef;
         b2CircleDef head1Def;
         b2CircleDef head2Def;
+        data snaildata;
 
         b2DistanceJointDef jd;
         b2Vec2 d[6];
@@ -33,10 +45,12 @@ class Snail{
         b2BodyDef eye1Def;
         b2Body* eye1;
         b2CircleDef e1;
+        data eye1data;
 
         b2BodyDef eye2Def;
         b2Body* eye2;
         b2CircleDef e2;
+        data eye2data;
 
         Image snailImg;
         Sprite SnailSp;
@@ -47,13 +61,16 @@ class Snail{
 
         Rifle* RifleGun;
         b2RevoluteJointDef gunjoint;
-        Granade* Granadebomb;
 
-        Snail(RenderWindow* window, b2World* World, float PositionX, float PositionY);
+        //Image lightImg;
+        //Sprite LightSp;
+
+        Snail(RenderWindow* window, b2World* World, TempObjectHandler* toh, float PositionX, float PositionY);
 
         void FlipX(bool flip);
         void Show();
         void InputHandling(Event ev);
+        void out();
 
 };
 

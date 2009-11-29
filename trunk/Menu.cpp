@@ -3,21 +3,21 @@
 	Menu::Menu(RenderWindow* window){
 	    Window=window;
 
-        csiga_b.LoadFromFile("csiguszbody.png");
+        csiga_b.LoadFromFile("contents/csiguszbody.png");
         Csiga_b.SetImage(csiga_b);
         Csiga_b.SetPosition(0+100,-5+30);
-        csiga_l.LoadFromFile("csiga_l.png");
+        csiga_l.LoadFromFile("contents/csiga_l.png");
         Csiga_l.SetImage(csiga_l);
         Csiga_l.SetCenter(8,80);
         Csiga_l.SetPosition(385+8+100,350+80+30);
-        csiga_r.LoadFromFile("csiga_r.png");
+        csiga_r.LoadFromFile("contents/csiga_r.png");
         Csiga_r.SetImage(csiga_r);
         Csiga_r.SetPosition(277+100,445+30);
-        gun.LoadFromFile("menugun.png");
+        gun.LoadFromFile("contents/menugun.png");
         Gun.SetImage(gun);
         Gun.SetCenter(36,195);
         Gun.SetPosition(270+36+100,299+195+30);
-        laser.LoadFromFile("laser2.png");
+        laser.LoadFromFile("contents/laser2.png");
         Laser.SetImage(laser);
         Laser.SetCenter(-65,71);
         Laser.SetPosition(Gun.GetPosition().x,Gun.GetPosition().y);
@@ -42,7 +42,7 @@
         Exit->Setup(Window,this,Window->GetWidth()-250,190,200,20,"Exit");
         Exit->SetTextPosition(77,-3);
 
-        MenuFont.LoadFromFile("Army.ttf");
+        MenuFont.LoadFromFile("contents/Army.ttf");
 
         ConnectionText= new String("Under construction...",MenuFont,20);
         ConnectionText->SetPosition(40, 40);
@@ -50,7 +50,7 @@
 
         players=new vector<player>();
         player p;
-        ifstream file("Scores.txt");
+        ifstream file("contents/Scores.txt");
         while(!file.eof()){
             file >> p.name;
             file >> p.score;
@@ -79,6 +79,11 @@
         no->SetTextPosition(15,-3);
         no->SetStandardColor(Color(0,0,200));
         no->SetInFocusColor(Color(0,0,255));
+
+        Buffer.LoadFromFile("contents/290673_03___Redemption.wav");
+        MenuSound.SetBuffer(Buffer);
+        MenuSound.SetVolume(100);
+        MenuSound.Play();
 
 	}
 
@@ -170,17 +175,16 @@
             Window2->Show(false);
         }
         if(from=="New Game"){
-            cout<<"New Game"<<endl;
+            MenuSound.Pause();
             MyGame=new Game(Window);
             MyGame->InGame=true;
             MyGame->GameLoop();
+            MenuSound.Play();
         }
         if(from=="Connect"){
-            cout<<"Connect"<<endl;
             ShowConnection=true;
         }
         if(from=="High Scores"){
-            cout<<"High Scores"<<endl;
             string highscores="   * high scores *\n\n";
             player p;
             for(unsigned int i=0;i<players->size();i++){
@@ -198,11 +202,9 @@
             ShowHighScores=true;
         }
         if(from=="Description"){
-            cout<<"Description"<<endl;
             ShowDescription=true;
         }
         if(from=="Exit"){
-            cout<<"Exit"<<endl;
             Window2->Show(true);
             ShowExitWindow=true;
         }

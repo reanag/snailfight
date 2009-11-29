@@ -1,6 +1,7 @@
 #ifndef MENU_HPP
 #define MENU_HPP
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <iostream>
 #include <math.h>
 #include <fstream>
@@ -56,6 +57,9 @@ class Menu{
         String* ExitText;
         Button* yes;
         Button* no;
+
+        SoundBuffer Buffer;
+        Sound MenuSound;
 
         Game* MyGame;
 

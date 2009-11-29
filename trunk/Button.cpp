@@ -8,12 +8,12 @@
         infocus=false;
         StandardColor=new Color(200,0,0);
         InFocusColor=new Color(255,0,0);
-        btnimage.LoadFromFile("button1.png");
+        btnimage.LoadFromFile("contents/button1.png");
         SetImage(btnimage);
         SetPosition(PositionX, PositionY);
         Resize(Width, Height);
         SetColor(*StandardColor);
-        ButtonFont.LoadFromFile("Army.ttf");
+        ButtonFont.LoadFromFile("contents/Army.ttf");
         Text= new String(label,ButtonFont,20);
         Text->SetPosition(PositionX, PositionY);
     }

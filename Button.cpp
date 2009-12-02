@@ -32,6 +32,7 @@
     }
 
     void Button::EventHandle(Event ev){
+
         if ((Window->GetInput().GetMouseX()>GetPosition().x &&
              Window->GetInput().GetMouseX()<GetPosition().x+GetSize().x &&
              Window->GetInput().GetMouseY()>GetPosition().y &&
@@ -49,7 +50,9 @@
 
         if (infocus && ev.Type == Event::MouseButtonPressed){
             if(ev.Key.Code == 0){
+
                 Parent->Action(label);
+
             }
         }
 	}

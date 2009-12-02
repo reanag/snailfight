@@ -7,11 +7,12 @@
 #include "TempObjectHandler.hpp"
 #include "Rifle.hpp"
 #include "Grenade.hpp"
+#include "Object.hpp"
 
 using namespace std;
 using namespace sf;
 
-class Snail{
+class Snail:public Object{
     struct data{
         string label;
         void* object;
@@ -62,8 +63,8 @@ class Snail{
         Rifle* RifleGun;
         b2RevoluteJointDef gunjoint;
 
-        //Image lightImg;
-        //Sprite LightSp;
+        Image lightImg;
+        Sprite LightSp;
 
         Snail(RenderWindow* window, b2World* World, TempObjectHandler* toh, float PositionX, float PositionY);
 

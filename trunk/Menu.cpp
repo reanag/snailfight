@@ -2,7 +2,6 @@
 
 	Menu::Menu(RenderWindow* window){
 	    Window=window;
-
         csiga_b.LoadFromFile("contents/csiguszbody.png");
         Csiga_b.SetImage(csiga_b);
         Csiga_b.SetPosition(0+100,-5+30);
@@ -43,11 +42,20 @@
         Exit->SetTextPosition(77,-3);
 
         MenuFont.LoadFromFile("contents/Army.ttf");
-
-        ConnectionText= new String("Under construction...",MenuFont,20);
+//ANDIKA RÉSZ:
+        ConnectionText= new String("Network setting\n\n Create server or join", MenuFont,20);
         ConnectionText->SetPosition(40, 40);
         ShowConnection=false;
+        ServerButton = new Button();
+        ServerButton->Setup(Window, this, Window->GetWidth()-760,150,200, 30, "Create server");
+        ServerButton->SetTextPosition(20, 0);
+        ClientButton = new Button();
+        ClientButton->Setup(Window, this, Window->GetWidth()-500,150,200, 30, "Join server");
+        ClientButton->SetTextPosition(40, 0);
+        ServerText = new InputTextField();
+        ServerText->Setup(Window, this, Window->GetWidth()-700,200,300, 30, "IP:");
 
+//ANDIKA RÉSZ END
         players=new vector<player>();
         player p;
         ifstream file("contents/Scores.txt");
@@ -103,9 +111,17 @@
         Window->Draw(*Exit);
         Window->Draw(*Exit->Text);
         Window->Draw(Laser);
+//ANDIKA RÉSZ:
         if(ShowConnection){
             Window->Draw(*ConnectionText);
+            Window->Draw(*ServerButton);
+            Window->Draw(*ServerButton->Text);
+            Window->Draw(*ClientButton);
+            Window->Draw(*ClientButton->Text);
+            Window->Draw(*ServerText);
+            Window->Draw(*ServerText->Text);
         }
+//ANDIKA END
         if(ShowHighScores){
             Window->Draw(*ScoresText);
         }
@@ -123,6 +139,7 @@
                 }
 
                 if (Event.Type == Event::KeyPressed){
+
                     if (Event.Key.Code == Key::Escape){
                         ShowExitWindow=false;
                         Window2->Show(false);
@@ -141,11 +158,21 @@
     }
 
 	void Menu::EventHandle(Event ev){
+
 	    NewGame->EventHandle(ev);
 	    Connect->EventHandle(ev);
         HighScores->EventHandle(ev);
         Description->EventHandle(ev);
         Exit->EventHandle(ev);
+
+//ANDIKA RÉSZ:
+
+    ServerButton->EventHandle(ev);
+
+    ClientButton->EventHandle(ev);
+    ServerText->EventHandle(ev);
+
+//ANDIKA RÉSZ END
 
         if(Window->GetInput().GetMouseX() > Window->GetWidth()-260 && Window->GetInput().GetMouseY() < 230){
             float tav_x=Window->GetInput().GetMouseX()-Gun.GetPosition().x;
@@ -165,8 +192,11 @@
             }
         }
 	}
-
+    void Menu::SetIP(string from){
+        cout<<"IP in menu: "<<from;
+    }
 	void Menu::Action(string& from){
+
         if(ShowConnection)ShowConnection=false;
         if(ShowHighScores)ShowHighScores=false;
         if(ShowDescription)ShowDescription=false;
@@ -215,4 +245,37 @@
             Window2->Show(false);
             ShowExitWindow=false;
         }
-    }
+
+//ANDIKA RÉSZ:
+        if(from=="Join server"){
+            cout<<"join server";
+            Thread* ThreadCreateClient = new Thread(&ThreadCreateClientFunc);
+            ThreadCreateClient->Launch();
+//            RunClient();
+            //itt lesz majd a cliens létrehozás
+        }
+
+        if(from =="Create server"){
+            cout<<"create server";
+
+            string sa = "192.168.1.2";
+            unsigned short port = 12435;
+            //ServerTCP Server = ServerTCP(sa, port);
+
+            Thread* ThreadCreateServer = new Thread(&ThreadCreateServerFunc);
+            ThreadCreateServer->Launch();
+
+            }
+//ANDIKA RÉSZ END
+}
+//Andika szálkezel:
+
+void Menu::ThreadCreateServerFunc(void* UserData){
+     ServerTCP Server = ServerTCP();
+     Server.Run();
+}
+
+void Menu::ThreadCreateClientFunc(void* UserData){
+    ClientTCP Client = ClientTCP("192.168.1.2");
+    Client.Run();
+}

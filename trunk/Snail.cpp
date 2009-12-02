@@ -150,9 +150,9 @@
         gunjoint.localAnchor2=b2Vec2(0.0f, 0.0f);
         world->CreateJoint(&gunjoint);
 
-        //lightImg.LoadFromFile("contents/night-light.png");
-        //LightSp.SetImage(lightImg);
-        //LightSp.SetCenter(1000,782);
+        lightImg.LoadFromFile("contents/night-light.png");
+        LightSp.SetImage(lightImg);
+        LightSp.SetCenter(1000,782);
 
 	}
 
@@ -238,7 +238,7 @@
             gunjoint.localAnchor2=b2Vec2(0.0f, 0.0f);
             world->CreateJoint(&gunjoint);
             RifleGun->FlipX(true);
-            //LightSp.FlipX(true);
+            LightSp.FlipX(true);
 	    }else{
 	        fliped=false;
             SnailSp.SetCenter(654+mx*2,444+my*2);
@@ -320,7 +320,7 @@
             gunjoint.localAnchor2=b2Vec2(0.0f, 0.0f);
             world->CreateJoint(&gunjoint);
             RifleGun->FlipX(false);
-            //LightSp.FlipX(false);
+            LightSp.FlipX(false);
         }
     }
 
@@ -329,9 +329,9 @@
         Window->Draw(Eye1Sp);
         Window->Draw(Eye2Sp);
         RifleGun->Show();
-        /*if(controlled){
+        if(controlled){
             Window->Draw(LightSp);
-        }*/
+        }
     }
 
 	void Snail::InputHandling(Event ev){
@@ -401,8 +401,8 @@
         SnailSp.SetRotation(snailbody->GetAngle()*-57.29577951308232);
         Eye1Sp.SetPosition(eye1->GetPosition().x,eye1->GetPosition().y);
         Eye2Sp.SetPosition(eye2->GetPosition().x,eye2->GetPosition().y);
-        //LightSp.SetPosition(RifleGun->weaponbody->GetPosition().x,RifleGun->weaponbody->GetPosition().y);
-        //LightSp.SetRotation(RifleGun->weaponbody->GetAngle()*-57.29577951308232);
+        LightSp.SetPosition(RifleGun->weaponbody->GetPosition().x,RifleGun->weaponbody->GetPosition().y);
+        LightSp.SetRotation(RifleGun->weaponbody->GetAngle()*-57.29577951308232);
 	}
 
 	void Snail::out(){

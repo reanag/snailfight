@@ -1,6 +1,8 @@
 #ifndef MENU_HPP
 #define MENU_HPP
 #include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
+#include <SFML/Network.hpp>
 #include <SFML/Audio.hpp>
 #include <iostream>
 #include <math.h>
@@ -9,7 +11,11 @@
 #include <sstream>
 #include "Button.hpp"
 #include "Game.hpp"
+#include "Server.cpp"
+#include "Cliens.cpp"
+#include "InputTextField.hpp"
 
+class InputTextField;
 class Button;
 using namespace std;
 using namespace sf;
@@ -40,6 +46,10 @@ class Menu{
         Button* Description;
         Button* Exit;
 
+        Button* ServerButton;
+        Button* ClientButton;
+        InputTextField* ServerText;
+
         Font MenuFont;
 
         bool ShowConnection;
@@ -65,9 +75,17 @@ class Menu{
 
         Menu(RenderWindow* window);
 
+
         void Show();
         void EventHandle(Event ev);
         void Action(string& from);
+        void SetIP(string from);
+        void static ThreadCreateServerFunc(void* UserData);
+        void static ThreadCreateClientFunc(void* UserData);
+
+
+
+
 };
 
 #endif

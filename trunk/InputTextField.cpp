@@ -90,11 +90,16 @@ void InputTextField::EventHandle(Event ev) {
         if (ev.Key.Code=='9') {
             s="9";
         }
+        if (ev.Key.Code=='d') {
+            s=".";
+        }
 
         if(GetLabel().size()<18){//&& nem backspace
             SetLabel(GetLabel()+s);
-        } else {
-         Parent->SetIP(GetLabel());
+            if(GetLabel().size()>13){
+                Parent->SetIP(GetLabel());
+                Parent->IpIsSet=true;
+            }
         }
 
         Text= new String(label,ButtonFont,20);

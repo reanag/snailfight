@@ -2,6 +2,9 @@
 
 	Menu::Menu(RenderWindow* window){
 	    Window=window;
+	    IpIsSet = false;
+	    AmIClient = false;
+	    AmIServer = false;
         csiga_b.LoadFromFile("contents/csiguszbody.png");
         Csiga_b.SetImage(csiga_b);
         Csiga_b.SetPosition(0+100,-5+30);
@@ -20,6 +23,7 @@
         Laser.SetImage(laser);
         Laser.SetCenter(-65,71);
         Laser.SetPosition(Gun.GetPosition().x,Gun.GetPosition().y);
+        ShowIPTextEditor = false;
 
         Gun.SetRotation(9);
         Laser.SetRotation(56);
@@ -53,7 +57,7 @@
         ClientButton->Setup(Window, this, Window->GetWidth()-500,150,200, 30, "Join server");
         ClientButton->SetTextPosition(40, 0);
         ServerText = new InputTextField();
-        ServerText->Setup(Window, this, Window->GetWidth()-700,200,300, 30, "IP:");
+        ServerText->Setup(Window, this, Window->GetWidth()-700,100,300, 30, "IP:");
 
 //ANDIKA RÉSZ END
         players=new vector<player>();
@@ -116,6 +120,13 @@
             Window->Draw(*ConnectionText);
             Window->Draw(*ServerButton);
             Window->Draw(*ServerButton->Text);
+            Window->Draw(*ClientButton);
+            Window->Draw(*ClientButton->Text);
+
+        }
+        if(ShowIPTextEditor){
+            ConnectionText= new String("\n   Type the IP of the server: \n\n  You can write a dot useing the D character", MenuFont,20);
+            Window->Draw(*ConnectionText);
             Window->Draw(*ClientButton);
             Window->Draw(*ClientButton->Text);
             Window->Draw(*ServerText);
@@ -193,7 +204,10 @@
         }
 	}
     void Menu::SetIP(string from){
-        cout<<"IP in menu: "<<from;
+      ip = from.substr(3,from.size());
+    }
+    string Menu::GetIP(){
+        return ip;
     }
 	void Menu::Action(string& from){
 
@@ -248,22 +262,31 @@
 
 //ANDIKA RÉSZ:
         if(from=="Join server"){
+           if(AmIServer||AmIServer){
+            cout<<"Error: you are already server or client is running!";
+            return;
+           }
+            ShowIPTextEditor = true;
             cout<<"join server";
-            Thread* ThreadCreateClient = new Thread(&ThreadCreateClientFunc);
-            ThreadCreateClient->Launch();
-//            RunClient();
-            //itt lesz majd a cliens létrehozás
+            if(ShowIPTextEditor&&IpIsSet){
+
+               p = &ip;
+               Thread* ThreadCreateClient = new Thread(&ThreadCreateClientFunc, p);
+               ThreadCreateClient->Launch();
+               AmIClient = true;
+            }
         }
 
         if(from =="Create server"){
+            if(AmIClient||AmIServer){
+                cout<<"Error: you are already client or server is already running!";
+                return;
+            }
             cout<<"create server";
 
-            string sa = "192.168.1.2";
-            unsigned short port = 12435;
-            //ServerTCP Server = ServerTCP(sa, port);
-
-            Thread* ThreadCreateServer = new Thread(&ThreadCreateServerFunc);
-            ThreadCreateServer->Launch();
+           Thread* ThreadCreateServer = new Thread(&ThreadCreateServerFunc);
+           ThreadCreateServer->Launch();
+           AmIServer = true;
 
             }
 //ANDIKA RÉSZ END
@@ -276,6 +299,8 @@ void Menu::ThreadCreateServerFunc(void* UserData){
 }
 
 void Menu::ThreadCreateClientFunc(void* UserData){
-    ClientTCP Client = ClientTCP("192.168.1.2");
+    string* Object = static_cast<string*>(UserData);
+    string s = *Object;
+    ClientTCP Client = ClientTCP(s);
     Client.Run();
 }

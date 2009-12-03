@@ -75,11 +75,18 @@ class Menu{
 
         Menu(RenderWindow* window);
 
+        bool ShowIPTextEditor;
+        bool IpIsSet;
+        bool AmIServer;
+        bool AmIClient;
 
+        string ip;
+        string* p;
         void Show();
         void EventHandle(Event ev);
         void Action(string& from);
         void SetIP(string from);
+        string GetIP();
         void static ThreadCreateServerFunc(void* UserData);
         void static ThreadCreateClientFunc(void* UserData);
 

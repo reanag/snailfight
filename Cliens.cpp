@@ -37,10 +37,13 @@ public:
    }
 
     void Run(){
+        cout<<"Kliens indul";
         while(true){
-            Sleep(2000.0f);
             cout<<"kliens";
+            Sleep(1000.0f);
+
         }
+        cout<<"Not run";
     }
 
     ~ClientTCP() {

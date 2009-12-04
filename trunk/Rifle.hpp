@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <math.h>
+#include "Object.hpp"
 #include "TempObjectHandler.hpp"
 #include "Bullet.hpp"
 

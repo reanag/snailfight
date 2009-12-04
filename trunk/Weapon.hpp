@@ -2,20 +2,15 @@
 #define WEAPON_HPP
 #include "..\Box2D_v2.0.1\Box2D\Include\Box2D.h"
 #include <SFML/Graphics.hpp>
-#include "TempObjectHandler.hpp"
 #include "Object.hpp";
+#include "TempObjectHandler.hpp"
 
 using namespace std;
 using namespace sf;
 
-class Weapon: public Object {
+class Weapon : public Object {
 
 	public:
-        struct data{
-            string label;
-            void* object;
-        };
-
         bool fliped;
 
         RenderWindow* Window;

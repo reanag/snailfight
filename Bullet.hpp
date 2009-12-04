@@ -5,6 +5,7 @@
 #include <SFML/Audio.hpp>
 #include <iostream>
 #include <math.h>
+#include "Object.hpp"
 #include "TempObjectHandler.hpp"
 
 using namespace std;
@@ -12,11 +13,7 @@ using namespace sf;
 
 class TempObjectHandler;
 
-class Bullet{
-    struct data{
-        string label;
-        void* object;
-    };
+class Bullet : public Object{
 
 	public:
         RenderWindow* Window;

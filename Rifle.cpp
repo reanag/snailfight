@@ -58,11 +58,12 @@
         }
     }
 
-	void Rifle::InputHandling(Event ev){
+    void Rifle::InputHandling(Event ev){
 	    timer+=Window->GetFrameTime();
 	    if(MouseTargeting){
-            float tav_x=Window->GetInput().GetMouseX()-weaponbody->GetPosition().x;
-            float tav_y=Window->GetInput().GetMouseY()-weaponbody->GetPosition().y;
+	        Vector2f Mouse = Window->ConvertCoords(Window->GetInput().GetMouseX(),Window->GetInput().GetMouseY());
+            float tav_x=Mouse.x-weaponbody->GetPosition().x;
+            float tav_y=Mouse.y-weaponbody->GetPosition().y;
             weaponbody->SetXForm(weaponbody->GetPosition(),(atan(tav_y/tav_x)));
 	    }
         WeaponSp.SetPosition(weaponbody->GetPosition().x,weaponbody->GetPosition().y);
@@ -72,8 +73,9 @@
 
 	void Rifle::Shot(){
 	    if(timer>firespeed){
-            float Vx=(Window->GetInput().GetMouseX()-weaponbody->GetPosition().x)*10;
-            float Vy=(Window->GetInput().GetMouseY()-weaponbody->GetPosition().y)*10;
+	        Vector2f Mouse = Window->ConvertCoords(Window->GetInput().GetMouseX(),Window->GetInput().GetMouseY());
+            float Vx=(Mouse.x-weaponbody->GetPosition().x)*10;
+            float Vy=(Mouse.y-weaponbody->GetPosition().y)*10;
             float modx=cos(weaponbody->GetAngle())*62.5;
             float mody=sin(weaponbody->GetAngle())*62.5;
             Bullet* b;
@@ -93,3 +95,4 @@
             timer=0;
 	    }
     }
+

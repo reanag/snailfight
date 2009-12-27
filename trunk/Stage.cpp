@@ -11,11 +11,13 @@
         b2Body* groundBody = world->CreateBody(&groundBodyDef);
         b2PolygonDef groundShapeDef;
         groundShapeDef.SetAsBox(1200.0f, 5.0f);
+        groundShapeDef.friction=1.1f;
         groundBody->CreateShape(&groundShapeDef);
         grounddata.label="GROUND";
         grounddata.object=this;
         groundBody->SetUserData(&grounddata);
         grassImg.LoadFromFile("contents/d.bg_grass.png");
+        //grassImg.LoadFromFile("contents/xmas_ground.png");
         GrassSp.SetImage(grassImg);
         GrassSp.SetPosition(-50,1760);
         //Ground=Shape::Rectangle(0, 0, 800, 10, Color(0,0,200));

@@ -3,6 +3,7 @@
 	Application::Application(int width, int height){
         Window=new RenderWindow(VideoMode(width, height, 32), "AnimalFighter",Style::Close);
         Window->UseVerticalSync(true);
+        //Window->SetFramerateLimit(60);
         menu=new Menu(Window);
 	}
 

@@ -6,6 +6,7 @@
 	    AmIClient = false;
 	    AmIServer = false;
         csiga_b.LoadFromFile("contents/csiguszbody.png");
+        //csiga_b.LoadFromFile("contents/xmas_csiguszbody.png");
         Csiga_b.SetImage(csiga_b);
         Csiga_b.SetPosition(0+100,-5+30);
         csiga_l.LoadFromFile("contents/csiga_l.png");
@@ -93,10 +94,16 @@
         no->SetInFocusColor(Color(0,0,255));
 
         Buffer.LoadFromFile("contents/290673_03___Redemption.wav");
+        //Buffer.LoadFromFile("contents/jinglebellrock.wav");
         MenuSound.SetBuffer(Buffer);
         MenuSound.SetVolume(100);
         MenuSound.Play();
 
+        LoadingText= new String("Loading...",MenuFont,100);
+        LoadingText->SetPosition(150, 200);
+
+        /*srand(time(NULL));
+        GenerateSnow();*/
 	}
 
 	void Menu::Show(){
@@ -166,6 +173,10 @@
             Window2->Draw(*no->Text);
             Window2->Display();
         }
+        /*for(int i=0;i<snow.size();i++){
+            Window->Draw(snow[i]);
+        }
+        SnowUpdate();*/
     }
 
 	void Menu::EventHandle(Event ev){
@@ -220,6 +231,9 @@
         }
         if(from=="New Game"){
             MenuSound.Pause();
+            Window->Clear();
+            Window->Draw(*LoadingText);
+            Window->Display();
             MyGame=new Game(Window);
             MyGame->InGame=true;
             MyGame->GameLoop();
@@ -304,3 +318,24 @@ void Menu::ThreadCreateClientFunc(void* UserData){
     ClientTCP Client = ClientTCP(s);
     Client.Run();
 }
+
+/*void Menu::GenerateSnow(){
+    for(int i=0;i<1100;i++){
+        Shape s=Shape::Circle(0,0,1,Color(255,255,255));
+        s.SetPosition(rand()%800,rand()%600);
+        snow.push_back(s);
+    }
+}
+
+void Menu::SnowUpdate(){
+    for(int i=0; i<snow.size(); i++){
+        snow[i].SetPosition(snow[i].GetPosition().x+(rand()%3-1),snow[i].GetPosition().y+(rand()%4-1));
+        if(snow[i].GetPosition().x<0)snow[i].SetPosition(0,snow[i].GetPosition().y);
+        if(snow[i].GetPosition().x>800)snow[i].SetPosition(800,snow[i].GetPosition().y);
+        if(snow[i].GetPosition().y>600){
+            snow[i].SetPosition(snow[i].GetPosition().x,0);
+        }
+    }
+}*/
+
+

@@ -5,11 +5,21 @@
 	    world=World;
 	    TOH=toh;
 
+	    damage=3;
 	    timer=0;
 	    firespeed=0.1;
-
 	    fliped=false;
+        MouseTargeting=false;
+        showmuzzle=false;
 
+        CreateBody(PositionX,PositionY);
+        LoadImage("contents/Rifle1.2.png");
+        WeaponSp.SetCenter(weaponshapeDef.vertices[2].x+1,weaponshapeDef.vertices[2].y);
+        LoadMuzzle("contents/tt2.png");
+        MuzzleSp.SetCenter(3,87);
+        MuzzleSp.SetScale(0.5,0.5);
+        LoadSound("contents/Gun_Silencer.wav");
+/*
 	    weaponbodyDef.position.Set(PositionX, PositionY);
         weaponbody = world->CreateBody(&weaponbodyDef);
         weaponshapeDef.SetAsBox(62.5f, 5.0f);
@@ -37,7 +47,9 @@
         WeaponFireSound.SetBuffer(Buffer);
         WeaponFireSound.SetVolume(100);
 
-        MouseTargeting=false;
+        MouseTargeting=false;*/
+
+
 	}
 
 	/*void Rifle::FlipX(bool flip){
@@ -50,7 +62,7 @@
         }
     }*/
 
-	void Rifle::Show(){
+	/*void Rifle::Show(){
 	    Window->Draw(WeaponSp);
 	    if(showmuzzle){
 	        Window->Draw(MuzzleSp);
@@ -64,11 +76,10 @@
 	        Vector2f Mouse = Window->ConvertCoords(Window->GetInput().GetMouseX(),Window->GetInput().GetMouseY());
             float tav_x=Mouse.x-weaponbody->GetPosition().x;
             float tav_y=Mouse.y-weaponbody->GetPosition().y;
-            weaponbody->SetXForm(weaponbody->GetPosition(),(atan(tav_y/tav_x)));
+            weaponbody->SetXForm(weaponbody->GetPosition(),atan(tav_y/tav_x));
 	    }
         WeaponSp.SetPosition(weaponbody->GetPosition().x,weaponbody->GetPosition().y);
         WeaponSp.SetRotation(weaponbody->GetAngle()*-57.29577951308232);
-
 	}
 
 	void Rifle::Shot(){
@@ -94,5 +105,5 @@
             WeaponFireSound.Play();
             timer=0;
 	    }
-    }
+    }*/
 

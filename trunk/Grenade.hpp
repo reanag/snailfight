@@ -20,7 +20,9 @@ class Grenade : public Object{
         b2World* world;
         TempObjectHandler* TOH;
 
+        int damage;
         float timer;
+        bool exploding;
         bool lim;
 
         int number;
@@ -41,6 +43,7 @@ class Grenade : public Object{
         Grenade(RenderWindow* window, b2World* World, TempObjectHandler* toh, float PositionX, float PositionY, float VelocityX, float VelocityY);
 
         void Show();
+        void ApplyForces();
         void InputHandling(Event ev);
         void DestroyGrenade();
         void SetNumber(int num);

@@ -24,7 +24,7 @@
         MySnail=new Snail(Window, world, TOH, 600, 150);
         OtherSnail=new Snail(Window, world, TOH, 200, 150);
         OtherSnail->controlled=false;
-        OtherSnail->RifleGun->MouseTargeting=false;
+        OtherSnail->Weapons[OtherSnail->aktWeapon]->MouseTargeting=false;
 
         GameView.SetCenter(MySnail->snailbody->GetPosition().x,MySnail->snailbody->GetPosition().y);
         GameView.SetHalfSize(400, 300);
@@ -50,6 +50,7 @@
 
             Event ev;
             while (Window->GetEvent(ev)){
+                MySnail->EventHandling(ev);
                 if (ev.Type == Event::Closed){
                     InGame=false;
                     Window->Close();

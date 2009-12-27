@@ -3,7 +3,11 @@
 using namespace std;
 
 class Object {
-
+    public:
+        struct data{
+            string label;
+            void* object;
+        };
 };
 
 #endif

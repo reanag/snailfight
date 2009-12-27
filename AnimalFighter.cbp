@@ -14,8 +14,8 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
-					<Add directory="..\..\..\..\..\SFML-1.5\include" />
-					<Add directory="D:\CsigaGame\Box2D_v2.0.1" />
+					<Add directory="C:\Dokumentumok\Pázmány ITK\5.félév\Haladó C++\SFML\SFML-1.5\include" />
+					<Add directory="C:\Dokumentumok\Pázmány ITK\5.félév\Haladó C++\Box2D_v2.0.1" />
 				</Compiler>
 				<Linker>
 					<Add option="-lsfml-window" />
@@ -23,8 +23,8 @@
 					<Add option="-lsfml-graphics" />
 					<Add option="-lsfml-audio" />
 					<Add option="-lsfml-network" />
-					<Add library="D:\CsigaGame\Box2D_v2.0.1\Box2D\Library\libBox2D.a" />
-					<Add directory="..\..\..\..\..\SFML-1.5\lib\mingw" />
+					<Add library="C:\Dokumentumok\Pázmány ITK\5.félév\Haladó C++\Box2D_v2.0.1\Box2D\Library\libBox2D.a" />
+					<Add directory="C:\Dokumentumok\Pázmány ITK\5.félév\Haladó C++\SFML\SFML-1.5\lib\mingw" />
 				</Linker>
 			</Target>
 		</Build>
@@ -33,7 +33,7 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Linker>
-			<Add library="D:\CsigaGame\Box2D_v2.0.1\Box2D\Library\libBox2D.a" />
+			<Add library="C:\Dokumentumok\Pázmány ITK\5.félév\Haladó C++\Box2D_v2.0.1\Box2D\Library\libBox2D.a" />
 		</Linker>
 		<Unit filename="Application.cpp">
 			<Option virtualFolder="Game\" />
@@ -101,6 +101,18 @@
 		<Unit filename="Rifle.hpp">
 			<Option virtualFolder="Objects\" />
 		</Unit>
+		<Unit filename="Rifle2.cpp">
+			<Option virtualFolder="Objects\" />
+		</Unit>
+		<Unit filename="Rifle2.hpp">
+			<Option virtualFolder="Objects\" />
+		</Unit>
+		<Unit filename="Rifle3.cpp">
+			<Option virtualFolder="Objects\" />
+		</Unit>
+		<Unit filename="Rifle3.hpp">
+			<Option virtualFolder="Objects\" />
+		</Unit>
 		<Unit filename="Server.cpp">
 			<Option virtualFolder="Network\" />
 		</Unit>
@@ -108,6 +120,12 @@
 			<Option virtualFolder="Objects\" />
 		</Unit>
 		<Unit filename="Snail.hpp">
+			<Option virtualFolder="Objects\" />
+		</Unit>
+		<Unit filename="Stage.cpp">
+			<Option virtualFolder="Objects\" />
+		</Unit>
+		<Unit filename="Stage.hpp">
 			<Option virtualFolder="Objects\" />
 		</Unit>
 		<Unit filename="TempObjectHandler.cpp">

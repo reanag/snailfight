@@ -20,6 +20,8 @@ class Bullet : public Object{
         b2World* world;
         TempObjectHandler* TOH;
 
+        int damage;
+
         bool lim;
         int number;
 
@@ -32,7 +34,7 @@ class Bullet : public Object{
         SoundBuffer Buffer;
         Sound Explode;
 
-        Bullet(RenderWindow* window, b2World* World, TempObjectHandler* toh, float PositionX, float PositionY, float VelocityX, float VelocityY);
+        Bullet(RenderWindow* window, b2World* World, TempObjectHandler* toh, float PositionX, float PositionY, float VelocityX, float VelocityY, int Damage);
 
         void Show();
         void InputHandling(Event ev);

@@ -72,6 +72,9 @@ class Menu{
         Sound MenuSound;
 
         Game* MyGame;
+        String* LoadingText;
+
+        //vector<Shape> snow;
 
         Menu(RenderWindow* window);
 
@@ -89,9 +92,8 @@ class Menu{
         string GetIP();
         void static ThreadCreateServerFunc(void* UserData);
         void static ThreadCreateClientFunc(void* UserData);
-
-
-
+        //void GenerateSnow();
+        //void SnowUpdate();
 
 };
 

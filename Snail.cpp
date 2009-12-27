@@ -5,12 +5,21 @@
 	    world=World;
 	    TOH=toh;
 
+	    Health=100;
+	    Stamina=100;
+	    Speed=30;
+	    alive=true;
+	    turbo=false;
+
 	    grenadethrowspeed=0.001;
         timer=0;
 
 	    fliped=false;
+	    hid=false;
 	    jump=false;
 	    controlled=true;
+	    up=false;
+	    once=false;
         mx=41.5095;
         my=20.7499;
 
@@ -22,7 +31,7 @@
         bodyshapeDef.vertices[1].Set(71-mx,45-my);
         bodyshapeDef.vertices[2].Set(0-mx,45-my);
         bodyshapeDef.density = 30.0f;
-        bodyshapeDef.friction = 1.0f;
+        bodyshapeDef.friction = 0.5f;
         snailbody->CreateShape(&bodyshapeDef);
 
         houseshapeDef.radius = 35.0f;
@@ -129,8 +138,18 @@
         jd.length = d[5].Length();
         world->CreateJoint(&jd);
 
-        snailImg.LoadFromFile("contents/csig1.6.png");
-        SnailSp.SetImage(snailImg);
+        for(int i=0;i<11;i++){
+            stringstream out;
+            out << i;
+            string s = "contents/csig1.6_wounds" + out.str() + ".png";
+            snailImg[i].LoadFromFile(s.c_str());
+        }
+        aktImg=0;
+
+        houseImg.LoadFromFile("contents/csig1.6.house.png");
+        //snailImg.LoadFromFile("contents/xmas_csig1.6.png");
+        //houseImg.LoadFromFile("contents/xmas_csig1.6.house.png");
+        SnailSp.SetImage(snailImg[aktImg]);
         SnailSp.Scale(0.5,0.5);
         SnailSp.SetCenter(654+mx*2,444+my*2);
 
@@ -143,9 +162,18 @@
         Eye2Sp.Scale(0.5,0.5);
         Eye2Sp.SetCenter(14,12);
 
-        RifleGun=new Rifle(Window, world, TOH, snailbody->GetWorldCenter().x, snailbody->GetWorldCenter().y);
+        aktWeapon=0;
+        Weapons.push_back(new Rifle(Window, world, TOH, snailbody->GetWorldCenter().x, snailbody->GetWorldCenter().y));
+        Weapons.push_back(new Rifle2(Window, world, TOH, snailbody->GetWorldCenter().x, snailbody->GetWorldCenter().y));
+        Weapons.push_back(new Rifle3(Window, world, TOH, snailbody->GetWorldCenter().x, snailbody->GetWorldCenter().y));
+        Weapons[aktWeapon]->MouseTargeting=true;
+        Weapons[1]->UnUse();
+        Weapons[2]->UnUse();
+        //Weapons[0]->Use(snailbody->GetWorldCenter().x, snailbody->GetWorldCenter().y);
+        /*RifleGun=new Rifle2(Window, world, TOH, snailbody->GetWorldCenter().x, snailbody->GetWorldCenter().y);
         RifleGun->MouseTargeting=true;
-        gunjoint.Initialize(snailbody, RifleGun->weaponbody, RifleGun->weaponbody->GetWorldCenter());
+        gunjoint.Initialize(snailbody, RifleGun->weaponbody, RifleGun->weaponbody->GetWorldCenter());*/
+        gunjoint.Initialize(snailbody, Weapons[aktWeapon]->weaponbody, Weapons[aktWeapon]->weaponbody->GetWorldCenter());
         gunjoint.localAnchor1=b2Vec2(30.0f, 0.0f);
         gunjoint.localAnchor2=b2Vec2(0.0f, 0.0f);
         world->CreateJoint(&gunjoint);
@@ -158,169 +186,333 @@
 
 	void Snail::FlipX(bool flip){
 	    if(flip){
-            fliped=true;
-            SnailSp.SetCenter(786-mx*2,444+my*2); //for fliped snail
-            SnailSp.FlipX(fliped);
-            Eye1Sp.FlipX(fliped);
-            Eye2Sp.FlipX(fliped);
+	        if(!hid){
+                fliped=true;
+                SnailSp.SetImage(snailImg[aktImg]);
+                SnailSp.SetCenter(786-mx*2,444+my*2); //for fliped snail
+                SnailSp.FlipX(fliped);
+                Eye1Sp.FlipX(fliped);
+                Eye2Sp.FlipX(fliped);
 
-            float x=snailbody->GetPosition().x;
-            float y=snailbody->GetPosition().y;
-            float ang=snailbody->GetAngle();
-            b2Vec2 linVel=snailbody->GetLinearVelocity();
-            float angVel=snailbody->GetAngularVelocity();
+                float x=snailbody->GetPosition().x;
+                float y=snailbody->GetPosition().y;
+                float ang=snailbody->GetAngle();
+                b2Vec2 linVel=snailbody->GetLinearVelocity();
+                float angVel=snailbody->GetAngularVelocity();
 
-            world->DestroyBody(snailbody);
-            snailbodyDef.position.Set(x,y);
-            snailbodyDef.angle=ang;
-            snailbody = world->CreateBody(&snailbodyDef);
-            bodyshapeDef.vertices[0].Set(-71+mx,0-my);
-            bodyshapeDef.vertices[1].Set(0+mx,45-my);
-            bodyshapeDef.vertices[2].Set(-71+mx,45-my);
-            snailbody->CreateShape(&bodyshapeDef);
-            houseshapeDef.localPosition.Set(-25+mx, 0-my);
-            snailbody->CreateShape(&houseshapeDef);
-            head1Def.localPosition.Set(-82+mx, -2-my);
-            snailbody->CreateShape(&head1Def);
-            head2Def.localPosition.Set(-73+mx, -18-my);
-            snailbody->CreateShape(&head2Def);
+                world->DestroyBody(snailbody);
+                snailbodyDef.position.Set(x,y);
+                snailbodyDef.angle=ang;
+                snailbody = world->CreateBody(&snailbodyDef);
+                bodyshapeDef.vertices[0].Set(-71+mx,0-my);
+                bodyshapeDef.vertices[1].Set(0+mx,45-my);
+                bodyshapeDef.vertices[2].Set(-71+mx,45-my);
+                snailbody->CreateShape(&bodyshapeDef);
+                houseshapeDef.localPosition.Set(-25+mx, 0-my);
+                snailbody->CreateShape(&houseshapeDef);
+                head1Def.localPosition.Set(-82+mx, -2-my);
+                snailbody->CreateShape(&head1Def);
+                head2Def.localPosition.Set(-73+mx, -18-my);
+                snailbody->CreateShape(&head2Def);
 
-            jd.body1 = snailbody;
-            jd.body2 = eye1;
-            jd.localAnchor1.Set(0.0f, 30.0f);
-            jd.localAnchor2.Set(0.0f, 0.0f);
-            jd.length = d[0].Length();
-            world->CreateJoint(&jd);
+                jd.body1 = snailbody;
+                jd.body2 = eye1;
+                jd.localAnchor1.Set(0.0f, 30.0f);
+                jd.localAnchor2.Set(0.0f, 0.0f);
+                jd.length = d[0].Length();
+                world->CreateJoint(&jd);
 
-            jd.body1 = snailbody;
-            jd.body2 = eye1;
-            jd.localAnchor1.Set(-30.0f, 0.0f);
-            jd.localAnchor2.Set(0.0f, 0.0f);
-            jd.length = d[1].Length();
-            world->CreateJoint(&jd);
+                jd.body1 = snailbody;
+                jd.body2 = eye1;
+                jd.localAnchor1.Set(-30.0f, 0.0f);
+                jd.localAnchor2.Set(0.0f, 0.0f);
+                jd.length = d[1].Length();
+                world->CreateJoint(&jd);
 
-            jd.body1 = snailbody;
-            jd.body2 = eye1;
-            jd.localAnchor1.Set(-30.0f, 30.0f);
-            jd.localAnchor2.Set(0.0f, 0.0f);
-            jd.length = d[2].Length();
-            world->CreateJoint(&jd);
+                jd.body1 = snailbody;
+                jd.body2 = eye1;
+                jd.localAnchor1.Set(-30.0f, 30.0f);
+                jd.localAnchor2.Set(0.0f, 0.0f);
+                jd.length = d[2].Length();
+                world->CreateJoint(&jd);
 
-            jd.body1 = snailbody;
-            jd.body2 = eye2;
-            jd.localAnchor1.Set(0.0f, 30.0f);
-            jd.localAnchor2.Set(0.0f, 0.0f);
-            jd.length = d[3].Length();
-            world->CreateJoint(&jd);
+                jd.body1 = snailbody;
+                jd.body2 = eye2;
+                jd.localAnchor1.Set(0.0f, 30.0f);
+                jd.localAnchor2.Set(0.0f, 0.0f);
+                jd.length = d[3].Length();
+                world->CreateJoint(&jd);
 
-            jd.body1 = snailbody;
-            jd.body2 = eye2;
-            jd.localAnchor1.Set(-30.0f, 0.0f);
-            jd.localAnchor2.Set(0.0f, 0.0f);
-            jd.length = d[4].Length();
-            world->CreateJoint(&jd);
+                jd.body1 = snailbody;
+                jd.body2 = eye2;
+                jd.localAnchor1.Set(-30.0f, 0.0f);
+                jd.localAnchor2.Set(0.0f, 0.0f);
+                jd.length = d[4].Length();
+                world->CreateJoint(&jd);
 
-            jd.body1 = snailbody;
-            jd.body2 = eye2;
-            jd.localAnchor1.Set(-30.0f, 30.0f);
-            jd.localAnchor2.Set(0.0f, 0.0f);
-            jd.length = d[5].Length();
-            world->CreateJoint(&jd);
+                jd.body1 = snailbody;
+                jd.body2 = eye2;
+                jd.localAnchor1.Set(-30.0f, 30.0f);
+                jd.localAnchor2.Set(0.0f, 0.0f);
+                jd.length = d[5].Length();
+                world->CreateJoint(&jd);
 
-            snailbody->SetMassFromShapes();
-            snailbody->SetUserData(&snaildata);
+                snailbody->SetMassFromShapes();
+                snailbody->SetUserData(&snaildata);
 
-            snailbody->SetLinearVelocity(linVel);
-            snailbody->SetAngularVelocity(angVel);
+                snailbody->SetLinearVelocity(linVel);
+                snailbody->SetAngularVelocity(angVel);
 
-            gunjoint.Initialize(snailbody, RifleGun->weaponbody, RifleGun->weaponbody->GetWorldCenter());
-            gunjoint.localAnchor1=b2Vec2(-30.0f, 0.0f);
-            gunjoint.localAnchor2=b2Vec2(0.0f, 0.0f);
-            world->CreateJoint(&gunjoint);
-            RifleGun->FlipX(true);
-            //LightSp.FlipX(true);
+                gunjoint.Initialize(snailbody, Weapons[aktWeapon]->weaponbody, Weapons[aktWeapon]->weaponbody->GetWorldCenter());
+                gunjoint.localAnchor1=b2Vec2(-30.0f, 0.0f);
+                gunjoint.localAnchor2=b2Vec2(0.0f, 0.0f);
+                world->CreateJoint(&gunjoint);
+                Weapons[aktWeapon]->FlipX(true);
+                //LightSp.FlipX(true);
+            }else{
+                fliped=true;
+                SnailSp.SetImage(houseImg);
+                SnailSp.SetCenter(786-mx*2,444+my*2); //for fliped snail
+                SnailSp.FlipX(fliped);
+                Eye1Sp.FlipX(fliped);
+                Eye2Sp.FlipX(fliped);
+
+                float x=snailbody->GetPosition().x;
+                float y=snailbody->GetPosition().y;
+                float ang=snailbody->GetAngle();
+                b2Vec2 linVel=snailbody->GetLinearVelocity();
+                float angVel=snailbody->GetAngularVelocity();
+
+                world->DestroyBody(snailbody);
+                snailbodyDef.position.Set(x,y);
+                snailbodyDef.angle=ang;
+                snailbody = world->CreateBody(&snailbodyDef);
+                houseshapeDef.localPosition.Set(-25+mx, 0-my);
+                snailbody->CreateShape(&houseshapeDef);
+
+                jd.body1 = snailbody;
+                jd.body2 = eye1;
+                jd.localAnchor1.Set(0.0f, 30.0f);
+                jd.localAnchor2.Set(0.0f, 0.0f);
+                jd.length = d[0].Length();
+                world->CreateJoint(&jd);
+
+                jd.body1 = snailbody;
+                jd.body2 = eye1;
+                jd.localAnchor1.Set(-30.0f, 0.0f);
+                jd.localAnchor2.Set(0.0f, 0.0f);
+                jd.length = d[1].Length();
+                world->CreateJoint(&jd);
+
+                jd.body1 = snailbody;
+                jd.body2 = eye1;
+                jd.localAnchor1.Set(-30.0f, 30.0f);
+                jd.localAnchor2.Set(0.0f, 0.0f);
+                jd.length = d[2].Length();
+                world->CreateJoint(&jd);
+
+                jd.body1 = snailbody;
+                jd.body2 = eye2;
+                jd.localAnchor1.Set(0.0f, 30.0f);
+                jd.localAnchor2.Set(0.0f, 0.0f);
+                jd.length = d[3].Length();
+                world->CreateJoint(&jd);
+
+                jd.body1 = snailbody;
+                jd.body2 = eye2;
+                jd.localAnchor1.Set(-30.0f, 0.0f);
+                jd.localAnchor2.Set(0.0f, 0.0f);
+                jd.length = d[4].Length();
+                world->CreateJoint(&jd);
+
+                jd.body1 = snailbody;
+                jd.body2 = eye2;
+                jd.localAnchor1.Set(-30.0f, 30.0f);
+                jd.localAnchor2.Set(0.0f, 0.0f);
+                jd.length = d[5].Length();
+                world->CreateJoint(&jd);
+
+                snailbody->SetMassFromShapes();
+                snailbody->SetUserData(&snaildata);
+
+                snailbody->SetLinearVelocity(linVel);
+                snailbody->SetAngularVelocity(angVel);
+
+                gunjoint.Initialize(snailbody, Weapons[aktWeapon]->weaponbody, Weapons[aktWeapon]->weaponbody->GetWorldCenter());
+                gunjoint.localAnchor1=b2Vec2(-30.0f, 0.0f);
+                gunjoint.localAnchor2=b2Vec2(0.0f, 0.0f);
+                world->CreateJoint(&gunjoint);
+                Weapons[aktWeapon]->FlipX(true);
+            }
 	    }else{
-	        fliped=false;
-            SnailSp.SetCenter(654+mx*2,444+my*2);
-            SnailSp.FlipX(fliped);
-            Eye1Sp.FlipX(fliped);
-            Eye2Sp.FlipX(fliped);
+	        if(!hid){
+                fliped=false;
+                SnailSp.SetImage(snailImg[aktImg]);
+                SnailSp.SetCenter(654+mx*2,444+my*2);
+                SnailSp.FlipX(fliped);
+                Eye1Sp.FlipX(fliped);
+                Eye2Sp.FlipX(fliped);
 
-            float x=snailbody->GetPosition().x;
-            float y=snailbody->GetPosition().y;
-            float ang=snailbody->GetAngle();
-            b2Vec2 linVel=snailbody->GetLinearVelocity();
-            float angVel=snailbody->GetAngularVelocity();
+                float x=snailbody->GetPosition().x;
+                float y=snailbody->GetPosition().y;
+                float ang=snailbody->GetAngle();
+                b2Vec2 linVel=snailbody->GetLinearVelocity();
+                float angVel=snailbody->GetAngularVelocity();
 
-            world->DestroyBody(snailbody);
-            snailbodyDef.position.Set(x,y);
-            snailbodyDef.angle=ang;
-            snailbody = world->CreateBody(&snailbodyDef);
-            bodyshapeDef.vertices[0].Set(71-mx,0-my);
-            bodyshapeDef.vertices[1].Set(71-mx,45-my);
-            bodyshapeDef.vertices[2].Set(0-mx,45-my);
-            snailbody->CreateShape(&bodyshapeDef);
-            houseshapeDef.localPosition.Set(25-mx, 0-my);
-            snailbody->CreateShape(&houseshapeDef);
-            head1Def.localPosition.Set(82-mx, -2-my);
-            snailbody->CreateShape(&head1Def);
-            head2Def.localPosition.Set(73-mx, -18-my);
-            snailbody->CreateShape(&head2Def);
+                world->DestroyBody(snailbody);
+                snailbodyDef.position.Set(x,y);
+                snailbodyDef.angle=ang;
+                snailbody = world->CreateBody(&snailbodyDef);
+                bodyshapeDef.vertices[0].Set(71-mx,0-my);
+                bodyshapeDef.vertices[1].Set(71-mx,45-my);
+                bodyshapeDef.vertices[2].Set(0-mx,45-my);
+                snailbody->CreateShape(&bodyshapeDef);
+                houseshapeDef.localPosition.Set(25-mx, 0-my);
+                snailbody->CreateShape(&houseshapeDef);
+                head1Def.localPosition.Set(82-mx, -2-my);
+                snailbody->CreateShape(&head1Def);
+                head2Def.localPosition.Set(73-mx, -18-my);
+                snailbody->CreateShape(&head2Def);
 
-            jd.body1 = snailbody;
-            jd.body2 = eye1;
-            jd.localAnchor1.Set(0.0f, 30.0f);
-            jd.localAnchor2.Set(0.0f, 0.0f);
-            jd.length = d[0].Length();
-            world->CreateJoint(&jd);
+                jd.body1 = snailbody;
+                jd.body2 = eye1;
+                jd.localAnchor1.Set(0.0f, 30.0f);
+                jd.localAnchor2.Set(0.0f, 0.0f);
+                jd.length = d[0].Length();
+                world->CreateJoint(&jd);
 
-            jd.body1 = snailbody;
-            jd.body2 = eye1;
-            jd.localAnchor1.Set(30.0f, 0.0f);
-            jd.localAnchor2.Set(0.0f, 0.0f);
-            jd.length = d[1].Length();
-            world->CreateJoint(&jd);
+                jd.body1 = snailbody;
+                jd.body2 = eye1;
+                jd.localAnchor1.Set(30.0f, 0.0f);
+                jd.localAnchor2.Set(0.0f, 0.0f);
+                jd.length = d[1].Length();
+                world->CreateJoint(&jd);
 
-            jd.body1 = snailbody;
-            jd.body2 = eye1;
-            jd.localAnchor1.Set(30.0f, 30.0f);
-            jd.localAnchor2.Set(0.0f, 0.0f);
-            jd.length = d[2].Length();
-            world->CreateJoint(&jd);
+                jd.body1 = snailbody;
+                jd.body2 = eye1;
+                jd.localAnchor1.Set(30.0f, 30.0f);
+                jd.localAnchor2.Set(0.0f, 0.0f);
+                jd.length = d[2].Length();
+                world->CreateJoint(&jd);
 
-            jd.body1 = snailbody;
-            jd.body2 = eye2;
-            jd.localAnchor1.Set(0.0f, 30.0f);
-            jd.localAnchor2.Set(0.0f, 0.0f);
-            jd.length = d[3].Length();
-            world->CreateJoint(&jd);
+                jd.body1 = snailbody;
+                jd.body2 = eye2;
+                jd.localAnchor1.Set(0.0f, 30.0f);
+                jd.localAnchor2.Set(0.0f, 0.0f);
+                jd.length = d[3].Length();
+                world->CreateJoint(&jd);
 
-            jd.body1 = snailbody;
-            jd.body2 = eye2;
-            jd.localAnchor1.Set(30.0f, 0.0f);
-            jd.localAnchor2.Set(0.0f, 0.0f);
-            jd.length = d[4].Length();
-            world->CreateJoint(&jd);
+                jd.body1 = snailbody;
+                jd.body2 = eye2;
+                jd.localAnchor1.Set(30.0f, 0.0f);
+                jd.localAnchor2.Set(0.0f, 0.0f);
+                jd.length = d[4].Length();
+                world->CreateJoint(&jd);
 
-            jd.body1 = snailbody;
-            jd.body2 = eye2;
-            jd.localAnchor1.Set(30.0f, 30.0f);
-            jd.localAnchor2.Set(0.0f, 0.0f);
-            jd.length = d[5].Length();
-            world->CreateJoint(&jd);
+                jd.body1 = snailbody;
+                jd.body2 = eye2;
+                jd.localAnchor1.Set(30.0f, 30.0f);
+                jd.localAnchor2.Set(0.0f, 0.0f);
+                jd.length = d[5].Length();
+                world->CreateJoint(&jd);
 
-            snailbody->SetMassFromShapes();
-            snailbody->SetUserData(&snaildata);
+                snailbody->SetMassFromShapes();
+                snailbody->SetUserData(&snaildata);
 
-            snailbody->SetLinearVelocity(linVel);
-            snailbody->SetAngularVelocity(angVel);
+                snailbody->SetLinearVelocity(linVel);
+                snailbody->SetAngularVelocity(angVel);
 
-            gunjoint.Initialize(snailbody, RifleGun->weaponbody, RifleGun->weaponbody->GetWorldCenter());
-            gunjoint.localAnchor1=b2Vec2(30.0f, 0.0f);
-            gunjoint.localAnchor2=b2Vec2(0.0f, 0.0f);
-            world->CreateJoint(&gunjoint);
-            RifleGun->FlipX(false);
-            //LightSp.FlipX(false);
+                gunjoint.Initialize(snailbody, Weapons[aktWeapon]->weaponbody, Weapons[aktWeapon]->weaponbody->GetWorldCenter());
+                gunjoint.localAnchor1=b2Vec2(30.0f, 0.0f);
+                gunjoint.localAnchor2=b2Vec2(0.0f, 0.0f);
+                world->CreateJoint(&gunjoint);
+                Weapons[aktWeapon]->FlipX(false);
+                //LightSp.FlipX(false);
+	        }else{
+	            fliped=false;
+                SnailSp.SetImage(houseImg);
+                SnailSp.SetCenter(654+mx*2,444+my*2);
+                SnailSp.FlipX(fliped);
+                Eye1Sp.FlipX(fliped);
+                Eye2Sp.FlipX(fliped);
+
+                float x=snailbody->GetPosition().x;
+                float y=snailbody->GetPosition().y;
+                float ang=snailbody->GetAngle();
+                b2Vec2 linVel=snailbody->GetLinearVelocity();
+                float angVel=snailbody->GetAngularVelocity();
+
+                world->DestroyBody(snailbody);
+                snailbodyDef.position.Set(x,y);
+                snailbodyDef.angle=ang;
+                snailbody = world->CreateBody(&snailbodyDef);
+                houseshapeDef.localPosition.Set(25-mx, 0-my);
+                snailbody->CreateShape(&houseshapeDef);
+
+                jd.body1 = snailbody;
+                jd.body2 = eye1;
+                jd.localAnchor1.Set(0.0f, 30.0f);
+                jd.localAnchor2.Set(0.0f, 0.0f);
+                jd.length = d[0].Length();
+                world->CreateJoint(&jd);
+
+                jd.body1 = snailbody;
+                jd.body2 = eye1;
+                jd.localAnchor1.Set(30.0f, 0.0f);
+                jd.localAnchor2.Set(0.0f, 0.0f);
+                jd.length = d[1].Length();
+                world->CreateJoint(&jd);
+
+                jd.body1 = snailbody;
+                jd.body2 = eye1;
+                jd.localAnchor1.Set(30.0f, 30.0f);
+                jd.localAnchor2.Set(0.0f, 0.0f);
+                jd.length = d[2].Length();
+                world->CreateJoint(&jd);
+
+                jd.body1 = snailbody;
+                jd.body2 = eye2;
+                jd.localAnchor1.Set(0.0f, 30.0f);
+                jd.localAnchor2.Set(0.0f, 0.0f);
+                jd.length = d[3].Length();
+                world->CreateJoint(&jd);
+
+                jd.body1 = snailbody;
+                jd.body2 = eye2;
+                jd.localAnchor1.Set(30.0f, 0.0f);
+                jd.localAnchor2.Set(0.0f, 0.0f);
+                jd.length = d[4].Length();
+                world->CreateJoint(&jd);
+
+                jd.body1 = snailbody;
+                jd.body2 = eye2;
+                jd.localAnchor1.Set(30.0f, 30.0f);
+                jd.localAnchor2.Set(0.0f, 0.0f);
+                jd.length = d[5].Length();
+                world->CreateJoint(&jd);
+
+                snailbody->SetMassFromShapes();
+                snailbody->SetUserData(&snaildata);
+
+                snailbody->SetLinearVelocity(linVel);
+                snailbody->SetAngularVelocity(angVel);
+
+                gunjoint.Initialize(snailbody, Weapons[aktWeapon]->weaponbody, Weapons[aktWeapon]->weaponbody->GetWorldCenter());
+                gunjoint.localAnchor1=b2Vec2(30.0f, 0.0f);
+                gunjoint.localAnchor2=b2Vec2(0.0f, 0.0f);
+                world->CreateJoint(&gunjoint);
+                Weapons[aktWeapon]->FlipX(false);
+            }
+        }
+    }
+
+    void Snail::Hide(bool hide){
+	    if(hide){
+            hid=true;
+            FlipX(fliped);
+        }else{
+            hid=false;
+            FlipX(fliped);
         }
     }
 
@@ -328,78 +520,152 @@
         Window->Draw(SnailSp);
         Window->Draw(Eye1Sp);
         Window->Draw(Eye2Sp);
-        RifleGun->Show();
+        if(alive)Weapons[aktWeapon]->Show();
         //if(controlled){
         //    Window->Draw(LightSp);
         //}
     }
 
+    void Snail::Die(){
+        alive=false;
+        aktImg=10;
+        hid=false;
+        float x=snailbody->GetPosition().x;
+        float y=snailbody->GetPosition().y;
+        float ang=snailbody->GetAngle();
+        b2Vec2 linVel=snailbody->GetLinearVelocity();
+        float angVel=snailbody->GetAngularVelocity();
+        Weapons[aktWeapon]->UnUse();
+
+        if(fliped){
+                world->DestroyBody(snailbody);
+                snailbodyDef.position.Set(x,y);
+                snailbodyDef.angle=ang;
+                snailbody = world->CreateBody(&snailbodyDef);
+                bodyshapeDef.vertices[0].Set(-71+mx,0-my);
+                bodyshapeDef.vertices[1].Set(0+mx,45-my);
+                bodyshapeDef.vertices[2].Set(-71+mx,45-my);
+                snailbody->CreateShape(&bodyshapeDef);
+                houseshapeDef.localPosition.Set(-25+mx, 0-my);
+                snailbody->CreateShape(&houseshapeDef);
+
+                snailbody->SetMassFromShapes();
+                snailbody->SetUserData(&snaildata);
+
+                snailbody->SetLinearVelocity(linVel);
+                snailbody->SetAngularVelocity(angVel);
+	    }else{
+                world->DestroyBody(snailbody);
+                snailbodyDef.position.Set(x,y);
+                snailbodyDef.angle=ang;
+                snailbody = world->CreateBody(&snailbodyDef);
+                bodyshapeDef.vertices[0].Set(71-mx,0-my);
+                bodyshapeDef.vertices[1].Set(71-mx,45-my);
+                bodyshapeDef.vertices[2].Set(0-mx,45-my);
+                snailbody->CreateShape(&bodyshapeDef);
+                houseshapeDef.localPosition.Set(25-mx, 0-my);
+                snailbody->CreateShape(&houseshapeDef);
+
+                snailbody->SetMassFromShapes();
+                snailbody->SetUserData(&snaildata);
+
+                snailbody->SetLinearVelocity(linVel);
+                snailbody->SetAngularVelocity(angVel);
+        }
+    }
+
 	void Snail::InputHandling(Event ev){
-        RifleGun->InputHandling(ev);
-	    if(controlled){
-	        timer+=Window->GetFrameTime();
+	    if(alive){
+            Weapons[aktWeapon]->InputHandling(ev);
+            if(controlled){
+                timer+=Window->GetFrameTime();
 
-            if(Window->GetInput().IsKeyDown(Key::A)){
-                b2Vec2 force(-30,snailbody->GetLinearVelocity().y);
-                snailbody->SetLinearVelocity(force);
-            }
-            if(Window->GetInput().IsKeyDown(Key::D)){
-                b2Vec2 force(30,snailbody->GetLinearVelocity().y);
-                snailbody->SetLinearVelocity(force);
-            }
-            if(Window->GetInput().IsKeyDown(Key::W) && jump){
-                b2Vec2 force(snailbody->GetLinearVelocity().x,-60);
-                snailbody->SetLinearVelocity(force);
-            }
-            if(Window->GetInput().IsKeyDown(Key::S)){
-                snailbody->SetLinearVelocity(b2Vec2(snailbody->GetLinearVelocity().x,snailbody->GetLinearVelocity().y+0.5));
-            }
-            if(Window->GetInput().IsKeyDown(Key::E)){
-                snailbody->SetAngularVelocity(0.5);
-            }
-            if(Window->GetInput().IsKeyDown(Key::Q)){
-                snailbody->SetAngularVelocity(-0.5);
-            }
-            if(Window->GetInput().IsKeyDown(Key::R)){
-                if(fliped){
-                    eye1->SetLinearVelocity(b2Vec2(-200,-100));
+                if(!turbo&&Stamina<100){Speed=30;Stamina+=0.1;}
+                if(Window->GetInput().IsKeyDown(Key::LShift) && Stamina>50 && !turbo){turbo=true;Speed=60;}
+                if(turbo && Stamina<1 && Stamina>=0)turbo=false;
+                if(turbo){Stamina-=0.75;if(Stamina<0){Stamina=0;}}
+
+                if(Window->GetInput().IsKeyDown(Key::A)){
+                    b2Vec2 force(-Speed,snailbody->GetLinearVelocity().y);
+                    snailbody->SetLinearVelocity(force);
+                }
+                if(Window->GetInput().IsKeyDown(Key::D)){
+                    b2Vec2 force(Speed,snailbody->GetLinearVelocity().y);
+                    snailbody->SetLinearVelocity(force);
+                }
+                if(Window->GetInput().IsKeyDown(Key::W) && jump){
+                    b2Vec2 force(snailbody->GetLinearVelocity().x,-Speed-30);
+                    snailbody->SetLinearVelocity(force);
+                }
+                if(Window->GetInput().IsKeyDown(Key::S)){
+                    snailbody->SetLinearVelocity(b2Vec2(snailbody->GetLinearVelocity().x,snailbody->GetLinearVelocity().y+0.5));
+                }
+                if(Window->GetInput().IsKeyDown(Key::E)){
+                    snailbody->SetAngularVelocity(0.5);
+                }
+                if(Window->GetInput().IsKeyDown(Key::Q)){
+                    snailbody->SetAngularVelocity(-0.5);
+                }
+                if(Window->GetInput().IsKeyDown(Key::R)){
+                    if(fliped){
+                        eye1->SetLinearVelocity(b2Vec2(-200,-100));
+                    }else{
+                        eye1->SetLinearVelocity(b2Vec2(200,-100));
+                    }
+                }
+                if(Window->GetInput().IsKeyDown(Key::F)){
+                    if(fliped){
+                        eye2->SetLinearVelocity(b2Vec2(-200,-100));
+                    }else{
+                        eye2->SetLinearVelocity(b2Vec2(200,-100));
+                    }
+                }
+                //cout<<abs(int(snailbody->GetAngle()*-57.29577951308232)%360)<<endl;
+                if(Window->GetInput().IsKeyDown(Key::C)){
+                    if(!hid){
+                        Hide(true);
+                    }
                 }else{
-                    eye1->SetLinearVelocity(b2Vec2(200,-100));
+                    if(hid){
+                        Hide(false);
+                    }
                 }
-            }
-            if(Window->GetInput().IsKeyDown(Key::F)){
-                if(fliped){
-                    eye2->SetLinearVelocity(b2Vec2(-200,-100));
-                }else{
-                    eye2->SetLinearVelocity(b2Vec2(200,-100));
+
+                Vector2f Mouse = Window->ConvertCoords(Window->GetInput().GetMouseX(),Window->GetInput().GetMouseY());
+
+                if(Window->GetInput().IsKeyDown(Key::G) && timer>grenadethrowspeed){
+                    Grenade* g=new Grenade(Window, world, TOH, snailbody->GetPosition().x+10, snailbody->GetPosition().y-70, (Mouse.x-(snailbody->GetPosition().x+10))/2,(Mouse.y-(snailbody->GetPosition().y-70))/2);
+                    TOH->Add(g);
+                    timer=0;
                 }
-            }
 
-            Vector2f Mouse = Window->ConvertCoords(Window->GetInput().GetMouseX(),Window->GetInput().GetMouseY());
-
-            if(Window->GetInput().IsKeyDown(Key::G) && timer>grenadethrowspeed){
-                Grenade* g=new Grenade(Window, world, TOH, snailbody->GetPosition().x+10, snailbody->GetPosition().y-70, (Mouse.x-(snailbody->GetPosition().x+10))/2,(Mouse.y-(snailbody->GetPosition().y-70))/2);
-                TOH->Add(g);
-                timer=0;
-            }
-
-            if((Mouse.x>snailbody->GetPosition().x) && (fliped)){
-                FlipX(false);
-            }
-            if((Mouse.x<snailbody->GetPosition().x) && (!fliped)){
-                FlipX(true);
-            }
-
-            if(Window->GetInput().IsMouseButtonDown(Mouse::Left)){
-                RifleGun->Shot();
-            }
-            /*
-            if(ev.Type == Event::MouseButtonPressed){
-                if(ev.Key.Code == 0){
-
+                if(Window->GetInput().IsKeyDown(Key::X)){
+                    Damage(1);
                 }
-            }*/
 
+                if(Window->GetInput().IsKeyDown(Key::H)){
+                    Heal(1);
+                }
+
+                if((Mouse.x>snailbody->GetPosition().x) && (fliped)){
+                    FlipX(false);
+                }
+                if((Mouse.x<snailbody->GetPosition().x) && (!fliped)){
+                    FlipX(true);
+                }
+
+                if(Window->GetInput().IsMouseButtonDown(Mouse::Left)){
+                    Weapons[aktWeapon]->Shot();
+                }
+
+                /*
+                if(ev.Type == Event::MouseButtonPressed){
+                    if(ev.Key.Code == 0){
+
+                    }
+                }*/
+
+            }
 	    }
         SnailSp.SetPosition(snailbody->GetPosition().x,snailbody->GetPosition().y);
         SnailSp.SetRotation(snailbody->GetAngle()*-57.29577951308232);
@@ -409,7 +675,85 @@
         //LightSp.SetRotation(RifleGun->weaponbody->GetAngle()*-57.29577951308232);
 	}
 
-	void Snail::out(){
-	    cout<<"mûködik!! :D"<<endl;
+	void Snail::EventHandling(Event ev){
+	    if(ev.Type == sf::Event::MouseWheelMoved && alive){
+            if(ev.MouseWheel.Delta == 1 ){
+                Weapons[aktWeapon]->UnUse();
+                aktWeapon++;
+                if(aktWeapon>Weapons.size()-1){
+                    aktWeapon=0;
+                }
+                Weapons[aktWeapon]->Use(snailbody->GetWorldCenter().x, snailbody->GetWorldCenter().y);
+                if(fliped){
+                    gunjoint.Initialize(snailbody, Weapons[aktWeapon]->weaponbody, Weapons[aktWeapon]->weaponbody->GetWorldCenter());
+                    gunjoint.localAnchor1=b2Vec2(-30.0f, 0.0f);
+                    gunjoint.localAnchor2=b2Vec2(0.0f, 0.0f);
+                    world->CreateJoint(&gunjoint);
+                    Weapons[aktWeapon]->FlipX(true);
+                }else{
+                    gunjoint.Initialize(snailbody, Weapons[aktWeapon]->weaponbody, Weapons[aktWeapon]->weaponbody->GetWorldCenter());
+                    gunjoint.localAnchor1=b2Vec2(30.0f, 0.0f);
+                    gunjoint.localAnchor2=b2Vec2(0.0f, 0.0f);
+                    world->CreateJoint(&gunjoint);
+                    Weapons[aktWeapon]->FlipX(false);
+                }
+            }
+            if(ev.MouseWheel.Delta == -1 ){
+                Weapons[aktWeapon]->UnUse();
+                aktWeapon--;
+                if(aktWeapon<0){
+                    aktWeapon=Weapons.size()-1;
+                }
+                Weapons[aktWeapon]->Use(snailbody->GetWorldCenter().x, snailbody->GetWorldCenter().y);
+                if(fliped){
+                    gunjoint.Initialize(snailbody, Weapons[aktWeapon]->weaponbody, Weapons[aktWeapon]->weaponbody->GetWorldCenter());
+                    gunjoint.localAnchor1=b2Vec2(-30.0f, 0.0f);
+                    gunjoint.localAnchor2=b2Vec2(0.0f, 0.0f);
+                    world->CreateJoint(&gunjoint);
+                    Weapons[aktWeapon]->FlipX(true);
+                }else{
+                    gunjoint.Initialize(snailbody, Weapons[aktWeapon]->weaponbody, Weapons[aktWeapon]->weaponbody->GetWorldCenter());
+                    gunjoint.localAnchor1=b2Vec2(30.0f, 0.0f);
+                    gunjoint.localAnchor2=b2Vec2(0.0f, 0.0f);
+                    world->CreateJoint(&gunjoint);
+                    Weapons[aktWeapon]->FlipX(false);
+                }
+            }
+        }
+    }
+
+	void Snail::Damage(int damage){
+	    if(alive){
+            Health-=damage;
+            if(Health<=0)Die();
+            else if(Health<10)aktImg=9;
+            else if(Health<20)aktImg=8;
+            else if(Health<30)aktImg=7;
+            else if(Health<40)aktImg=6;
+            else if(Health<50)aktImg=5;
+            else if(Health<60)aktImg=4;
+            else if(Health<70)aktImg=3;
+            else if(Health<80)aktImg=2;
+            else if(Health<90)aktImg=1;
+            //cout<<aktImg<<" "<<Health<<" "<<alive<<endl;
+            SnailSp.SetImage(snailImg[aktImg]);
+	    }
+    }
+
+    void Snail::Heal(int heal){
+        Health+=heal;
+        if(Health>100)Health=100;
+        if(Health<10)aktImg=9;
+        else if(Health<20)aktImg=8;
+        else if(Health<30)aktImg=7;
+        else if(Health<40)aktImg=6;
+        else if(Health<50)aktImg=5;
+        else if(Health<60)aktImg=4;
+        else if(Health<70)aktImg=3;
+        else if(Health<80)aktImg=2;
+        else if(Health<90)aktImg=1;
+        else if(Health>90)aktImg=0;
+        //cout<<aktImg<<" "<<Health<<" "<<alive<<endl;
+        SnailSp.SetImage(snailImg[aktImg]);
     }
 

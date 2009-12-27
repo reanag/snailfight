@@ -11,14 +11,14 @@
 using namespace std;
 using namespace sf;
 
-class Weapon;
-#include "Weapon.hpp"
 class TempObjectHandler;
+#include "Weapon.hpp"
+class Weapon;
 
 class Rifle : public Weapon{
 
 	public:
-        float firespeed;
+        /*float firespeed;
         float timer;
         bool MouseTargeting;
 
@@ -27,14 +27,13 @@ class Rifle : public Weapon{
         Sprite MuzzleSp;
 
         SoundBuffer Buffer;
-        Sound WeaponFireSound;
+        Sound WeaponFireSound;*/
 
         Rifle(RenderWindow* window, b2World* World, TempObjectHandler* toh, float PositionX, float PositionY);
-
-        //void FlipX(bool flip);
+/*
         void Show();
         void InputHandling(Event ev);
-        void Shot();
+        void Shot();*/
 
 };
 

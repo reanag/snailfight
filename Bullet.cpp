@@ -1,9 +1,10 @@
 #include "Bullet.hpp"
 
-	Bullet::Bullet(RenderWindow* window, b2World* World, TempObjectHandler* toh, float PositionX, float PositionY, float VelocityX, float VelocityY){
+	Bullet::Bullet(RenderWindow* window, b2World* World, TempObjectHandler* toh, float PositionX, float PositionY, float VelocityX, float VelocityY, int Damage){
 	    Window=window;
 	    world=World;
 	    TOH=toh;
+	    damage=Damage;
 	    lim=false;
 
         bulletbodyDef.position.Set(PositionX, PositionY);

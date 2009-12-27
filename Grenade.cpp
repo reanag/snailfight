@@ -1,11 +1,15 @@
 #include "Grenade.hpp"
+#include "Snail.hpp"
 
 	Grenade::Grenade(RenderWindow* window, b2World* World, TempObjectHandler* toh, float PositionX, float PositionY, float VelocityX, float VelocityY){
 	    Window=window;
 	    world=World;
 	    TOH=toh;
+
+	    damage=15;
 	    timer=0;
 	    lim=false;
+	    exploding=false;
 
         grenadebodyDef.position.Set(PositionX, PositionY);
         grenadebody = world->CreateBody(&grenadebodyDef);
@@ -39,12 +43,37 @@
             Window->Draw(GrenadeSp);
     }
 
+    void Grenade::ApplyForces(){
+        b2Body* body=world->GetBodyList();
+        for(int i=0;i<world->GetBodyCount();i++){
+            data* d=(data*) body->GetUserData();
+            if(d->label=="GROUND"||d->label=="wall1"||d->label=="wall2"){
+                continue;
+            }else{
+                float Vx=body->GetPosition().x-grenadebody->GetPosition().x;
+                float Vy=body->GetPosition().y-grenadebody->GetPosition().y;
+                float dist=sqrt(pow(Vx,2)+pow(Vy,2));
+                if(dist<200&&Vx!=0&&Vy!=0){
+                    Vx=Vx*100/dist;
+                    Vy=Vy*100/dist;
+                    if(d->label=="snail"){
+                        Snail* snail=(Snail*) d->object;
+                        snail->Damage(damage);
+                    }
+                    body->SetLinearVelocity(b2Vec2(body->GetLinearVelocity().x+Vx,body->GetLinearVelocity().y+Vy));
+                }
+            }
+            body=body->GetNext();
+        }
+    }
+
 	void Grenade::InputHandling(Event ev){
         timer+=Window->GetFrameTime();
         if(timer>5){
             if(!lim){
                 Explode.Play();
                 lim=true;
+                ApplyForces();
             }
             if(iter>2){
                 DestroyGrenade();
@@ -62,7 +91,6 @@
                 }
             }
         }
-
         GrenadeSp.SetPosition(grenadebody->GetPosition().x,grenadebody->GetPosition().y);
         GrenadeSp.SetRotation(grenadebody->GetAngle()*-57.29577951308232);
 	}

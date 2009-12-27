@@ -3,14 +3,20 @@
 #include "..\Box2D_v2.0.1\Box2D\Include\Box2D.h"
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <sstream>
 #include <math.h>
 #include "Object.hpp"
 #include "TempObjectHandler.hpp"
+#include "Weapon.hpp"
 #include "Rifle.hpp"
+#include "Rifle2.hpp"
+#include "Rifle3.hpp"
 #include "Grenade.hpp"
 
 using namespace std;
 using namespace sf;
+
+class TempObjectHandler;
 
 class Snail : public Object{
 
@@ -19,12 +25,21 @@ class Snail : public Object{
         b2World* world;
         TempObjectHandler* TOH;
 
+        int Health;
+        float Stamina;
+        int Speed;
+        bool alive;
+        bool turbo;
+
         float grenadethrowspeed;
         float timer;
 
         bool fliped;
+        bool hid;
         bool jump;
         bool controlled;
+        bool up;
+        bool once;
         float mx;
         float my;
 
@@ -49,14 +64,18 @@ class Snail : public Object{
         b2CircleDef e2;
         data eye2data;
 
-        Image snailImg;
+        Image snailImg[11];
+        int aktImg;
+        Image houseImg;
         Sprite SnailSp;
         Image eye1Img;
         Sprite Eye1Sp;
         Image eye2Img;
         Sprite Eye2Sp;
 
-        Rifle* RifleGun;
+        vector<Weapon* > Weapons;
+        int aktWeapon;
+        Rifle2* RifleGun;
         b2RevoluteJointDef gunjoint;
 
         //Image lightImg;
@@ -65,9 +84,13 @@ class Snail : public Object{
         Snail(RenderWindow* window, b2World* World, TempObjectHandler* toh, float PositionX, float PositionY);
 
         void FlipX(bool flip);
+        void Hide(bool hide);
+        void Die();
         void Show();
         void InputHandling(Event ev);
-        void out();
+        void EventHandling(Event ev);
+        void Damage(int damage);
+        void Heal(int heal);
 
 };
 

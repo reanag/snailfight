@@ -11,11 +11,12 @@
 using namespace std;
 using namespace sf;
 
+static SocketTCP mSocket;
+
 class Pool {
 public:
     static vector<GameEvent> Messages;
     static vector<GameEvent> MessagesToSend;
-    static SocketTCP* mSocket;
 
 public:
 
@@ -28,8 +29,8 @@ public:
         ThreadHandle-> Launch();
     }
 
-    void static setSocket(SocketTCP sock){
-        mSocket = &sock;
+    void static setSocket(SocketTCP* sock){
+//        mSocket = sock;
     }
 
 
@@ -54,7 +55,7 @@ public:
     //    SocketTCP sock= *Object;
         cout << "\nReceiveThread START\n";
         while (true) {
-            string s = ReceiveMess(*mSocket);
+            string s = ReceiveMess(mSocket);
             cout << s;
             Sleep(1.0f);
             //if(s!="-")
@@ -69,7 +70,7 @@ public:
           cout << "\nSendThread Start\n";
         //     if(MessagesToSend.size()>0){
         //       string s = GetFirstEvent(MessagesToSend).EventToString();
-        SendMess(*mSocket, "uzenet");
+        SendMess(mSocket, "uzenet");
         cout << "\nSendThread End\n";
     }
 

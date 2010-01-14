@@ -23,16 +23,14 @@ public:
     Pool() {
        // mSocket = sock;
         cout<<"\nPOOL created\n";
+    }
+
+    void static start() {
         SocketTCP* pSocket;
 
         Thread* ThreadHandle = new Thread(&ThreadHandleFunc, pSocket);
         ThreadHandle-> Launch();
     }
-
-    void static setSocket(SocketTCP* sock){
-//        mSocket = sock;
-    }
-
 
 //Létrehoz egy üzenet küldő és üzenet fogadó szálat
     void static ThreadHandleFunc(void* UserData) {

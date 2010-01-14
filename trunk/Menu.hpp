@@ -88,6 +88,7 @@ class Menu{
 
         string ip;
         string* p;
+
         void Show();
         void EventHandle(Event ev);
         void Action(string& from);

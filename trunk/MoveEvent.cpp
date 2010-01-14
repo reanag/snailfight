@@ -1,7 +1,7 @@
 #include "MoveEvent.hpp"
 
 MoveEvent::MoveEvent(float vVel, float fVel, float angVel) {
-  // EventName = "MoveEvent";
+   EventName = "#MoveEvent";
    vVel = vVel;
    fVel = fVel;
    angVel = angVel;

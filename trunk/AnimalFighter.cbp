@@ -5,7 +5,7 @@
 		<Option title="AnimalFighter" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
-		<Option virtualFolders="Network\;Objects\;Surface\;Game\;" />
+		<Option virtualFolders="Network\;Objects\;Surface\;Game\;FieldEvents\;" />
 		<Build>
 			<Target title="Debug">
 				<Option output="AnimalFighter" prefix_auto="1" extension_auto="1" />
@@ -23,7 +23,7 @@
 					<Add option="-lsfml-graphics" />
 					<Add option="-lsfml-audio" />
 					<Add option="-lsfml-network" />
-					<Add library="C:\Dokumentumok\Pázmány ITK\5.félév\Haladó C++\Box2D_v2.0.1\Box2D\Library\libBox2D.a" />
+					<Add library="D:\CsigaGame\Box2D_v2.0.1\Box2D\Library\libBox2D.a" />
 					<Add directory="C:\Dokumentumok\Pázmány ITK\5.félév\Haladó C++\SFML\SFML-1.5\lib\mingw" />
 				</Linker>
 			</Target>
@@ -31,9 +31,11 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
+			<Add directory="..\..\SFML-1.5\include" />
 		</Compiler>
 		<Linker>
-			<Add library="C:\Dokumentumok\Pázmány ITK\5.félév\Haladó C++\Box2D_v2.0.1\Box2D\Library\libBox2D.a" />
+			<Add library="..\Box2D_v2.0.1\Box2D\Library\libBox2D.a" />
+			<Add directory="..\..\SFML-1.5\lib\mingw" />
 		</Linker>
 		<Unit filename="Application.cpp">
 			<Option virtualFolder="Game\" />
@@ -53,14 +55,17 @@
 		<Unit filename="Button.hpp">
 			<Option virtualFolder="Surface\" />
 		</Unit>
-		<Unit filename="Cliens.cpp">
-			<Option virtualFolder="Network\" />
-		</Unit>
 		<Unit filename="ContactListener.cpp">
 			<Option virtualFolder="Game\" />
 		</Unit>
 		<Unit filename="ContactListener.hpp">
 			<Option virtualFolder="Game\" />
+		</Unit>
+		<Unit filename="Event.cpp">
+			<Option virtualFolder="FieldEvents\" />
+		</Unit>
+		<Unit filename="Event.hpp">
+			<Option virtualFolder="FieldEvents\" />
 		</Unit>
 		<Unit filename="Game.cpp">
 			<Option virtualFolder="Game\" />
@@ -92,9 +97,17 @@
 		<Unit filename="Menu.hpp">
 			<Option virtualFolder="Surface\" />
 		</Unit>
+		<Unit filename="MoveEvent.cpp" />
+		<Unit filename="MoveEvent.hpp">
+			<Option virtualFolder="FieldEvents\" />
+		</Unit>
+		<Unit filename="NetworkInterface.cpp">
+			<Option virtualFolder="Network\" />
+		</Unit>
 		<Unit filename="Object.hpp">
 			<Option virtualFolder="Objects\" />
 		</Unit>
+		<Unit filename="Pool.cpp" />
 		<Unit filename="Rifle.cpp">
 			<Option virtualFolder="Objects\" />
 		</Unit>
@@ -112,9 +125,6 @@
 		</Unit>
 		<Unit filename="Rifle3.hpp">
 			<Option virtualFolder="Objects\" />
-		</Unit>
-		<Unit filename="Server.cpp">
-			<Option virtualFolder="Network\" />
 		</Unit>
 		<Unit filename="Snail.cpp">
 			<Option virtualFolder="Objects\" />

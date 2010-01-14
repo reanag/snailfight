@@ -17,6 +17,7 @@ void InputTextField::Setup(RenderWindow* window, Menu* parent, float PositionX, 
     ButtonFont.LoadFromFile("contents/Army.ttf");
     Text= new String(label,ButtonFont,20);
     Text->SetPosition(PositionX, PositionY);
+    ipSize=0;
 }
 
 void InputTextField::SetTextPosition(float RelativePositionX, float RelativePositionY) {
@@ -90,17 +91,28 @@ void InputTextField::EventHandle(Event ev) {
         if (ev.Key.Code=='9') {
             s="9";
         }
-        if (ev.Key.Code=='d') {
+        if (ev.Key.Code==270) {
+
             s=".";
+            ipSize++;
         }
 
-        if(GetLabel().size()<18){//&& nem backspace
+
+        if(ev.Key.Code==279){
+            if(GetLabel().size()>3){
+                SetLabel(GetLabel().substr(0, GetLabel().size()-1));
+            }
+
+        }
+
+        if(GetLabel().size()<18){
             SetLabel(GetLabel()+s);
             if(GetLabel().size()>13){
                 Parent->SetIP(GetLabel());
                 Parent->IpIsSet=true;
             }
         }
+
 
         Text= new String(label,ButtonFont,20);
         Text->SetPosition(PosX,PosY);

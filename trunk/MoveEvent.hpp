@@ -1,11 +1,11 @@
 #ifndef MOVEEVENT_HPP
 #define MOVEEVENT_HPP
-//#include "Event.hpp"
+#include "Event.hpp"
 #include <string>
 
 using namespace std;
 
-class MoveEvent{
+class MoveEvent: public GameEvent{
 
 private:
 float vVel;

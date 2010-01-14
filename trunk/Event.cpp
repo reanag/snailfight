@@ -1,6 +1,16 @@
 #include "Event.hpp"
 
-//Event::Event(){
-  //  EventName = "#";
-//}
+
+GameEvent::GameEvent(){
+   EventName = "#";
+}
+
+GameEvent::GameEvent(string s) {
+    EventName = "#"+s;
+}
+
+string GameEvent::EventToString(){
+    return EventName;
+}
+
 

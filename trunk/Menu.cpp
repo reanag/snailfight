@@ -5,6 +5,7 @@
 	    IpIsSet = false;
 	    AmIClient = false;
 	    AmIServer = false;
+	    CreateServer = false;
         csiga_b.LoadFromFile("contents/csiguszbody.png");
         //csiga_b.LoadFromFile("contents/xmas_csiguszbody.png");
         Csiga_b.SetImage(csiga_b);
@@ -129,15 +130,18 @@
             Window->Draw(*ServerButton->Text);
             Window->Draw(*ClientButton);
             Window->Draw(*ClientButton->Text);
-
         }
         if(ShowIPTextEditor){
-            ConnectionText= new String("\n   Type the IP of the server: \n\n  You can write a dot useing the D character", MenuFont,20);
+            ConnectionText= new String("\n   Type the IP of the server: ", MenuFont,20);
             Window->Draw(*ConnectionText);
             Window->Draw(*ClientButton);
             Window->Draw(*ClientButton->Text);
             Window->Draw(*ServerText);
             Window->Draw(*ServerText->Text);
+        }
+        if(CreateServer){
+            ConnectionText= new String("\n\n    Waiting for client.. ", MenuFont,20);
+            Window->Draw(*ConnectionText);
         }
 //ANDIKA END
         if(ShowHighScores){
@@ -164,6 +168,7 @@
                     }
                 }
             }
+
 
             Window2->Clear();
             Window2->Draw(*ExitText);
@@ -242,6 +247,9 @@
         if(from=="Connect"){
             ShowConnection=true;
         }
+        if(from=="Create server"){
+            CreateServer = true;
+        }
         if(from=="High Scores"){
             string highscores="   * high scores *\n\n";
             player p;
@@ -276,7 +284,7 @@
 
 //ANDIKA RÉSZ:
         if(from=="Join server"){
-           if(AmIServer||AmIServer){
+           if(AmIServer||AmIClient){
             cout<<"Error: you are already server or client is running!";
             return;
            }
@@ -298,9 +306,12 @@
             }
             cout<<"create server";
 
+
            Thread* ThreadCreateServer = new Thread(&ThreadCreateServerFunc);
            ThreadCreateServer->Launch();
            AmIServer = true;
+
+
 
             }
 //ANDIKA RÉSZ END
@@ -308,16 +319,18 @@
 //Andika szálkezel:
 
 void Menu::ThreadCreateServerFunc(void* UserData){
-     ServerTCP Server = ServerTCP();
-     Server.Run();
-}
+     cout<<"\nIN MENU: Create Server\n";
+     NetworkInterface p;
+     Pool poo(p.RunAsServer());
+ }
 
 void Menu::ThreadCreateClientFunc(void* UserData){
+    cout<<"\nIN MENU: Create Client\n";
     string* Object = static_cast<string*>(UserData);
     string s = *Object;
-    ClientTCP Client = ClientTCP(s);
-    Client.Run();
-}
+    NetworkInterface p;
+    Pool poo(p.RunAsClient(s));
+ }
 
 /*void Menu::GenerateSnow(){
     for(int i=0;i<1100;i++){

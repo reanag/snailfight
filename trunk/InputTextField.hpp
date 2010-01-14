@@ -25,6 +25,7 @@ class InputTextField : public sf::Sprite{
         Image btnimage;
         float PosX;
         float PosY;
+        int ipSize;
 
         void Setup(RenderWindow* window, Menu* parent, float PositionX, float PositionY, float SizeX, float SizeY, string Label);
         void SetTextPosition(float RelativePositionX, float RelativePositionY);

@@ -11,8 +11,10 @@
 #include <sstream>
 #include "Button.hpp"
 #include "Game.hpp"
-#include "Server.cpp"
-#include "Cliens.cpp"
+#include "NetworkInterface.cpp"
+//#include "Server.cpp"
+//#include "Cliens.cpp"
+#include "Pool.cpp"
 #include "InputTextField.hpp"
 
 class InputTextField;
@@ -80,6 +82,7 @@ class Menu{
 
         bool ShowIPTextEditor;
         bool IpIsSet;
+        bool CreateServer;
         bool AmIServer;
         bool AmIClient;
 

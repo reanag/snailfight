@@ -1,16 +1,20 @@
-#ifndef EVENT_HPP
-#define EVENT_HPP
+#ifndef GAMEEVENT_HPP
+#define GAMEEVENT_HPP
 #include <string>
+#include<iostream>
 using namespace std;
 
-class Event{
+class GameEvent{
 
 protected:
     string EventName;
 
 public:
-    Event();
+    GameEvent();
+    GameEvent(string s);
+
     virtual string EventToString();
 
 };
+
 #endif

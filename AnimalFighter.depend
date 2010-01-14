@@ -983,7 +983,7 @@
 1259769827 source:c:\documents and settings\andika\my documents\snailfight\snailfight\inputtextfield.cpp
 	"InputTextField.hpp"
 
-1259685988 source:c:\documents and settings\andika\desktop\snailproject\snailfight\application.cpp
+1261937500 source:c:\documents and settings\andika\desktop\snailproject\snailfight\application.cpp
 	"Application.hpp"
 
 1259685994 c:\documents and settings\andika\desktop\snailproject\snailfight\application.hpp
@@ -991,7 +991,7 @@
 	<iostream>
 	"Menu.hpp"
 
-1259846273 c:\documents and settings\andika\desktop\snailproject\snailfight\menu.hpp
+1263471264 c:\documents and settings\andika\desktop\snailproject\snailfight\menu.hpp
 	<SFML/Graphics.hpp>
 	<SFML/System.hpp>
 	<SFML/Network.hpp>
@@ -1003,8 +1003,8 @@
 	<sstream>
 	"Button.hpp"
 	"Game.hpp"
-	"Server.cpp"
-	"Cliens.cpp"
+	"NetworkInterface.cpp"
+	"Pool.cpp"
 	"InputTextField.hpp"
 
 1258000046 c:\documents and settings\andika\desktop\snailproject\snailfight\button.hpp
@@ -1013,7 +1013,7 @@
 	"SFML/Graphics/Sprite.hpp"
 	"Menu.hpp"
 
-1259499399 c:\documents and settings\andika\desktop\snailproject\snailfight\game.hpp
+1261939480 c:\documents and settings\andika\desktop\snailproject\snailfight\game.hpp
 	"..\Box2D_v2.0.1\Box2D\Include\Box2D.h"
 	<SFML/Graphics.hpp>
 	<iostream>
@@ -1021,6 +1021,7 @@
 	<vector>
 	"GameLogic.hpp"
 	"TempObjectHandler.hpp"
+	"Stage.hpp"
 	"Snail.hpp"
 
 1259499399 c:\documents and settings\andika\desktop\snailproject\snailfight\gamelogic.hpp
@@ -1039,15 +1040,19 @@
 1259499399 c:\documents and settings\andika\desktop\snailproject\snailfight\contactlistener.hpp
 	"..\Box2D_v2.0.1\Box2D\Include\Box2D.h"
 
-1259678292 c:\documents and settings\andika\desktop\snailproject\snailfight\snail.hpp
+1261937500 c:\documents and settings\andika\desktop\snailproject\snailfight\snail.hpp
 	"..\Box2D_v2.0.1\Box2D\Include\Box2D.h"
 	<SFML/Graphics.hpp>
 	<iostream>
+	<sstream>
 	<math.h>
-	"TempObjectHandler.hpp"
-	"Rifle.hpp"
-	"Grenade.hpp"
 	"Object.hpp"
+	"TempObjectHandler.hpp"
+	"Weapon.hpp"
+	"Rifle.hpp"
+	"Rifle2.hpp"
+	"Rifle3.hpp"
+	"Grenade.hpp"
 
 1259499399 c:\documents and settings\andika\desktop\snailproject\snailfight\tempobjecthandler.hpp
 	<SFML/Graphics.hpp>
@@ -1057,63 +1062,66 @@
 	"Grenade.hpp"
 	"Bullet.hpp"
 
-1259499399 c:\documents and settings\andika\desktop\snailproject\snailfight\grenade.hpp
+1261937500 c:\documents and settings\andika\desktop\snailproject\snailfight\grenade.hpp
 	"..\Box2D_v2.0.1\Box2D\Include\Box2D.h"
 	<SFML/Graphics.hpp>
 	<SFML/Audio.hpp>
 	<iostream>
 	<math.h>
+	"Object.hpp"
 	"TempObjectHandler.hpp"
 
-1259499399 c:\documents and settings\andika\desktop\snailproject\snailfight\bullet.hpp
+1261937500 c:\documents and settings\andika\desktop\snailproject\snailfight\bullet.hpp
 	"..\Box2D_v2.0.1\Box2D\Include\Box2D.h"
 	<SFML/Graphics.hpp>
 	<SFML/Audio.hpp>
 	<iostream>
 	<math.h>
+	"Object.hpp"
 	"TempObjectHandler.hpp"
 
-1259499399 c:\documents and settings\andika\desktop\snailproject\snailfight\rifle.hpp
+1261937500 c:\documents and settings\andika\desktop\snailproject\snailfight\rifle.hpp
 	"..\Box2D_v2.0.1\Box2D\Include\Box2D.h"
 	<SFML/Graphics.hpp>
 	<iostream>
 	<math.h>
+	"Object.hpp"
 	"TempObjectHandler.hpp"
 	"Bullet.hpp"
 	"Weapon.hpp"
 
-1259678253 c:\documents and settings\andika\desktop\snailproject\snailfight\weapon.hpp
+1261937500 c:\documents and settings\andika\desktop\snailproject\snailfight\weapon.hpp
 	"..\Box2D_v2.0.1\Box2D\Include\Box2D.h"
 	<SFML/Graphics.hpp>
-	"TempObjectHandler.hpp"
 	"Object.hpp"
+	"TempObjectHandler.hpp"
 
-1259678198 c:\documents and settings\andika\desktop\snailproject\snailfight\object.hpp
+1261937500 c:\documents and settings\andika\desktop\snailproject\snailfight\object.hpp
 
-1259698115 c:\documents and settings\andika\desktop\snailproject\snailfight\server.cpp
+1263044091 c:\documents and settings\andika\desktop\snailproject\snailfight\server.cpp
 	<SFML/Network.hpp>
 	<iostream>
 	<string>
 
-1259847920 c:\documents and settings\andika\desktop\snailproject\snailfight\cliens.cpp
+1263044093 c:\documents and settings\andika\desktop\snailproject\snailfight\cliens.cpp
 	<SFML/Network.hpp>
 	<iostream>
 	<string>
 
-1259700819 c:\documents and settings\andika\desktop\snailproject\snailfight\inputtextfield.hpp
+1261988679 c:\documents and settings\andika\desktop\snailproject\snailfight\inputtextfield.hpp
 	<SFML/Graphics.hpp>
 	<iostream>
 	"SFML/Graphics/Sprite.hpp"
 	"Menu.hpp"
 
-1259499399 source:c:\documents and settings\andika\desktop\snailproject\snailfight\bullet.cpp
+1261937500 source:c:\documents and settings\andika\desktop\snailproject\snailfight\bullet.cpp
 	"Bullet.hpp"
 
 1259697231 source:c:\documents and settings\andika\desktop\snailproject\snailfight\button.cpp
 	"Button.hpp"
 	<SFML/Graphics.hpp>
 
-1259847920 source:c:\documents and settings\andika\desktop\snailproject\snailfight\cliens.cpp
+1263044093 source:c:\documents and settings\andika\desktop\snailproject\snailfight\cliens.cpp
 	<SFML/Network.hpp>
 	<iostream>
 	<string>
@@ -1121,39 +1129,40 @@
 1259499399 source:c:\documents and settings\andika\desktop\snailproject\snailfight\contactlistener.cpp
 	"ContactListener.hpp"
 
-1259702866 source:c:\documents and settings\andika\desktop\snailproject\snailfight\game.cpp
+1261937500 source:c:\documents and settings\andika\desktop\snailproject\snailfight\game.cpp
 	"Game.hpp"
 
-1259499399 source:c:\documents and settings\andika\desktop\snailproject\snailfight\gamelogic.cpp
+1261937500 source:c:\documents and settings\andika\desktop\snailproject\snailfight\gamelogic.cpp
 	"GameLogic.hpp"
 
-1259499399 source:c:\documents and settings\andika\desktop\snailproject\snailfight\grenade.cpp
+1261937500 source:c:\documents and settings\andika\desktop\snailproject\snailfight\grenade.cpp
 	"Grenade.hpp"
+	"Snail.hpp"
 
-1259826305 source:c:\documents and settings\andika\desktop\snailproject\snailfight\inputtextfield.cpp
+1262000289 source:c:\documents and settings\andika\desktop\snailproject\snailfight\inputtextfield.cpp
 	"InputTextField.hpp"
 
-1259846556 source:c:\documents and settings\andika\desktop\snailproject\snailfight\menu.cpp
+1263483863 source:c:\documents and settings\andika\desktop\snailproject\snailfight\menu.cpp
 	"Menu.hpp"
 
-1259499399 source:c:\documents and settings\andika\desktop\snailproject\snailfight\rifle.cpp
+1261937500 source:c:\documents and settings\andika\desktop\snailproject\snailfight\rifle.cpp
 	"Rifle.hpp"
 
-1259698115 source:c:\documents and settings\andika\desktop\snailproject\snailfight\server.cpp
+1263044091 source:c:\documents and settings\andika\desktop\snailproject\snailfight\server.cpp
 	<SFML/Network.hpp>
 	<iostream>
 	<string>
 
-1259500007 source:c:\documents and settings\andika\desktop\snailproject\snailfight\snail.cpp
+1261937500 source:c:\documents and settings\andika\desktop\snailproject\snailfight\snail.cpp
 	"Snail.hpp"
 
 1259499399 source:c:\documents and settings\andika\desktop\snailproject\snailfight\tempobjecthandler.cpp
 	"TempObjectHandler.hpp"
 
-1259499399 source:c:\documents and settings\andika\desktop\snailproject\snailfight\weapon.cpp
+1261937500 source:c:\documents and settings\andika\desktop\snailproject\snailfight\weapon.cpp
 	"Weapon.hpp"
 
-1257953928 source:c:\documents and settings\andika\desktop\snailproject\snailfight\main.cpp
+1262886462 source:c:\documents and settings\andika\desktop\snailproject\snailfight\main.cpp
 	"Application.hpp"
 
 1243526204 c:\documents and settings\andika\desktop\sfml-1.5\include\sfml\graphics.hpp
@@ -1521,21 +1530,25 @@
 	<SFML/System/Thread.hpp>
 	<vector>
 
-1259858242 source:c:\documents and settings\andika\desktop\snailproject\snailfight\event.cpp
+1263041698 source:c:\documents and settings\andika\desktop\snailproject\snailfight\event.cpp
 	"Event.hpp"
 
-1259856528 c:\documents and settings\andika\desktop\snailproject\snailfight\event.hpp
+1263041473 c:\documents and settings\andika\desktop\snailproject\snailfight\event.hpp
 	<string>
+	<iostream>
 
-1259852611 source:c:\documents and settings\andika\desktop\snailproject\snailfight\pool.cpp
+1263479873 source:c:\documents and settings\andika\desktop\snailproject\snailfight\pool.cpp
 	<iostream>
 	<vector>
+	<SFML/Network.hpp>
+	<SFML/System.hpp>
 	"Event.hpp"
 
-1259858249 source:c:\documents and settings\andika\desktop\snailproject\snailfight\moveevent.cpp
+1262625174 source:c:\documents and settings\andika\desktop\snailproject\snailfight\moveevent.cpp
 	"MoveEvent.hpp"
 
-1259858291 c:\documents and settings\andika\desktop\snailproject\snailfight\moveevent.hpp
+1262625125 c:\documents and settings\andika\desktop\snailproject\snailfight\moveevent.hpp
+	"Event.hpp"
 	<string>
 
 1261934278 source:c:\dokumentumok\pázmány itk\5.félév\haladó c++\afighter\application.cpp
@@ -2121,4 +2134,178 @@
 
 1261931863 source:c:\dokumentumok\pázmány itk\5.félév\haladó c++\afighter\rifle3.cpp
 	"Rifle3.hpp"
+
+1261937500 c:\documents and settings\andika\desktop\snailproject\snailfight\rifle2.hpp
+	"..\Box2D_v2.0.1\Box2D\Include\Box2D.h"
+	<SFML/Graphics.hpp>
+	<iostream>
+	<math.h>
+	"Object.hpp"
+	"TempObjectHandler.hpp"
+	"Bullet.hpp"
+	"Weapon.hpp"
+
+1261937500 c:\documents and settings\andika\desktop\snailproject\snailfight\rifle3.hpp
+	"..\Box2D_v2.0.1\Box2D\Include\Box2D.h"
+	<SFML/Graphics.hpp>
+	<iostream>
+	<math.h>
+	"Object.hpp"
+	"TempObjectHandler.hpp"
+	"Bullet.hpp"
+	"Weapon.hpp"
+
+1260038750 c:\documents and settings\andika\desktop\snailproject\snailfight\stage.hpp
+	"..\Box2D_v2.0.1\Box2D\Include\Box2D.h"
+	<SFML/Graphics.hpp>
+	<iostream>
+	<math.h>
+	"Object.hpp"
+	"TempObjectHandler.hpp"
+
+1198623660 c:\documents and settings\andika\desktop\snailproject\box2d_v2.0.1\box2d\include\box2d.h
+	"../Source/Common/b2Settings.h"
+	"../Source/Collision/Shapes/b2CircleShape.h"
+	"../Source/Collision/Shapes/b2PolygonShape.h"
+	"../Source/Collision/b2BroadPhase.h"
+	"../Source/Dynamics/b2WorldCallbacks.h"
+	"../Source/Dynamics/b2World.h"
+	"../Source/Dynamics/b2Body.h"
+	"../Source/Dynamics/Contacts/b2Contact.h"
+	"../Source/Dynamics/Joints/b2DistanceJoint.h"
+	"../Source/Dynamics/Joints/b2MouseJoint.h"
+	"../Source/Dynamics/Joints/b2PrismaticJoint.h"
+	"../Source/Dynamics/Joints/b2RevoluteJoint.h"
+	"../Source/Dynamics/Joints/b2PulleyJoint.h"
+	"../Source/Dynamics/Joints/b2GearJoint.h"
+
+1207863846 c:\documents and settings\andika\desktop\snailproject\box2d_v2.0.1\box2d\source\common\b2settings.h
+	<assert.h>
+	<math.h>
+	"jtypes.h"
+	"Fixed.h"
+
+1205185848 c:\documents and settings\andika\desktop\snailproject\box2d_v2.0.1\box2d\source\common\jtypes.h
+	<stdint.h>
+
+1205789774 c:\documents and settings\andika\desktop\snailproject\box2d_v2.0.1\box2d\source\common\fixed.h
+	<stdio.h>
+	"nds.h"
+	<execinfo.h>
+	<signal.h>
+	<exception>
+
+1207861258 c:\documents and settings\andika\desktop\snailproject\box2d_v2.0.1\box2d\source\collision\shapes\b2circleshape.h
+	"b2Shape.h"
+
+1207993494 c:\documents and settings\andika\desktop\snailproject\box2d_v2.0.1\box2d\source\collision\shapes\b2shape.h
+	"../../Common/b2Math.h"
+	"../b2Collision.h"
+
+1207604104 c:\documents and settings\andika\desktop\snailproject\box2d_v2.0.1\box2d\source\common\b2math.h
+	"b2Settings.h"
+	<cmath>
+	<cfloat>
+	<cstdlib>
+	<stdio.h>
+
+1207001076 c:\documents and settings\andika\desktop\snailproject\box2d_v2.0.1\box2d\source\collision\b2collision.h
+	"../Common/b2Math.h"
+	<climits>
+
+1207862458 c:\documents and settings\andika\desktop\snailproject\box2d_v2.0.1\box2d\source\collision\shapes\b2polygonshape.h
+	"b2Shape.h"
+
+1205181756 c:\documents and settings\andika\desktop\snailproject\box2d_v2.0.1\box2d\source\collision\b2broadphase.h
+	"../Common/b2Settings.h"
+	"b2Collision.h"
+	"b2PairManager.h"
+	<climits>
+
+1206647518 c:\documents and settings\andika\desktop\snailproject\box2d_v2.0.1\box2d\source\collision\b2pairmanager.h
+	"../Common/b2Settings.h"
+	"../Common/b2Math.h"
+	<climits>
+
+1207952446 c:\documents and settings\andika\desktop\snailproject\box2d_v2.0.1\box2d\source\dynamics\b2worldcallbacks.h
+	"../Common/b2Settings.h"
+
+1207863474 c:\documents and settings\andika\desktop\snailproject\box2d_v2.0.1\box2d\source\dynamics\b2world.h
+	"../Common/b2Math.h"
+	"../Common/b2BlockAllocator.h"
+	"../Common/b2StackAllocator.h"
+	"b2ContactManager.h"
+	"b2WorldCallbacks.h"
+
+1206647496 c:\documents and settings\andika\desktop\snailproject\box2d_v2.0.1\box2d\source\common\b2blockallocator.h
+	"b2Settings.h"
+
+1195765918 c:\documents and settings\andika\desktop\snailproject\box2d_v2.0.1\box2d\source\common\b2stackallocator.h
+	"b2Settings.h"
+
+1200959456 c:\documents and settings\andika\desktop\snailproject\box2d_v2.0.1\box2d\source\dynamics\b2contactmanager.h
+	"../Collision/b2BroadPhase.h"
+	"../Dynamics/Contacts/b2NullContact.h"
+
+1201127870 c:\documents and settings\andika\desktop\snailproject\box2d_v2.0.1\box2d\source\dynamics\contacts\b2nullcontact.h
+	"../../Common/b2Math.h"
+	"b2Contact.h"
+
+1207001076 c:\documents and settings\andika\desktop\snailproject\box2d_v2.0.1\box2d\source\dynamics\contacts\b2contact.h
+	"../../Common/b2Math.h"
+	"../../Collision/b2Collision.h"
+	"../../Collision/Shapes/b2Shape.h"
+
+1207993876 c:\documents and settings\andika\desktop\snailproject\box2d_v2.0.1\box2d\source\dynamics\b2body.h
+	"../Common/b2Math.h"
+	"../Collision/Shapes/b2Shape.h"
+	"Joints/b2Joint.h"
+	<memory>
+
+1207993944 c:\documents and settings\andika\desktop\snailproject\box2d_v2.0.1\box2d\source\dynamics\joints\b2joint.h
+	"../../Common/b2Math.h"
+
+1206656922 c:\documents and settings\andika\desktop\snailproject\box2d_v2.0.1\box2d\source\dynamics\joints\b2distancejoint.h
+	"b2Joint.h"
+
+1206654762 c:\documents and settings\andika\desktop\snailproject\box2d_v2.0.1\box2d\source\dynamics\joints\b2mousejoint.h
+	"b2Joint.h"
+
+1206654762 c:\documents and settings\andika\desktop\snailproject\box2d_v2.0.1\box2d\source\dynamics\joints\b2prismaticjoint.h
+	"b2Joint.h"
+
+1206882064 c:\documents and settings\andika\desktop\snailproject\box2d_v2.0.1\box2d\source\dynamics\joints\b2revolutejoint.h
+	"b2Joint.h"
+
+1206654762 c:\documents and settings\andika\desktop\snailproject\box2d_v2.0.1\box2d\source\dynamics\joints\b2pulleyjoint.h
+	"b2Joint.h"
+
+1206654762 c:\documents and settings\andika\desktop\snailproject\box2d_v2.0.1\box2d\source\dynamics\joints\b2gearjoint.h
+	"b2Joint.h"
+
+1261937500 source:c:\documents and settings\andika\desktop\snailproject\snailfight\rifle2.cpp
+	"Rifle2.hpp"
+
+1261937500 source:c:\documents and settings\andika\desktop\snailproject\snailfight\rifle3.cpp
+	"Rifle3.hpp"
+
+1261939752 source:c:\documents and settings\andika\desktop\snailproject\snailfight\stage.cpp
+	"Stage.hpp"
+
+1263484431 c:\documents and settings\andika\desktop\snailproject\snailfight\pool.cpp
+	<iostream>
+	<vector>
+	<SFML/Network.hpp>
+	<SFML/System.hpp>
+	"Event.hpp"
+
+1263484171 c:\documents and settings\andika\desktop\snailproject\snailfight\networkinterface.cpp
+	<SFML/Network.hpp>
+	<iostream>
+	<string>
+
+1263483588 source:c:\documents and settings\andika\desktop\snailproject\snailfight\networkinterface.cpp
+	<SFML/Network.hpp>
+	<iostream>
+	<string>
 

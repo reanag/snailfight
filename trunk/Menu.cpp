@@ -322,7 +322,8 @@ void Menu::ThreadCreateServerFunc(void* UserData){
      cout<<"\nIN MENU: Create Server\n";
      NetworkInterface p;
      Pool poo();
-     Pool::setSocket(p.RunAsServer());
+//     Pool::setSocket(&p.RunAsServer());
+     mSocket = p.RunAsServer();
  }
 
 void Menu::ThreadCreateClientFunc(void* UserData){
@@ -331,7 +332,9 @@ void Menu::ThreadCreateClientFunc(void* UserData){
     string s = *Object;
     NetworkInterface p;
     Pool poo();
-    Pool::setSocket(p.RunAsClient(s));
+//    Pool::setSocket(&p.RunAsClient(s));
+     mSocket = p.RunAsClient(s);
+
  }
 
 /*void Menu::GenerateSnow(){

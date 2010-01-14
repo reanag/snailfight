@@ -57,7 +57,6 @@ public:
             Port = 12435;
       //  }
 
-
         if (Client.Connect(Port, ServerAddress) != Socket::Done) {
             cout<<"Error in Connect 1";
         } else {

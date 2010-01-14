@@ -324,6 +324,7 @@ void Menu::ThreadCreateServerFunc(void* UserData){
      Pool poo();
 //     Pool::setSocket(&p.RunAsServer());
      mSocket = p.RunAsServer();
+    Pool::start();
  }
 
 void Menu::ThreadCreateClientFunc(void* UserData){
@@ -333,7 +334,8 @@ void Menu::ThreadCreateClientFunc(void* UserData){
     NetworkInterface p;
     Pool poo();
 //    Pool::setSocket(&p.RunAsClient(s));
-     mSocket = p.RunAsClient(s);
+    mSocket = p.RunAsClient(s);
+    Pool::start();
 
  }
 

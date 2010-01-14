@@ -52,13 +52,13 @@ public:
 
     SocketTCP Connect(string sa) {
 
-        while (!ServerAddress.IsValid()) {
+    //    while (!ServerAddress.IsValid()) {
             ServerAddress=sa;
             Port = 12435;
-        }
+      //  }
 
 
-        if (Client.Connect(Port, ServerAddress) != sf::Socket::Done) {
+        if (Client.Connect(Port, ServerAddress) != Socket::Done) {
             cout<<"Error in Connect 1";
         } else {
             cout << "Connected to server " << ServerAddress << std::endl;

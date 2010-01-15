@@ -6,6 +6,7 @@
 #include <math.h>
 #include "Object.hpp"
 #include "TempObjectHandler.hpp"
+#include "DestroyableBody.hpp"
 
 using namespace std;
 using namespace sf;
@@ -32,14 +33,22 @@ class Stage : public Object {
 
         Image grassImg;
         Sprite GrassSp;
+        Image bacgroundImg;
+        Sprite BacgroundSp;
         //Image treeImg;
         //Sprite TreeSp;
+
+        b2Body* stageBody;
+        data stagedata;
+        Shape StageShape;
+        Image stageImg;
+        Sprite StageSp;
 
         Stage(RenderWindow* window, b2World* World, TempObjectHandler* toh);
 
         void Show();
         void ShowAfter();
-        void InputHandling(Event ev);
+        void InputHandling();
 
 };
 

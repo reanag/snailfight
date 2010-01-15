@@ -29,7 +29,7 @@ class Rifle : public Weapon{
         SoundBuffer Buffer;
         Sound WeaponFireSound;*/
 
-        Rifle(RenderWindow* window, b2World* World, TempObjectHandler* toh, float PositionX, float PositionY);
+        Rifle(RenderWindow* window, b2World* World, TempObjectHandler* toh, float PositionX, float PositionY, int Ammunition);
 /*
         void Show();
         void InputHandling(Event ev);

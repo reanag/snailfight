@@ -1,24 +1,31 @@
 #include "Rifle.hpp"
 
-	Rifle::Rifle(RenderWindow* window, b2World* World, TempObjectHandler* toh, float PositionX, float PositionY)/*:Weapon(RenderWindow* window, b2World* World, float PositionX, float PositionY)*/{
-	    Window=window;
+	Rifle::Rifle(RenderWindow* window, b2World* World, TempObjectHandler* toh, float PositionX, float PositionY, int Ammunition):Weapon(window, World, toh, PositionX, PositionY, Ammunition){
+	    /*Window=window;
 	    world=World;
 	    TOH=toh;
 
 	    damage=3;
+        clipsize=10;
+        clip=clipsize;
+        ammunition=Ammunition-clip;
+        maxammunition=200;
 	    timer=0;
 	    firespeed=0.1;
 	    fliped=false;
         MouseTargeting=false;
         showmuzzle=false;
+        inUse=false;*/
 
         CreateBody(PositionX,PositionY);
-        LoadImage("contents/Rifle1.2.png");
+        LoadImage("contents/Rifle1.2.png", weaponImg, WeaponSp);
         WeaponSp.SetCenter(weaponshapeDef.vertices[2].x+1,weaponshapeDef.vertices[2].y);
-        LoadMuzzle("contents/tt2.png");
+        LoadImage("contents/tt2.png", muzzleImg, MuzzleSp);
         MuzzleSp.SetCenter(3,87);
         MuzzleSp.SetScale(0.5,0.5);
-        LoadSound("contents/Gun_Silencer.wav");
+        LoadSound("contents/Gun_Silencer.wav", WeaponFireSoundBuffer, WeaponFireSound);
+        LoadSound("contents/Sound 634 load 3.wav", WeaponReloadSoundBuffer, WeaponReloadSound);
+        LoadSound("contents/Sound 837 clip out 1.wav", WeaponOutOfAmmoSoundBuffer, WeaponOutOfAmmoSound);
 /*
 	    weaponbodyDef.position.Set(PositionX, PositionY);
         weaponbody = world->CreateBody(&weaponbodyDef);

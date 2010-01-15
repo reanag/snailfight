@@ -9,15 +9,20 @@
 #include "TempObjectHandler.hpp"
 #include "Stage.hpp"
 #include "Snail.hpp"
+#include "Pool.cpp"
+#include "Menu.hpp"
 
 using namespace std;
 using namespace sf;
 
 class GameLogic;
-
+class Snail;
+class Pool;
 class Game{
 
 	public:
+        Pool* pPoo;
+        Menu* menu;
         RenderWindow* Window;
         bool InGame;
         b2World* world;
@@ -35,7 +40,7 @@ class Game{
 
         View GameView;
 
-        Game(RenderWindow* window);
+        Game( RenderWindow* window, int i, Pool* p, Menu* m);
 
         void Show();
         void GameLoop();

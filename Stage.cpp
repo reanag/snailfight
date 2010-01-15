@@ -16,7 +16,7 @@
         grounddata.label="GROUND";
         grounddata.object=this;
         groundBody->SetUserData(&grounddata);
-        grassImg.LoadFromFile("contents/d.bg_grass.png");
+        //grassImg.LoadFromFile("contents/d.bg_grass.png");
         //grassImg.LoadFromFile("contents/xmas_ground.png");
         GrassSp.SetImage(grassImg);
         GrassSp.SetPosition(-50,1760);
@@ -69,10 +69,50 @@
         TreeSp.SetScale(2,2);
         TreeSp.SetPosition(5,1800);*/
 
+        bacgroundImg.LoadFromFile("contents/Fantasy_War_014653_.jpg");
+        BacgroundSp.SetImage(bacgroundImg);
+        BacgroundSp.SetScale(1.5,1.5);
+
+        b2BodyDef stageBodyDef;
+        stageBodyDef.position.Set(520.0f, 1780.0f);
+        stageBody = world->CreateBody(&stageBodyDef);
+        b2PolygonDef stageShapeDef;
+
+        stageShapeDef.SetAsBox(510.0f, 15.0f);
+        stageBody->CreateShape(&stageShapeDef);
+
+        stageShapeDef.SetAsBox(15.0f, 30.0f, b2Vec2(500,0),0);
+        //stageShapeDef.localPosition.Set(500,0);
+        stageBody->CreateShape(&stageShapeDef);
+
+        stagedata.label="stage";
+        stagedata.object=this;
+        stageBody->SetUserData(&stagedata);
+        //StageShape=Shape::Rectangle(0, 0, stageShapeDef.vertices[2].x*2, stageShapeDef.vertices[2].y*2, Color(0,0,200));
+        StageShape=Shape::Rectangle(0, 0, 30, 60, Color(0,0,200));
+        StageShape.SetCenter(stageShapeDef.vertices[2].x, stageShapeDef.vertices[2].y);
+        //StageShape.SetPosition(stageBodyDef.position.x,stageBodyDef.position.y);
+        StageShape.SetPosition(stageBodyDef.position.x+1000,stageBodyDef.position.y);
+
+        stageImg.LoadFromFile("contents/roof.png");
+        StageSp.SetImage(stageImg);
+        StageSp.SetPosition(-100,1690);
+
+        /*TOH->Add(new DestroyableBody(Window, world, TOH, 1600, 1500, 0, true));
+        TOH->Add(new DestroyableBody(Window, world, TOH, 2000, 1500, 270, true));
+        TOH->Add(new DestroyableBody(Window, world, TOH, 2100, 1500, 90, true));
+        TOH->Add(new DestroyableBody(Window, world, TOH, 2100, 1000, 180, true));
+        */
+        for(int i=0;i<5;i++){
+            TOH->Add(new DestroyableBody(Window, world, TOH, 300+(i*500), 1500, 270, true));
+        }
 	}
 
 	void Stage::Show(){
 	    //Window->Draw(Ground);
+	    Window->Draw(BacgroundSp);
+	    Window->Draw(StageSp);
+	    //Window->Draw(StageShape);
         Window->Draw(Wall1);
         Window->Draw(Wall2);
         Window->Draw(Roof);
@@ -84,9 +124,15 @@
 	    //Window->Draw(TreeSp);
         Window->Draw(GrassSp);
         GrassSp.SetPosition(-50,1760);
+        //db->Show();
+        //db2->Show();
+        //db3->Show();
     }
 
-	void Stage::InputHandling(Event ev){
+	void Stage::InputHandling(){
+        //db->InputHandling();
+        //db2->InputHandling();
+        //db3->InputHandling();
 
 	}
 

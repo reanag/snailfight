@@ -12,13 +12,19 @@ class Weapon : public Object {
 
 	public:
         int damage;
+        int clip;
+        int clipsize;
+        int ammunition;
+        int maxammunition;
         float timer;
         float firespeed;
-        float clip;
         bool fliped;
         bool MouseTargeting;
         bool showmuzzle;
         bool inUse;
+
+        float jointX;
+        float jointY;
 
         RenderWindow* Window;
         b2World* world;
@@ -38,18 +44,24 @@ class Weapon : public Object {
         Sound WeaponFireSound;
         SoundBuffer WeaponReloadSoundBuffer;
         Sound WeaponReloadSound;
+        SoundBuffer WeaponOutOfAmmoSoundBuffer;
+        Sound WeaponOutOfAmmoSound;
+
+        Shape debugDrawShape;
+        bool debugDraw;
 
         Weapon(){};
-        Weapon(RenderWindow* window, b2World* World, TempObjectHandler* toh, float PositionX, float PositionY);
+        Weapon(RenderWindow* window, b2World* World, TempObjectHandler* toh, float PositionX, float PositionY, int Ammunition);
 
         virtual ~Weapon(){};
         virtual void CreateBody(float PositionX, float PositionY);
-        virtual void LoadImage(string file);
-        virtual void LoadMuzzle(string file);
-        virtual void LoadSound(string file);
+        virtual void CreateBody(float PositionX, float PositionY, float HalfWidth, float HalfHeight);
+        virtual void LoadImage(string file, Image& image, Sprite& sprite);
+        virtual void LoadSound(string file, SoundBuffer& buffer, Sound& sound);
+        virtual void CreateDebugShape();
         virtual void FlipX(bool flip);
         virtual void Show();
-        virtual void InputHandling(Event ev);
+        virtual void InputHandling();
         virtual void Shot();
         virtual void Use(float PositionX, float PositionY);
         virtual void UnUse();

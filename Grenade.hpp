@@ -34,17 +34,18 @@ class Grenade : public Object{
 
         Image grenadeImg;
         Sprite GrenadeSp;
-        Image detonation[3];
+        //Image detonation[3];
         int iter;
         int iter2;
         SoundBuffer Buffer;
         Sound Explode;
+        Sound Throw;
 
         Grenade(RenderWindow* window, b2World* World, TempObjectHandler* toh, float PositionX, float PositionY, float VelocityX, float VelocityY);
 
         void Show();
         void ApplyForces();
-        void InputHandling(Event ev);
+        void InputHandling();
         void DestroyGrenade();
         void SetNumber(int num);
         int GetNumber();

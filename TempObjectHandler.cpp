@@ -6,12 +6,9 @@
         detonation[1].LoadFromFile("contents/det2.png");
         detonation[2].LoadFromFile("contents/det3.png");
         GranadeSoundBuffer.LoadFromFile("contents/Grenade3.wav");
-    }
-
-	void TempObjectHandler::ShowBullets(){
-        for(int i=0;i<Bullets.size();i++){
-            Bullets[i]->Show();
-        }
+        GranadeThrowSoundBuffer.LoadFromFile("contents/grenade_throw.wav");
+	    rocketImg.LoadFromFile("contents/rocket2.png");
+	    RocketFlightSoundBuffer.LoadFromFile("contents/Rocket.wav");
     }
 
     void TempObjectHandler::ShowGrenades(){
@@ -20,12 +17,44 @@
         }
     }
 
-	void TempObjectHandler::InputHandling(Event ev){
+	void TempObjectHandler::ShowBullets(){
+        for(int i=0;i<Bullets.size();i++){
+            Bullets[i]->Show();
+        }
+    }
+
+    void TempObjectHandler::ShowRockets(){
+	    for(int i=Rockets.size();i>0;i--){
+            Rockets[i-1]->Show();
+        }
+    }
+
+    void TempObjectHandler::ShowRocketsDetonation(){
+	    for(int i=Rockets.size();i>0;i--){
+	        if(Rockets[i-1]->exploding){
+                Rockets[i-1]->Show();
+	        }
+        }
+    }
+
+    void TempObjectHandler::ShowDBodyes(){
+        for(int i=0;i<DBodyes.size();i++){
+            DBodyes[i]->Show();
+        }
+    }
+
+	void TempObjectHandler::InputHandling(){
 	    for(int i=0;i<Grenades.size();i++){
-            Grenades[i]->InputHandling(ev);
+            Grenades[i]->InputHandling();
         }
         for(int i=0;i<Bullets.size();i++){
-            Bullets[i]->InputHandling(ev);
+            Bullets[i]->InputHandling();
+        }
+	    for(int i=0;i<Rockets.size();i++){
+            Rockets[i]->InputHandling();
+        }
+        for(int i=0;i<DBodyes.size();i++){
+            DBodyes[i]->InputHandling();
         }
 	}
 
@@ -53,4 +82,30 @@
             Bullets[i]->SetNumber(i-1);
         }
         Bullets.erase(Bullets.begin()+num);
+    }
+
+    void TempObjectHandler::Add(Rocket* rocket){
+        rocket->SetNumber(Rockets.size());
+        Rockets.push_back(rocket);
+    }
+
+    void TempObjectHandler::Remove(Rocket* rocket){
+        int num=rocket->GetNumber();
+        for(int i=num+1;i<Rockets.size();i++){
+            Rockets[i]->SetNumber(i-1);
+        }
+        Rockets.erase(Rockets.begin()+num);
+    }
+
+    void TempObjectHandler::Add(DestroyableBody* dbody){
+        dbody->SetNumber(DBodyes.size());
+        DBodyes.push_back(dbody);
+    }
+
+    void TempObjectHandler::Remove(DestroyableBody* dbody){
+        int num=dbody->GetNumber();
+        for(int i=num+1;i<DBodyes.size();i++){
+            DBodyes[i]->SetNumber(i-1);
+        }
+        DBodyes.erase(DBodyes.begin()+num);
     }

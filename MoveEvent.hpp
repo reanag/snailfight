@@ -8,12 +8,13 @@ using namespace std;
 class MoveEvent: public GameEvent{
 
 private:
-float vVel;
-float fVel;
-float angVel;
+float xVelocity;
+float yVelocity;
+float angVelocity;
 
 public:
-MoveEvent(float vVel, float fVel, float angVel);
+MoveEvent(float xVel, float yVel, float angVel);
+MoveEvent(string s);
 //~MoveEvent();
 virtual string EventToString();
 

@@ -1,19 +1,25 @@
 #include "Weapon.hpp"
 
-	Weapon::Weapon(RenderWindow* window, b2World* World, TempObjectHandler* toh, float PositionX, float PositionY){
+	Weapon::Weapon(RenderWindow* window, b2World* World, TempObjectHandler* toh, float PositionX, float PositionY, int Ammunition){
 	    Window=window;
 	    world=World;
 	    TOH=toh;
 
         damage=3;
+        clipsize=10;
+        clip=clipsize;
+        ammunition=Ammunition-clip;
+        maxammunition=200;
 	    timer=0;
 	    firespeed=0.1;
 	    fliped=false;
         MouseTargeting=false;
         showmuzzle=false;
         inUse=false;
+        debugDraw=false;
 
-	    CreateBody(PositionX, PositionY);
+        jointX=30;
+        jointY=0;
 	}
 
 	void Weapon::CreateBody(float PositionX, float PositionY){
@@ -29,20 +35,34 @@
         weaponbody->SetUserData(&weapondata);
     }
 
-	void Weapon::LoadImage(string file){
-	    weaponImg.LoadFromFile(file.c_str());
-        WeaponSp.SetImage(weaponImg);
-        WeaponSp.SetPosition(weaponbodyDef.position.x,weaponbodyDef.position.y);
+    void Weapon::CreateBody(float PositionX, float PositionY, float HalfWidth, float HalfHeight){
+	    weaponbodyDef.position.Set(PositionX, PositionY);
+        weaponbody = world->CreateBody(&weaponbodyDef);
+        weaponshapeDef.SetAsBox(HalfWidth, HalfHeight);
+        weaponshapeDef.density = 0.01f;
+        weaponshapeDef.friction = 1.0f;
+        weaponbody->CreateShape(&weaponshapeDef);
+        weaponbody->SetMassFromShapes();
+        weapondata.label="weapon";
+        weapondata.object=this;
+        weaponbody->SetUserData(&weapondata);
     }
 
-    void Weapon::LoadMuzzle(string file){
-        muzzleImg.LoadFromFile(file.c_str());
-        MuzzleSp.SetImage(muzzleImg);
+	void Weapon::LoadImage(string file, Image& image, Sprite& sprite){
+	    image.LoadFromFile(file.c_str());
+        sprite.SetImage(image);
+        sprite.SetPosition(weaponbodyDef.position.x,weaponbodyDef.position.y);
     }
 
-    void Weapon::LoadSound(string file){
-        WeaponFireSoundBuffer.LoadFromFile(file.c_str());
-        WeaponFireSound.SetBuffer(WeaponFireSoundBuffer);
+    void Weapon::LoadSound(string file, SoundBuffer& buffer, Sound& sound){
+        buffer.LoadFromFile(file.c_str());
+        sound.SetBuffer(buffer);
+    }
+
+    void Weapon::CreateDebugShape(){
+        debugDrawShape=Shape::Rectangle(0, 0, weaponshapeDef.vertices[2].x*2, weaponshapeDef.vertices[2].y*2, Color(200,0,0));
+        debugDrawShape.SetCenter(weaponshapeDef.vertices[2].x, weaponshapeDef.vertices[2].y);
+        debugDrawShape.SetPosition(weaponbody->GetPosition().x,weaponbody->GetPosition().y);
     }
 
 	void Weapon::FlipX(bool flip){
@@ -56,14 +76,15 @@
     }
 
 	void Weapon::Show(){
-	    Window->Draw(WeaponSp);
 	    if(showmuzzle){
 	        Window->Draw(MuzzleSp);
 	        showmuzzle=false;
         }
+	    Window->Draw(WeaponSp);
+        if(debugDraw)Window->Draw(debugDrawShape);
     }
 
-	void Weapon::InputHandling(Event ev){
+	void Weapon::InputHandling(){
         timer+=Window->GetFrameTime();
 	    if(MouseTargeting){
 	        Vector2f Mouse = Window->ConvertCoords(Window->GetInput().GetMouseX(),Window->GetInput().GetMouseY());
@@ -73,11 +94,15 @@
 	    }
         WeaponSp.SetPosition(weaponbody->GetPosition().x,weaponbody->GetPosition().y);
         WeaponSp.SetRotation(weaponbody->GetAngle()*-57.29577951308232);
-
+        if(debugDraw){
+            debugDrawShape.SetPosition(weaponbody->GetPosition().x,weaponbody->GetPosition().y);
+            debugDrawShape.SetRotation(weaponbody->GetAngle()*-57.29577951308232);
+        }
 	}
 
 	void Weapon::Shot(){
-	    if(timer>firespeed){
+        if(ammunition==0 && clip==0 && WeaponOutOfAmmoSound.GetPlayingOffset()==0)WeaponOutOfAmmoSound.Play();
+	    if(timer>firespeed && (ammunition>0 || clip>0) && WeaponReloadSound.GetPlayingOffset()==0 ){
 	        Vector2f Mouse = Window->ConvertCoords(Window->GetInput().GetMouseX(),Window->GetInput().GetMouseY());
             float Vx=(Mouse.x-weaponbody->GetPosition().x)*10;
             float Vy=(Mouse.y-weaponbody->GetPosition().y)*10;
@@ -98,12 +123,25 @@
             showmuzzle=true;
             WeaponFireSound.Play();
             timer=0;
+
+            clip--;
+            if(clip==0 && ammunition>0){
+                WeaponReloadSound.Play();
+                if(ammunition>=clipsize){
+                    clip=clipsize;
+                    ammunition-=clipsize;
+                }else{
+                    clip=ammunition;
+                    ammunition=0;
+                }
+            }
+            //cout<<clip<<" "<<ammunition<<endl;
 	    }
     }
 
     void Weapon::Use(float PositionX, float PositionY){
         inUse=true;
-        CreateBody(PositionX, PositionY);
+        CreateBody(PositionX, PositionY, weaponshapeDef.vertices[2].x, weaponshapeDef.vertices[2].y);
         MouseTargeting=true;
     }
 

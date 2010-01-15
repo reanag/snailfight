@@ -9,8 +9,12 @@
 
 	void GameLogic::LogicListener(){
 	    vector<b2Body* > nuke;
+	    vector<b2Shape* > nuke2;
         //cout<<CL.m_pointCount<<endl;
         bool once=false;
+        bool once2=false;
+        bool once3=false;
+        bool once4=false;
         for (int32 i = 0; i < CL.m_pointCount; ++i){
 
 			ContactPoint* point = CL.m_points + i;
@@ -51,7 +55,7 @@
                     nuke.push_back(body2);
                     Snail* snail=(Snail*) data1->object;
                     Bullet* bullet=(Bullet*) data2->object;
-                    snail->Damage(bullet->damage);
+                    snail->Damage(bullet->GetDamage());
                     float vx=body2->GetLinearVelocity().x;
                     float vy=body2->GetLinearVelocity().y;
                     body1->SetLinearVelocity(b2Vec2(body1->GetLinearVelocity().x+vx/10,body1->GetLinearVelocity().y+vy/10));
@@ -64,13 +68,60 @@
                     cout<<"hurt"<<endl;
                     nuke.push_back(body1);
                     Snail* snail=(Snail*) data2->object;
-                    Bullet* bullet=(Bullet*) data2->object;
-                    snail->Damage(bullet->damage);
+                    Bullet* bullet=(Bullet*) data1->object;
+                    snail->Damage(bullet->GetDamage());
                     float vx=body1->GetLinearVelocity().x;
                     float vy=body1->GetLinearVelocity().y;
                     body2->SetLinearVelocity(b2Vec2(body2->GetLinearVelocity().x+vx/10,body2->GetLinearVelocity().y+vy/10));
                 }
                 once=true;
+            }
+
+            if(data1->label=="grenade" && data2->label=="bullet" && !once2){
+                nuke.push_back(body2);
+                Grenade* grenade=(Grenade*) data1->object;
+                grenade->timer=6;
+                once2=true;
+            }
+            if(data1->label=="bullet" && data2->label=="grenade" && !once2){
+                nuke.push_back(body1);
+                Grenade* grenade=(Grenade*) data2->object;
+                grenade->timer=6;
+                once2=true;
+            }
+
+            if((data1->label=="rocket" || data2->label=="rocket") && !once3 && (data1->label!="weapon"&&data2->label!="weapon")){
+                if(data1->label=="rocket" && !once3){
+                    nuke.push_back(body1);
+                    //Rocket* rocket=(Rocket*) data1->object;
+                    once3=true;
+                }
+                if(data2->label=="rocket" && !once3){
+                    nuke.push_back(body2);
+                    //Rocket* rocket=(Rocket*) data2->object;
+                    once3=true;
+                }
+            }
+
+            int bullpow=100;
+            if(data1->label=="Dbody" && data2->label=="bullet" && !once4){
+                DestroyableBody* db=(DestroyableBody*) data1->object;
+                if(db->isstatic)bullpow=5;
+                if(body2->GetLinearVelocity().x>bullpow || body2->GetLinearVelocity().x<-bullpow || body2->GetLinearVelocity().y>bullpow || body2->GetLinearVelocity().y<-bullpow){
+                    nuke.push_back(body2);
+                    nuke2.push_back(point->shape1);
+                    once4=true;
+                }
+            }
+            bullpow=100;
+            if(data1->label=="bullet" && data2->label=="Dbody" && !once4){
+                DestroyableBody* db=(DestroyableBody*) data1->object;
+                if(db->isstatic)bullpow=5;
+                if(body1->GetLinearVelocity().x>bullpow || body1->GetLinearVelocity().x<-bullpow || body1->GetLinearVelocity().y>bullpow || body1->GetLinearVelocity().y<-bullpow){
+                    nuke.push_back(body1);
+                    nuke2.push_back(point->shape2);
+                    once4=true;
+                }
             }
 
 /*
@@ -104,7 +155,19 @@
 
 		for(unsigned int i=0;i<nuke.size();i++){
 		    data* d=(data*) nuke[i]->GetUserData();
-		    Bullet* b=(Bullet*) d->object;
-		    b->DestroyBullet();
+		    if(d->label=="rocket"){
+		        Rocket* r=(Rocket*) d->object;
+		        r->DestroyRocket();
+            }else{
+                Bullet* b=(Bullet*) d->object;
+                b->DestroyBullet();
+            }
+        }
+
+        for(unsigned int i=0;i<nuke2.size();i++){
+		    b2Body* b=nuke2[i]->GetBody();
+		    data* dat=(data*) b->GetUserData();
+		    DestroyableBody* db=(DestroyableBody*) dat->object;
+		    db->EliminateShape(nuke2[i]);
         }
     }

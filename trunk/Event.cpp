@@ -14,3 +14,10 @@ string GameEvent::EventToString(){
 }
 
 
+string GameEvent::Convert (float number){
+ostringstream buff;
+buff<<number;
+return buff.str();
+}
+
+

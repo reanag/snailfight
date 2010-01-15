@@ -36,7 +36,8 @@
         iter2=0;
         //Buffer.LoadFromFile("contents/Grenade3.wav");
         Explode.SetBuffer(TOH->GranadeSoundBuffer);
-        Explode.SetVolume(100);
+        Throw.SetBuffer(TOH->GranadeThrowSoundBuffer);
+        Throw.Play();
 	}
 
 	void Grenade::Show(){
@@ -47,7 +48,7 @@
         b2Body* body=world->GetBodyList();
         for(int i=0;i<world->GetBodyCount();i++){
             data* d=(data*) body->GetUserData();
-            if(d->label=="GROUND"||d->label=="wall1"||d->label=="wall2"){
+            if(d->label=="GROUND"||d->label=="wall1"||d->label=="wall2"||d->label=="roof"||d->label=="stage"){
                 continue;
             }else{
                 float Vx=body->GetPosition().x-grenadebody->GetPosition().x;
@@ -60,16 +61,24 @@
                         Snail* snail=(Snail*) d->object;
                         snail->Damage(damage);
                     }
-                    body->SetLinearVelocity(b2Vec2(body->GetLinearVelocity().x+Vx,body->GetLinearVelocity().y+Vy));
+                    if(d->label=="Dbody"){
+                        DestroyableBody* db=(DestroyableBody*) d->object;
+                        if(!db->isstatic){
+                            body->SetLinearVelocity(b2Vec2(body->GetLinearVelocity().x+Vx,body->GetLinearVelocity().y+Vy));
+                        }
+                    }else{
+                        body->SetLinearVelocity(b2Vec2(body->GetLinearVelocity().x+Vx,body->GetLinearVelocity().y+Vy));
+                    }
                 }
             }
             body=body->GetNext();
         }
     }
 
-	void Grenade::InputHandling(Event ev){
+	void Grenade::InputHandling(){
         timer+=Window->GetFrameTime();
         if(timer>5){
+            exploding=true;
             if(!lim){
                 Explode.Play();
                 lim=true;
@@ -82,7 +91,7 @@
                     Sprite sp;
                     sp.SetImage(TOH->detonation[iter]);
                     GrenadeSp=sp;
-                    GrenadeSp.SetScale(2,2);
+                    GrenadeSp.SetScale(1+(0.5*iter),1+(0.5*iter));
                     GrenadeSp.SetCenter(60,65);
                     iter++;
                     iter2=0;
@@ -92,7 +101,7 @@
             }
         }
         GrenadeSp.SetPosition(grenadebody->GetPosition().x,grenadebody->GetPosition().y);
-        GrenadeSp.SetRotation(grenadebody->GetAngle()*-57.29577951308232);
+        if(!exploding)GrenadeSp.SetRotation(grenadebody->GetAngle()*-57.29577951308232);
 	}
 
     void Grenade::DestroyGrenade(){

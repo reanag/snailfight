@@ -12,13 +12,13 @@
 #include "Button.hpp"
 #include "Game.hpp"
 #include "NetworkInterface.cpp"
-//#include "Server.cpp"
-//#include "Cliens.cpp"
 #include "Pool.cpp"
 #include "InputTextField.hpp"
 
 class InputTextField;
 class Button;
+class Pool;
+class Game;
 using namespace std;
 using namespace sf;
 
@@ -71,10 +71,11 @@ class Menu{
         Button* no;
 
         SoundBuffer Buffer;
-        Sound MenuSound;
+ Sound MenuSound;
 
-        Game* MyGame;
-        String* LoadingText;
+      Game* MyGame;
+
+       String* LoadingText;
 
         //vector<Shape> snow;
 
@@ -96,6 +97,17 @@ class Menu{
         string GetIP();
         void static ThreadCreateServerFunc(void* UserData);
         void static ThreadCreateClientFunc(void* UserData);
+        void GameStart(int i, Pool* p);
+
+//        Pool poo;
+        Pool* pPoo;
+
+
+        void AddMess(GameEvent ev);
+        static void DelFirst();
+
+
+
         //void GenerateSnow();
         //void SnowUpdate();
 

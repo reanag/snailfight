@@ -11,16 +11,23 @@
 #include "Rifle.hpp"
 #include "Rifle2.hpp"
 #include "Rifle3.hpp"
+#include "RocketLauncher.hpp"
 #include "Grenade.hpp"
+#include "TargetPointChangeEvent.hpp"
+#include "Pool.cpp"
+#include "Menu.hpp"
 
 using namespace std;
 using namespace sf;
 
 class TempObjectHandler;
+class Pool;
 
 class Snail : public Object{
 
 	public:
+        Pool* poo;
+        Menu* menu;
         RenderWindow* Window;
         b2World* world;
         TempObjectHandler* TOH;
@@ -75,20 +82,36 @@ class Snail : public Object{
 
         vector<Weapon* > Weapons;
         int aktWeapon;
-        Rifle2* RifleGun;
         b2RevoluteJointDef gunjoint;
+
+        Vector2f Mouse; // ! //
 
         //Image lightImg;
         //Sprite LightSp;
 
-        Snail(RenderWindow* window, b2World* World, TempObjectHandler* toh, float PositionX, float PositionY);
+        Snail(RenderWindow* window, b2World* World, TempObjectHandler* toh, float PositionX, float PositionY, bool Controlled, Pool* p, Menu* m);
 
         void FlipX(bool flip);
         void Hide(bool hide);
         void Die();
         void Show();
-        void InputHandling(Event ev);
+        void InputHandling();
         void EventHandling(Event ev);
+
+        void SetTargetPoint(int x, int y);
+        void MoveLeft();
+        void MoveRight();
+        void MoveUp();
+        void MoveDown();
+        void RollLeft();
+        void RollRight();
+        void Eye1Attak();
+        void Eye2Attak();
+        void Shot();
+        void ThrowGrenade();
+        void UseTurbo();
+        void ChangeWeapon(int WeaponNumber);
+
         void Damage(int damage);
         void Heal(int heal);
 

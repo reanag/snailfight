@@ -61,6 +61,12 @@
 		<Unit filename="ContactListener.hpp">
 			<Option virtualFolder="Game\" />
 		</Unit>
+		<Unit filename="DestroyableBody.cpp">
+			<Option virtualFolder="Objects\" />
+		</Unit>
+		<Unit filename="DestroyableBody.hpp">
+			<Option virtualFolder="Objects\" />
+		</Unit>
 		<Unit filename="Event.cpp">
 			<Option virtualFolder="FieldEvents\" />
 		</Unit>
@@ -97,7 +103,9 @@
 		<Unit filename="Menu.hpp">
 			<Option virtualFolder="Surface\" />
 		</Unit>
-		<Unit filename="MoveEvent.cpp" />
+		<Unit filename="MoveEvent.cpp">
+			<Option virtualFolder="FieldEvents\" />
+		</Unit>
 		<Unit filename="MoveEvent.hpp">
 			<Option virtualFolder="FieldEvents\" />
 		</Unit>
@@ -107,7 +115,9 @@
 		<Unit filename="Object.hpp">
 			<Option virtualFolder="Objects\" />
 		</Unit>
-		<Unit filename="Pool.cpp" />
+		<Unit filename="Pool.cpp">
+			<Option virtualFolder="Network\" />
+		</Unit>
 		<Unit filename="Rifle.cpp">
 			<Option virtualFolder="Objects\" />
 		</Unit>
@@ -126,6 +136,18 @@
 		<Unit filename="Rifle3.hpp">
 			<Option virtualFolder="Objects\" />
 		</Unit>
+		<Unit filename="Rocket.cpp">
+			<Option virtualFolder="Objects\" />
+		</Unit>
+		<Unit filename="Rocket.hpp">
+			<Option virtualFolder="Objects\" />
+		</Unit>
+		<Unit filename="RocketLauncher.cpp">
+			<Option virtualFolder="Objects\" />
+		</Unit>
+		<Unit filename="RocketLauncher.hpp">
+			<Option virtualFolder="Objects\" />
+		</Unit>
 		<Unit filename="Snail.cpp">
 			<Option virtualFolder="Objects\" />
 		</Unit>
@@ -138,6 +160,12 @@
 		<Unit filename="Stage.hpp">
 			<Option virtualFolder="Objects\" />
 		</Unit>
+		<Unit filename="TargetPointChangeEvent.cpp">
+			<Option virtualFolder="FieldEvents\" />
+		</Unit>
+		<Unit filename="TargetPointChangeEvent.hpp">
+			<Option virtualFolder="FieldEvents\" />
+		</Unit>
 		<Unit filename="TempObjectHandler.cpp">
 			<Option virtualFolder="Game\" />
 		</Unit>
@@ -149,6 +177,12 @@
 		</Unit>
 		<Unit filename="Weapon.hpp">
 			<Option virtualFolder="Objects\" />
+		</Unit>
+		<Unit filename="WeaponChangeEvent.cpp">
+			<Option virtualFolder="FieldEvents\" />
+		</Unit>
+		<Unit filename="WeaponChangeEvent.hpp">
+			<Option virtualFolder="FieldEvents\" />
 		</Unit>
 		<Unit filename="main.cpp">
 			<Option virtualFolder="Game\" />

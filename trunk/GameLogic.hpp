@@ -11,6 +11,8 @@
 #include "Rifle.hpp"
 #include "Grenade.hpp"
 #include "Bullet.hpp"
+#include "Rocket.hpp"
+#include "DestroyableBody.hpp"
 
 using namespace std;
 using namespace sf;

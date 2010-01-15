@@ -34,13 +34,15 @@ class Bullet : public Object{
         SoundBuffer Buffer;
         Sound Explode;
 
+        Bullet(){};
         Bullet(RenderWindow* window, b2World* World, TempObjectHandler* toh, float PositionX, float PositionY, float VelocityX, float VelocityY, int Damage);
 
-        void Show();
-        void InputHandling(Event ev);
-        void DestroyBullet();
-        void SetNumber(int num);
-        int GetNumber();
+        virtual void Show();
+        virtual void InputHandling();
+        virtual void DestroyBullet();
+        virtual void SetNumber(int num);
+        virtual int GetNumber();
+        virtual int GetDamage();
 
 };
 

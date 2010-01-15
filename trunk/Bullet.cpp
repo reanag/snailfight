@@ -29,12 +29,12 @@
             Window->Draw(BulletSp);
     }
 
-	void Bullet::InputHandling(Event ev){
+	void Bullet::InputHandling(){
         BulletSp.SetPosition(bulletbody->GetPosition().x,bulletbody->GetPosition().y);
         //BulletSp.SetRotation(bulletbody->GetAngle()*-57.29577951308232);
 
         //cout<<bulletbody->GetLinearVelocity().x<<" "<<bulletbody->GetLinearVelocity().y<<endl;
-        if(bulletbody->GetLinearVelocity().x>-1 && bulletbody->GetLinearVelocity().x<1 && bulletbody->GetLinearVelocity().y>-1 && bulletbody->GetLinearVelocity().y<1){
+        if(bulletbody->GetLinearVelocity().x>-2 && bulletbody->GetLinearVelocity().x<2 && bulletbody->GetLinearVelocity().y>-2 && bulletbody->GetLinearVelocity().y<2){
             DestroyBullet();
         }
 	}
@@ -50,4 +50,8 @@
 
     int Bullet::GetNumber(){
         return number;
+    }
+
+    int Bullet::GetDamage(){
+        return damage;
     }

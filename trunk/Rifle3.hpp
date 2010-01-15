@@ -18,7 +18,7 @@ class Weapon;
 class Rifle3 : public Weapon{
 
 	public:
-        Rifle3(RenderWindow* window, b2World* World, TempObjectHandler* toh, float PositionX, float PositionY);
+        Rifle3(RenderWindow* window, b2World* World, TempObjectHandler* toh, float PositionX, float PositionY, int Ammunition);
 
 };
 

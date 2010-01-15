@@ -6,23 +6,29 @@
 #include <SFML/Network.hpp>
 #include <SFML/System.hpp>
 #include "Event.hpp"
+#include "TargetPointChangeEvent.hpp"
+#include "Menu.hpp"
 
 
 using namespace std;
 using namespace sf;
 
 static SocketTCP mSocket;
+static vector<GameEvent*> Messages;
+static vector<GameEvent*> MessagesToSend;
+static int messageIndex;
+
 
 class Pool {
-public:
-    static vector<GameEvent> Messages;
-    static vector<GameEvent> MessagesToSend;
+
+
 
 public:
 
     Pool() {
        // mSocket = sock;
         cout<<"\nPOOL created\n";
+
     }
 
     void static start() {
@@ -54,6 +60,8 @@ public:
         cout << "\nReceiveThread START\n";
         while (true) {
             string s = ReceiveMess(mSocket);
+            Messages.push_back(&GameEvent(s));
+            cout<<"\nsize: "<<Messages.size();
             cout << s;
             Sleep(1.0f);
             //if(s!="-")
@@ -66,9 +74,23 @@ public:
      //   SocketTCP* Object = static_cast<SocketTCP*>(UserData);
      //   SocketTCP sock= *Object;
           cout << "\nSendThread Start\n";
-        //     if(MessagesToSend.size()>0){
-        //       string s = GetFirstEvent(MessagesToSend).EventToString();
-        SendMess(mSocket, "uzenet");
+        while(true){
+
+            if(MessagesToSend.size()>0){
+               GameEvent ev;
+               ev = GetFirstEvent(MessagesToSend);
+
+               string s;
+               if(ev.EventName == "#TargetPointChangeEvent"){
+
+                    ev = GetFirstEvent(MessagesToSend);
+                    s = ev.EventToString();
+               }
+
+               SendMess(mSocket, s);
+
+            }
+        }
         cout << "\nSendThread End\n";
     }
 
@@ -95,31 +117,43 @@ public:
         if (mSock.Receive(Message, sizeof(Message), Received) != sf::Socket::Done)
             return "-";
 
-        for (int i = 0; i<10; i++) {
+        for (int i = 0; i<40; i++) {
             s+= Message[i];
         }
         cout<<"Received message: " <<s;
         return s;
     }
 
+//ez még jó: eventet megkapja, vector mérete szépen nő
+  //  static void AddMess(GameEvent ev) {
+  //      MessagesToSend.push_back(ev);
+       // cout<<MessagesToSend.size();
+        //GameEvent ge = GetFirstEvent(MessagesToSend);
+       // cout<<"-"<< ge.EventToString();
+///}
 
-    void AddMess(GameEvent ev) {
-        Messages.push_back(ev);
+    static int MessSize() {
+        int i = MessagesToSend.size();
+        cout<<i;
+        return i;
     }
 
-    int MessSize() {
-        return Messages.size();
-    }
-
-    vector<GameEvent> GeMessages() {
+    vector<GameEvent*> GetMessages() {
         return Messages;
     }
-
-    GameEvent GetFirstEvent(vector<GameEvent> vec) {
-        GameEvent p = vec.at(0);
-        vector<GameEvent>::iterator i = vec.begin();
+//ez szintén működik
+    static GameEvent GetFirstEvent(vector<GameEvent*> vec) {
+       // if(!vec.size()>0){
+       //     GameEvent ev("Null");
+       //     return ev;
+       // }
+        cout<<endl<<vec.size()<<"-";
+        GameEvent* p = vec.at(messageIndex);
+        vector<GameEvent*>::iterator i = vec.begin();
         vec.erase(i);
-        return p;
+        //cout<<endl<<"Ezt vettem ki: "<<p.EventToString();
+        cout<<vec.size();
+        return *p;
     }
 
 };

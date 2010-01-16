@@ -1,7 +1,7 @@
 #include "TargetPointChangeEvent.hpp"
 
     TargetPointChangeEvent::TargetPointChangeEvent(int xPos, int yPos){
-        EventName = "#TargetPointChangeEvent";
+        EventName = "1TargetPointChangeEvent";
         x = xPos;
         y = yPos;
     }

@@ -738,10 +738,10 @@
     }
 
     void Snail::SetTargetPoint(int x, int y){
-        TargetPointChangeEvent nev = TargetPointChangeEvent(x,y);
-        //cout<<"Snailban: "<<nev.EventToString();
-        menu->AddMess(nev);
-
+     //TargetPointChangeEvent létrehozása, ha megváltozott a TargetPoint
+        TargetPointChangeEvent* nev = new TargetPointChangeEvent(x,y);
+     //Pool MessagesToSend vektorához hozzáadni (static vector, csak a menün keresztül lehet)
+         menu->AddMess(nev);
 
         Mouse = Window->ConvertCoords(x,y);
         if((Mouse.x>snailbody->GetPosition().x) && (fliped)){

@@ -1,7 +1,7 @@
 #include "Menu.hpp"
 
 Menu::Menu(RenderWindow* window) {
-    pPoo = new Pool();
+  //  pPoo = new Pool();
     Window=window;
     IpIsSet = false;
     AmIClient = false;
@@ -317,7 +317,10 @@ void Menu::ThreadCreateServerFunc(void* UserData) {
     NetworkInterface p;
     mSocket = p.RunAsServer();
     messageIndex = 0;
-    Pool::start();
+    pPoo = new Pool();
+    pPoo->start();
+    GameEvent* ev = new GameEvent("Beta");
+    pPoo->AddMess(ev);
 }
 
 
@@ -327,8 +330,9 @@ void Menu::ThreadCreateClientFunc(void* UserData) {
     string s = *Object;
     NetworkInterface p;
     mSocket = p.RunAsClient(s);
-    Pool::start();
-
+//    MessagesToSend = new vector<GameEvent*>();
+    pPoo = new Pool();
+    pPoo->start();
 }
 
 void Menu::GameStart(int i, Pool* p){
@@ -343,23 +347,25 @@ void Menu::GameStart(int i, Pool* p){
 
         MenuSound.Play();
 }
+
 //Pool MessagesToSend vectorához új elem hozzáadása, messageIndex beállítása (a Pool üzenet küldésénél van jelentősége)
 //Ha túl nagy a vector mérete, akkor kitörli azokat, amiket valószínüleg már elküldtek.
-void Menu::AddMess(GameEvent* ev){
+/*void Menu::AddMess(GameEvent* ev){
     MessagesToSend.push_back(ev);
     messageIndex++;
-   // if(messageIndex>50){
-    //    for(int i = 0; i<20; i++){
-     //       DelFirst();
-     //       messageIndex--;
-     //   }
-   // }
+    if(messageIndex>50){
+        for(int i = 0; i<20; i++){
+            DelFirst();
+
+        }
+    }
 }
 
 void Menu::DelFirst(){
     vector<GameEvent*>::iterator i = MessagesToSend.begin();
     MessagesToSend.erase(i);
-}
+    messageIndex--;
+}*/
 
 /*void Menu::GenerateSnow(){
     for(int i=0;i<1100;i++){

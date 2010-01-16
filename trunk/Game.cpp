@@ -56,11 +56,14 @@ void Game::Show() {
 
 void Game::GameLoop() {
     while (InGame) {
+     //   cout<<"Zsolti kéri: "<<Window->GetFrameTime()<<endl;
+
         Logic->CL.m_pointCount = 0;
         MySnail->jump=false;
         world->Step(timeStep, iterations);
         Logic->LogicListener();
         GameStage->InputHandling();
+        pPoo->
 
         Event ev;
         while (Window->GetEvent(ev)) {

@@ -22,6 +22,8 @@ class Game;
 using namespace std;
 using namespace sf;
 
+static Pool* pPoo;
+
 class Menu{
 
 	public:
@@ -71,9 +73,9 @@ class Menu{
         Button* no;
 
         SoundBuffer Buffer;
- Sound MenuSound;
+        Sound MenuSound;
 
-      Game* MyGame;
+        Game* MyGame;
 
        String* LoadingText;
 
@@ -100,13 +102,11 @@ class Menu{
         void GameStart(int i, Pool* p);
 
 //        Pool poo;
-        Pool* pPoo;
+
 
 
         void AddMess(GameEvent* ev);
         static void DelFirst();
-
-
 
         //void GenerateSnow();
         //void SnowUpdate();

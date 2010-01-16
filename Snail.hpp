@@ -14,8 +14,9 @@
 #include "RocketLauncher.hpp"
 #include "Grenade.hpp"
 #include "TargetPointChangeEvent.hpp"
+#include "MoveLeftEvent.hpp"
 #include "Pool.cpp"
-#include "Menu.hpp"
+//#include "Menu.hpp"
 
 using namespace std;
 using namespace sf;

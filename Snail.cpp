@@ -741,7 +741,7 @@
      //TargetPointChangeEvent létrehozása, ha megváltozott a TargetPoint
         TargetPointChangeEvent* nev = new TargetPointChangeEvent(x,y);
      //Pool MessagesToSend vektorához hozzáadni (static vector, csak a menün keresztül lehet)
-         menu->AddMess(nev);
+         poo->AddMess(nev);
 
         Mouse = Window->ConvertCoords(x,y);
         if((Mouse.x>snailbody->GetPosition().x) && (fliped)){
@@ -751,7 +751,10 @@
             FlipX(true);
         }
     }
+
     void Snail::MoveLeft(){
+        MoveLeftEvent* mlev = new MoveLeftEvent();
+        poo->AddMess(mlev);
         snailbody->SetLinearVelocity(b2Vec2(-Speed,snailbody->GetLinearVelocity().y));
     }
     void Snail::MoveRight(){

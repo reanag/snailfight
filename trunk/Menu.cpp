@@ -49,7 +49,7 @@ Menu::Menu(RenderWindow* window) {
     Exit->SetTextPosition(77,-3);
 
     MenuFont.LoadFromFile("contents/Army.ttf");
-//ANDIKA R�SZ:
+//ANDIKA RÉSZ:
     ConnectionText= new String("Network setting\n\n Create server or join", MenuFont,20);
     ConnectionText->SetPosition(40, 40);
     ShowConnection=false;
@@ -62,7 +62,7 @@ Menu::Menu(RenderWindow* window) {
     ServerText = new InputTextField();
     ServerText->Setup(Window, this, Window->GetWidth()-700,100,300, 30, "IP:");
 
-//ANDIKA R�SZ END
+//ANDIKA RÉSZ END
     players=new vector<player>();
     player p;
     ifstream file("contents/Scores.txt");
@@ -75,7 +75,7 @@ Menu::Menu(RenderWindow* window) {
     ScoresText->SetPosition(150, 40);
     ShowHighScores=false;
 
-    DescriptionText= new String("A j�t�k c�lja hogy kellemes hangulatban\naranyos kis erdei �llatk�k b�r�be b�jva\n       halomragyilkol�sszuk egym�st a\n     bar�tokkal vagy a csal�dtagokkal.\n\n                              fegyverbe!!!",MenuFont,20);
+    DescriptionText= new String("A játék célja hogy kellemes hangulatban\naranyos kis erdei állatkák bõrébe bújva\n       halomragyilkolásszuk egymást a\n     barátokkal vagy a családtagokkal.\n\n                              fegyverbe!!!",MenuFont,20);
     DescriptionText->SetPosition(40, 40);
     ShowDescription=false;
 
@@ -124,7 +124,7 @@ void Menu::Show() {
     Window->Draw(*Exit);
     Window->Draw(*Exit->Text);
     Window->Draw(Laser);
-//ANDIKA R�SZ:
+//ANDIKA RÉSZ:
     if (ShowConnection) {
         Window->Draw(*ConnectionText);
         Window->Draw(*ServerButton);
@@ -194,14 +194,14 @@ void Menu::EventHandle(Event ev) {
     Description->EventHandle(ev);
     Exit->EventHandle(ev);
 
-//ANDIKA R�SZ:
+//ANDIKA RÉSZ:
 
     ServerButton->EventHandle(ev);
 
     ClientButton->EventHandle(ev);
     ServerText->EventHandle(ev);
 
-//ANDIKA R�SZ END
+//ANDIKA RÉSZ END
 
     if (Window->GetInput().GetMouseX() > Window->GetWidth()-260 && Window->GetInput().GetMouseY() < 230) {
         float tav_x=Window->GetInput().GetMouseX()-Gun.GetPosition().x;
@@ -277,7 +277,7 @@ void Menu::Action(string& from) {
         ShowExitWindow=false;
     }
 
-//ANDIKA R�SZ:
+//ANDIKA RÉSZ:
     if (from=="Join server") {
         if (AmIServer||AmIClient) {
             cout<<"Error: you are already server or client is running!";
@@ -308,9 +308,9 @@ void Menu::Action(string& from) {
         AmIServer = true;
 
     }
-//ANDIKA R�SZ END
+//ANDIKA RÉSZ END
 }
-//Andika sz�lkezel:
+//Andika szálkezel:
 
 void Menu::ThreadCreateServerFunc(void* UserData) {
     cout<<"\nIN MENU: Create Server\n";
@@ -343,16 +343,17 @@ void Menu::GameStart(int i, Pool* p){
 
         MenuSound.Play();
 }
-
-void Menu::AddMess(GameEvent ev){
-    MessagesToSend.push_back(&ev);
+//Pool MessagesToSend vectorához új elem hozzáadása, messageIndex beállítása (a Pool üzenet küldésénél van jelentősége)
+//Ha túl nagy a vector mérete, akkor kitörli azokat, amiket valószínüleg már elküldtek.
+void Menu::AddMess(GameEvent* ev){
+    MessagesToSend.push_back(ev);
     messageIndex++;
-    if(messageIndex>50){
-        for(int i = 0; i<40; i++){
-            DelFirst();
-            messageIndex--;
-        }
-    }
+   // if(messageIndex>50){
+    //    for(int i = 0; i<20; i++){
+     //       DelFirst();
+     //       messageIndex--;
+     //   }
+   // }
 }
 
 void Menu::DelFirst(){

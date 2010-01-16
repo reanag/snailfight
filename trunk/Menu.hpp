@@ -103,7 +103,7 @@ class Menu{
         Pool* pPoo;
 
 
-        void AddMess(GameEvent ev);
+        void AddMess(GameEvent* ev);
         static void DelFirst();
 
 

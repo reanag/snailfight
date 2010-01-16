@@ -26,19 +26,16 @@ class Pool {
 public:
 
     Pool() {
-       // mSocket = sock;
         cout<<"\nPOOL created\n";
-
     }
 
     void static start() {
         SocketTCP* pSocket;
-
         Thread* ThreadHandle = new Thread(&ThreadHandleFunc, pSocket);
         ThreadHandle-> Launch();
     }
 
-//Létrehoz egy üzenet küldő és üzenet fogadó szálat
+//Létrehoz egy üzenet küldő és üzenet fogadó szálat és elindítja őket
     void static ThreadHandleFunc(void* UserData) {
         cout<<"\n\tThreadHandle START\n";
         SocketTCP* Object = static_cast<SocketTCP*>(UserData);
@@ -46,61 +43,44 @@ public:
         Thread* ThreadReceiveMess = new Thread(&ThreadReceiveMessFunc, Object);
         ThreadSendMess -> Launch();
         ThreadReceiveMess -> Launch();
-
-
         cout<<"\n\tThreadHandle END\n";
-
     }
 
-
+//Figyeli a socket-et, ha stringet kap cast-olja a megfelelő típusú üzenetté, és a Messages vektorba teszi.
     void static ThreadReceiveMessFunc(void* UserData) {
-        cout <<"\nReceiveThread IN\n";
-   //     SocketTCP* Object = static_cast<SocketTCP*>(UserData);
-    //    SocketTCP sock= *Object;
         cout << "\nReceiveThread START\n";
         while (true) {
             string s = ReceiveMess(mSocket);
-            Messages.push_back(&GameEvent(s));
-            cout<<"\nsize: "<<Messages.size();
-            cout << s;
+            if(s.at(0) == '1'){
+                TargetPointChangeEvent* ge = new TargetPointChangeEvent(s);
+                Messages.push_back(ge);
+            } else {
+                GameEvent* ge = new GameEvent(s);
+                Messages.push_back(ge);
+            }
             Sleep(1.0f);
-            //if(s!="-")
-            //   Messages.push_back(GameEvent(s));
         }
     }
 
     void static ThreadSendMessFunc(void* UserData) {
-        cout << "\nSendThread IN\n";
-     //   SocketTCP* Object = static_cast<SocketTCP*>(UserData);
-     //   SocketTCP sock= *Object;
-          cout << "\nSendThread Start\n";
+        cout << "\nSendThread Start\n";
         while(true){
-
-            if(MessagesToSend.size()>0){
-               GameEvent ev;
-               ev = GetFirstEvent(MessagesToSend);
-
+               GameEvent* ev;
+               ev = GetActEvent(MessagesToSend);
                string s;
-               if(ev.EventName == "#TargetPointChangeEvent"){
-
-                    ev = GetFirstEvent(MessagesToSend);
-                    s = ev.EventToString();
-               }
-
+               s = ev->EventToString();
                SendMess(mSocket, s);
-
-            }
+               Sleep(1.0f);
         }
         cout << "\nSendThread End\n";
     }
 
-
+//Üzenet küldés, ezzel nem kell foglalkozni, jó úgy ahogy van!!!
     void static SendMess(SocketTCP mSock, string s) {
         char ToSend[s.size()];
         for (int i =0; i<s.size(); i++) {
             ToSend[i] = s[i];
         }
-
 
         if (mSock.Send(ToSend, sizeof(ToSend)) != sf::Socket::Done) {
             cout<< "\n\nError in SendMess";
@@ -109,7 +89,7 @@ public:
         }
     }
 
-
+//Üzenet fogadás, ezzel nem kell foglalkozni, jó úgy ahogy van!!!
     string static ReceiveMess(SocketTCP mSock) {
         string s="";
         char Message[1024];
@@ -124,36 +104,16 @@ public:
         return s;
     }
 
-//ez még jó: eventet megkapja, vector mérete szépen nő
-  //  static void AddMess(GameEvent ev) {
-  //      MessagesToSend.push_back(ev);
-       // cout<<MessagesToSend.size();
-        //GameEvent ge = GetFirstEvent(MessagesToSend);
-       // cout<<"-"<< ge.EventToString();
-///}
 
-    static int MessSize() {
-        int i = MessagesToSend.size();
-        cout<<i;
-        return i;
-    }
+  //  vector<GameEvent*> GetMessages() {
+    //    return Messages;
+   // }
 
-    vector<GameEvent*> GetMessages() {
-        return Messages;
-    }
-//ez szintén működik
-    static GameEvent GetFirstEvent(vector<GameEvent*> vec) {
-       // if(!vec.size()>0){
-       //     GameEvent ev("Null");
-       //     return ev;
-       // }
-        cout<<endl<<vec.size()<<"-";
-        GameEvent* p = vec.at(messageIndex);
-        vector<GameEvent*>::iterator i = vec.begin();
-        vec.erase(i);
-        //cout<<endl<<"Ezt vettem ki: "<<p.EventToString();
-        cout<<vec.size();
-        return *p;
+//Visszatér a legutóbb beletett elemmel
+    static GameEvent* GetActEvent(vector<GameEvent*> vec) {
+        GameEvent* p;
+        p = vec.at(messageIndex);
+        return p;
     }
 
 };

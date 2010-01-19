@@ -7,6 +7,7 @@
 #include "Object.hpp"
 #include "TempObjectHandler.hpp"
 #include "Rocket.hpp"
+#include "Snail.hpp"
 
 using namespace std;
 using namespace sf;
@@ -14,11 +15,13 @@ using namespace sf;
 class TempObjectHandler;
 #include "Weapon.hpp"
 class Weapon;
+class Snail;
 
 class RocketLauncher : public Weapon{
-
 	public:
-        RocketLauncher(RenderWindow* window, b2World* World, TempObjectHandler* toh, float PositionX, float PositionY, int Ammunition);
+        Snail* User;
+
+        RocketLauncher(RenderWindow* window, b2World* World, TempObjectHandler* toh, float PositionX, float PositionY, int Ammunition, Snail* user);
 
     void Shot();
 };

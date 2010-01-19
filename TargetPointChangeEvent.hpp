@@ -13,5 +13,7 @@ public:
     TargetPointChangeEvent(int x, int y);
     TargetPointChangeEvent(string s);
     string EventToString();
+    int getXPos();
+    int getYPos();
 };
 #endif

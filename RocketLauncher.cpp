@@ -1,7 +1,8 @@
 #include "RocketLauncher.hpp"
 #include "Snail.hpp"
 
-	RocketLauncher::RocketLauncher(RenderWindow* window, b2World* World, TempObjectHandler* toh, float PositionX, float PositionY, int Ammunition):Weapon(window, World, toh, PositionX, PositionY, Ammunition){
+	RocketLauncher::RocketLauncher(RenderWindow* window, b2World* World, TempObjectHandler* toh, float PositionX, float PositionY, int Ammunition, Snail* user):Weapon(window, World, toh, PositionX, PositionY, Ammunition){
+        User=user;
         damage=15;
         clipsize=1;
         clip=clipsize;
@@ -25,9 +26,9 @@
     void RocketLauncher::Shot(){
         if(ammunition==0 && clip==0 && WeaponOutOfAmmoSound.GetPlayingOffset()==0)WeaponOutOfAmmoSound.Play();
 	    if(timer>firespeed && (ammunition>0 || clip>0) && WeaponReloadSound.GetPlayingOffset()==0 ){
-	        Vector2f Mouse = Window->ConvertCoords(Window->GetInput().GetMouseX(),Window->GetInput().GetMouseY());
-            float Vx=(Mouse.x-weaponbody->GetPosition().x)*10;
-            float Vy=(Mouse.y-weaponbody->GetPosition().y)*10;
+	        //Vector2f Mouse = Window->ConvertCoords(Window->GetInput().GetMouseX(),Window->GetInput().GetMouseY());
+            float Vx=(Target.x-weaponbody->GetPosition().x)*10;
+            float Vy=(Target.y-weaponbody->GetPosition().y)*10;
             float modx=cos(weaponbody->GetAngle())*62.5;
             float mody=sin(weaponbody->GetAngle())*62.5;
             Rocket* r;
@@ -59,22 +60,12 @@
             }
             //cout<<clip<<" "<<ammunition<<endl;
 
-            b2Body* body=world->GetBodyList();
-            for(int i=0;i<world->GetBodyCount()-1;i++){
-                data* d=(data*) body->GetUserData();
-                if(d->label=="snail"){
-                    Snail* snail=(Snail*) d->object;
-                    if( snail->Weapons[snail->aktWeapon] == this){
-                        float modX=cos(weaponbody->GetAngle())*30;
-                        float modY=sin(weaponbody->GetAngle())*30;
-                        if(fliped){
-                            snail->snailbody->SetLinearVelocity(b2Vec2(modX,modY));
-                        }else{
-                            snail->snailbody->SetLinearVelocity(b2Vec2(-modX,-modY));
-                        }
-                    }
-                }
-                body=body->GetNext();
+            float modX=cos(weaponbody->GetAngle())*30;
+            float modY=sin(weaponbody->GetAngle())*30;
+            if(fliped){
+                User->snailbody->SetLinearVelocity(b2Vec2(modX,modY));
+            }else{
+                User->snailbody->SetLinearVelocity(b2Vec2(-modX,-modY));
             }
 	    }
     }

@@ -5,9 +5,14 @@ MoveLeftEvent::MoveLeftEvent(){
 }
 
 MoveLeftEvent::MoveLeftEvent(string s){
-    EventName = "2"+s;
+    for(int i = 0; i<s.size(); i++){
+        if(s.at(i)=='!'){
+            break;
+        }
+        EventName +=s.at(i);
+    }
 }
 
 string MoveLeftEvent::EventToString(){
-    return EventName;
+    return EventName+"!";
 }

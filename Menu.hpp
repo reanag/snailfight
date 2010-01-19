@@ -11,7 +11,7 @@
 #include <sstream>
 #include "Button.hpp"
 #include "Game.hpp"
-#include "NetworkInterface.cpp"
+//#include "NetworkInterface.cpp"
 #include "Pool.cpp"
 #include "InputTextField.hpp"
 
@@ -22,7 +22,6 @@ class Game;
 using namespace std;
 using namespace sf;
 
-static Pool* pPoo;
 
 class Menu{
 
@@ -31,6 +30,7 @@ class Menu{
             string name;
             int score;
         };
+
 
         RenderWindow* Window;
         Image csiga_b;
@@ -86,6 +86,7 @@ class Menu{
         bool ShowIPTextEditor;
         bool IpIsSet;
         bool CreateServer;
+
         bool AmIServer;
         bool AmIClient;
 
@@ -97,16 +98,17 @@ class Menu{
         void Action(string& from);
         void SetIP(string from);
         string GetIP();
-        void static ThreadCreateServerFunc(void* UserData);
-        void static ThreadCreateClientFunc(void* UserData);
-        void GameStart(int i, Pool* p);
+//1        void static ThreadCreateServerFunc(void* UserData);
+//1        void static ThreadCreateClientFunc(void* UserData);
+        void GameStart(int i);
+
 
 //        Pool poo;
 
 
 
-        void AddMess(GameEvent* ev);
-        static void DelFirst();
+        //void AddMess(GameEvent* ev);
+        //static void DelFirst();
 
         //void GenerateSnow();
         //void SnowUpdate();

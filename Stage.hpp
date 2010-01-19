@@ -44,6 +44,11 @@ class Stage : public Object {
         Image stageImg;
         Sprite StageSp;
 
+        Stage();
+        void MakeStage(RenderWindow* window, b2World* World, TempObjectHandler* toh);
+        int Width(){return 2400;};
+        int Height(){return 1800;};
+
         Stage(RenderWindow* window, b2World* World, TempObjectHandler* toh);
 
         void Show();

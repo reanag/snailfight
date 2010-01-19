@@ -1,6 +1,9 @@
 #include "Stage.hpp"
 
-	Stage::Stage(RenderWindow* window, b2World* World, TempObjectHandler* toh){
+    Stage::Stage()
+    {}
+
+	void Stage::MakeStage(RenderWindow* window, b2World* World, TempObjectHandler* toh){
 	    Window=window;
 	    world=World;
 	    TOH=toh;

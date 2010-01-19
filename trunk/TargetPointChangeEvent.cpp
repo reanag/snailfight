@@ -30,6 +30,13 @@
 
     }
 
+    int TargetPointChangeEvent::getXPos(){
+        return x;
+    }
+    int TargetPointChangeEvent::getYPos(){
+        return y;
+    }
+
     string TargetPointChangeEvent::EventToString(){
         string s = EventName+";"+Convert(x)+";"+Convert(y)+"!";
         return s;

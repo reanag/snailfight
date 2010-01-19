@@ -1,13 +1,23 @@
 #include "Game.hpp"
 
-Game::Game(RenderWindow* window, int i, Pool* p, Menu* m) {
-    menu = m;
+  Game::Game(RenderWindow* window, int i, string iP) {
+    ip = iP;
+    p = &ip;
+
     Window=window;
     InGame=false;
-    pPoo = p;
+    pPoo = new Pool();
+
+    TOH=new TempObjectHandler();    // Módosítva CseAn által 2010 01 15
+    GameStage=new Stage2();          // Módosítva CseAn által 2010 01 15
+
+    Width=GameStage->Width();   // Módosítva CseAn által 2010 01 15
+    Height=GameStage->Height(); // Módosítva CseAn által 2010 01 15
+
+
     b2AABB worldAABB; // Define the size of the world. Simulation will still work if bodies reach the end of the world, but it will be slower.
     worldAABB.lowerBound.Set(-100.0f, -100.0f);
-    worldAABB.upperBound.Set(2500.0f, 1900.0f);
+    worldAABB.upperBound.Set(Width+100, Height+100);  // Módosítva CseAn által 2010 01 15
 
     b2Vec2 gravity(0.0f, 10.0f); // Define the gravity vector.
 
@@ -16,54 +26,118 @@ Game::Game(RenderWindow* window, int i, Pool* p, Menu* m) {
 
     timeStep = 1.0f / 10.0f;
     iterations = 10;
+	Logic=new GameLogic(Window,world);
+	 GameStage->MakeStage(Window, world, TOH);   // Módosítva CseAn által 2010 01 15
+    //TOH=new TempObjectHandler();
 
-    Logic=new GameLogic(Window,world);
-    TOH=new TempObjectHandler();
+    //GameStage=new Stage(Window, world, TOH);
+    Surface=new GameSurface(window);
 
-    GameStage=new Stage(Window, world, TOH);
     if (i==0) {
-        MySnail=new Snail(Window, world, TOH, 2000, 150, true, pPoo, menu);
+        MySnail=new Snail(Window, world, TOH, Surface, 2000, 150, true, pPoo, false);
 
     }
     if (i ==1) {
-        MySnail=new Snail(Window, world, TOH, 2000, 150, true, pPoo, menu);
-        OtherSnail=new Snail(Window, world, TOH, 200, 150, false, pPoo, menu);
+        Thread* ThreadCreateServer = new Thread(&ThreadCreateServerFunc);
+        ThreadCreateServer->Launch();
+        MySnail=new Snail(Window, world, TOH, Surface, 3400, 1200, true, pPoo, false);
+        OtherSnail=new Snail(Window, world, TOH, Surface, 900, 1650, false, pPoo, true);
+
     }
     if (i==2) {
-        MySnail=new Snail(Window, world, TOH, 200, 150, true, pPoo, menu);
-        OtherSnail=new Snail(Window, world, TOH, 2000, 150, false, pPoo, menu);
-    }
+       Thread* ThreadCreateClient = new Thread(&ThreadCreateClientFunc, p);
+       ThreadCreateClient->Launch();
 
+       MySnail=new Snail(Window, world, TOH, Surface, 900, 1650, true, pPoo, false);
+       OtherSnail=new Snail(Window, world, TOH, Surface, 3400, 1200, false, pPoo, true);
+
+    }
 
 
     GameView.SetCenter(MySnail->snailbody->GetPosition().x,MySnail->snailbody->GetPosition().y);
     GameView.SetHalfSize(400, 300);
 }
 
+void Game::ThreadCreateServerFunc(void* UserData) {
+    cout<<"\nIN MENU: Create Server\n";
+    NetworkInterface p;
+    mSocket = p.RunAsServer();
+    pPoo->start();
+    GameEvent* ev = new GameEvent("Beta");
+    pPoo->AddMess(ev);
+}
+
+
+void Game::ThreadCreateClientFunc(void* UserData) {
+    string* Object = static_cast<string*>(UserData);
+    string s = *Object;
+    NetworkInterface p;
+    mSocket = p.RunAsClient(s);
+    pPoo->start();
+    GameEvent* ev = new GameEvent("Beta");
+    pPoo->AddMess2(ev);
+}
+
+
 void Game::Show() {
-    GameStage->Show();
+        GameStage->Show();
+        TOH->ShowDBodyes();
+        TOH->ShowBullets();
+        TOH->ShowRockets();
+        TOH->ShowPackages();
+        OtherSnail->Show();
+        MySnail->Show();
+        TOH->ShowGrenades();
+        TOH->ShowRocketsDetonation();
 
-    TOH->ShowDBodyes();
-    TOH->ShowBullets();
-    TOH->ShowRockets();
-    OtherSnail->Show();
-    MySnail->Show();
-    TOH->ShowGrenades();
-    TOH->ShowRocketsDetonation();
-
-    GameStage->ShowAfter();
+        GameStage->ShowAfter();
+        Surface->Show();
 }
 
 void Game::GameLoop() {
     while (InGame) {
-     //   cout<<"Zsolti k�ri: "<<Window->GetFrameTime()<<endl;
 
         Logic->CL.m_pointCount = 0;
         MySnail->jump=false;
         world->Step(timeStep, iterations);
         Logic->LogicListener();
         GameStage->InputHandling();
-        pPoo->
+
+        GameEvent* ge;
+
+        ge = pPoo->GetMess();
+        if(ge->EventToString().at(0)=='1'){
+           TargetPointChangeEvent* tpche = (TargetPointChangeEvent*) ge;
+           OtherSnail->SetTargetPoint(tpche->getXPos(),tpche->getYPos());
+        }
+        if(ge->EventToString().at(0)=='2'){
+            cout<<"CSIGA MOZOG Balra";
+            OtherSnail->MoveLeft();
+        }
+        if(ge->EventToString().at(0)=='3'){
+            cout<<"CSIGA MOZOG Jobbra";
+            OtherSnail->MoveRight();
+        }
+        if(ge->EventToString().at(0)=='4'){
+            cout<<"CSIGA UGRIK";
+            OtherSnail->MoveUp();
+        }
+        if(ge->EventToString().at(0)=='5'){
+            cout<<"CSIGA TAPAD";
+            OtherSnail->MoveDown();
+        }
+        if(ge->EventToString().at(0)=='7'){
+            OtherSnail->RollLeft();
+        }
+        if(ge->EventToString().at(0)=='8'){
+            OtherSnail->RollRight();
+        }
+        if(ge->EventToString().at(0)=='9'){
+            OtherSnail->ThrowGrenade();
+        }
+        if(ge->EventToString()=="#ShotEvent"){
+            OtherSnail->Shot();
+        }
 
         Event ev;
         while (Window->GetEvent(ev)) {
@@ -76,13 +150,9 @@ void Game::GameLoop() {
             if (ev.Type == Event::KeyPressed) {
                 if (ev.Key.Code == Key::Escape) {
                     InGame=false;
-                    //Window->Close();
                 }
             }
         }
-
-//TargetPointChangeEvent tpce(pPoo->GetMessages().at(0)->EventToString());
-//OtherSnail->SetTargetPoint(tpce.x, tpce.y);
         MySnail->InputHandling();
         OtherSnail->InputHandling();
         TOH->InputHandling();
@@ -90,8 +160,9 @@ void Game::GameLoop() {
         float viewx=MySnail->snailbody->GetPosition().x-(400-Window->GetInput().GetMouseX());
         float viewy=MySnail->snailbody->GetPosition().y-(300-Window->GetInput().GetMouseY());
         if (viewx<400) viewx=400;
-        if (viewx>2000) viewx=2000;
-        if (viewy>1495) viewy=1495;
+        if(viewy<300) viewy=300;                    // Módosítva CseAn által 2010 01 15
+        if(viewx>Width-400) viewx=Width-400;        // Módosítva CseAn által 2010 01 15
+        if(viewy>Height-300) viewy=Height-300;      // Módosítva CseAn által 2010 01 15
         GameView.SetCenter(viewx,viewy);
 
         Window->SetView(GameView);

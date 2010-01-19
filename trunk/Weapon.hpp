@@ -11,6 +11,7 @@ using namespace sf;
 class Weapon : public Object {
 
 	public:
+        Vector2f Target;
         int damage;
         int clip;
         int clipsize;
@@ -61,10 +62,12 @@ class Weapon : public Object {
         virtual void CreateDebugShape();
         virtual void FlipX(bool flip);
         virtual void Show();
+        virtual void SetTargetPoint(int x, int y);
         virtual void InputHandling();
         virtual void Shot();
         virtual void Use(float PositionX, float PositionY);
         virtual void UnUse();
+        virtual void AddAmmo(int ammo);
 
 };
 

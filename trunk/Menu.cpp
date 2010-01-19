@@ -1,7 +1,6 @@
 #include "Menu.hpp"
 
 Menu::Menu(RenderWindow* window) {
-  //  pPoo = new Pool();
     Window=window;
     IpIsSet = false;
     AmIClient = false;
@@ -96,16 +95,12 @@ Menu::Menu(RenderWindow* window) {
     no->SetInFocusColor(Color(0,0,255));
 
     Buffer.LoadFromFile("contents/290673_03___Redemption.wav");
-    //Buffer.LoadFromFile("contents/jinglebellrock.wav");
     MenuSound.SetBuffer(Buffer);
     MenuSound.SetVolume(100);
     MenuSound.Play();
 
     LoadingText= new String("Loading...",MenuFont,100);
     LoadingText->SetPosition(150, 200);
-
-    /*srand(time(NULL));
-    GenerateSnow();*/
 }
 
 void Menu::Show() {
@@ -124,6 +119,7 @@ void Menu::Show() {
     Window->Draw(*Exit);
     Window->Draw(*Exit->Text);
     Window->Draw(Laser);
+
 //ANDIKA RÉSZ:
     if (ShowConnection) {
         Window->Draw(*ConnectionText);
@@ -170,8 +166,6 @@ void Menu::Show() {
                 }
             }
         }
-
-
         Window2->Clear();
         Window2->Draw(*ExitText);
         Window2->Draw(*yes);
@@ -180,10 +174,6 @@ void Menu::Show() {
         Window2->Draw(*no->Text);
         Window2->Display();
     }
-    /*for(int i=0;i<snow.size();i++){
-        Window->Draw(snow[i]);
-    }
-    SnowUpdate();*/
 }
 
 void Menu::EventHandle(Event ev) {
@@ -197,7 +187,6 @@ void Menu::EventHandle(Event ev) {
 //ANDIKA RÉSZ:
 
     ServerButton->EventHandle(ev);
-
     ClientButton->EventHandle(ev);
     ServerText->EventHandle(ev);
 
@@ -258,7 +247,6 @@ void Menu::Action(string& from) {
             highscores.append(c_string);
             highscores.append("\n");
         }
-        //cout<<highscores<<endl;
         ScoresText->SetText(highscores);
         ShowHighScores=true;
     }
@@ -286,11 +274,8 @@ void Menu::Action(string& from) {
         ShowIPTextEditor = true;
         cout<<"join server";
         if (ShowIPTextEditor&&IpIsSet) {
-
             p = &ip;
-            Thread* ThreadCreateClient = new Thread(&ThreadCreateClientFunc, p);
-            ThreadCreateClient->Launch();
-            GameStart(1, pPoo);
+            GameStart(2);
             AmIClient = true;
         }
     }
@@ -301,87 +286,20 @@ void Menu::Action(string& from) {
             return;
         }
         cout<<"create server";
-
-        Thread* ThreadCreateServer = new Thread(&ThreadCreateServerFunc);
-        ThreadCreateServer->Launch();
-        GameStart(2, pPoo);
+        GameStart(1);
         AmIServer = true;
-
     }
 //ANDIKA RÉSZ END
 }
-//Andika szálkezel:
 
-void Menu::ThreadCreateServerFunc(void* UserData) {
-    cout<<"\nIN MENU: Create Server\n";
-    NetworkInterface p;
-    mSocket = p.RunAsServer();
-    messageIndex = 0;
-    pPoo = new Pool();
-    pPoo->start();
-    GameEvent* ev = new GameEvent("Beta");
-    pPoo->AddMess(ev);
-}
-
-
-void Menu::ThreadCreateClientFunc(void* UserData) {
-    cout<<"\nIN MENU: Create Client\n";
-    string* Object = static_cast<string*>(UserData);
-    string s = *Object;
-    NetworkInterface p;
-    mSocket = p.RunAsClient(s);
-//    MessagesToSend = new vector<GameEvent*>();
-    pPoo = new Pool();
-    pPoo->start();
-}
-
-void Menu::GameStart(int i, Pool* p){
+void Menu::GameStart(int i){
         MenuSound.Pause();
         Window->Clear();
         Window->Draw(*LoadingText);
         Window->Display();
-        MyGame=new Game(Window, i, p, this);
-
+        MyGame=new Game(Window, i, ip);
         MyGame->InGame=true;
         MyGame->GameLoop();
-
         MenuSound.Play();
 }
 
-//Pool MessagesToSend vectorához új elem hozzáadása, messageIndex beállítása (a Pool üzenet küldésénél van jelentősége)
-//Ha túl nagy a vector mérete, akkor kitörli azokat, amiket valószínüleg már elküldtek.
-/*void Menu::AddMess(GameEvent* ev){
-    MessagesToSend.push_back(ev);
-    messageIndex++;
-    if(messageIndex>50){
-        for(int i = 0; i<20; i++){
-            DelFirst();
-
-        }
-    }
-}
-
-void Menu::DelFirst(){
-    vector<GameEvent*>::iterator i = MessagesToSend.begin();
-    MessagesToSend.erase(i);
-    messageIndex--;
-}*/
-
-/*void Menu::GenerateSnow(){
-    for(int i=0;i<1100;i++){
-        Shape s=Shape::Circle(0,0,1,Color(255,255,255));
-        s.SetPosition(rand()%800,rand()%600);
-        snow.push_back(s);
-    }
-}
-
-void Menu::SnowUpdate(){
-    for(int i=0; i<snow.size(); i++){
-        snow[i].SetPosition(snow[i].GetPosition().x+(rand()%3-1),snow[i].GetPosition().y+(rand()%4-1));
-        if(snow[i].GetPosition().x<0)snow[i].SetPosition(0,snow[i].GetPosition().y);
-        if(snow[i].GetPosition().x>800)snow[i].SetPosition(800,snow[i].GetPosition().y);
-        if(snow[i].GetPosition().y>600){
-            snow[i].SetPosition(snow[i].GetPosition().x,0);
-        }
-    }
-}*/

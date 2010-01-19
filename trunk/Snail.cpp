@@ -1,11 +1,12 @@
 #include "Snail.hpp"
 
-	Snail::Snail(RenderWindow* window, b2World* World, TempObjectHandler* toh, float PositionX, float PositionY, bool Controlled, Pool* p, Menu* m){
+	Snail::Snail(RenderWindow* window, b2World* World, TempObjectHandler* toh, GameSurface* surface, float PositionX, float PositionY, bool Controlled, Pool* p,  bool b){
 	    poo = p;
-	    menu = m;
+	    NET = b;
 	    Window=window;
 	    world=World;
 	    TOH=toh;
+		Surface=surface;
 
 	    Health=100;
 	    Stamina=100;
@@ -13,6 +14,7 @@
 	    alive=true;
 	    turbo=false;
 
+		grenades=5;
 	    grenadethrowspeed=0.5;
         timer=0;
 
@@ -151,8 +153,6 @@
         aktImg=0;
 
         houseImg.LoadFromFile("contents/csig1.6.house.png");
-        //snailImg.LoadFromFile("contents/xmas_csig1.6.png");
-        //houseImg.LoadFromFile("contents/xmas_csig1.6.house.png");
         SnailSp.Scale(0.5,0.5);
         SnailSp.SetCenter(654+mx*2,444+my*2);
         SnailSp.SetImage(snailImg[aktImg]);
@@ -170,25 +170,21 @@
         Weapons.push_back(new Rifle(Window, world, TOH, snailbody->GetWorldCenter().x, snailbody->GetWorldCenter().y, 500));
         Weapons.push_back(new Rifle2(Window, world, TOH, snailbody->GetWorldCenter().x, snailbody->GetWorldCenter().y, 200));
         Weapons.push_back(new Rifle3(Window, world, TOH, snailbody->GetWorldCenter().x, snailbody->GetWorldCenter().y, 200));
-        Weapons.push_back(new RocketLauncher(Window, world, TOH, snailbody->GetWorldCenter().x, snailbody->GetWorldCenter().y, 200));
+        Weapons.push_back(new RocketLauncher(Window, world, TOH, snailbody->GetWorldCenter().x, snailbody->GetWorldCenter().y, 10, this));
         if(controlled){
             Weapons[aktWeapon]->MouseTargeting=true;
         }
         Weapons[1]->UnUse();
         Weapons[2]->UnUse();
         Weapons[3]->UnUse();
+
+		Surface->SetAmmo(Weapons[aktWeapon]->ammunition);
+        Surface->SetClip(Weapons[aktWeapon]->clip);
         //Weapons[0]->Use(snailbody->GetWorldCenter().x, snailbody->GetWorldCenter().y);
-        /*RifleGun=new Rifle2(Window, world, TOH, snailbody->GetWorldCenter().x, snailbody->GetWorldCenter().y);
-        RifleGun->MouseTargeting=true;
-        gunjoint.Initialize(snailbody, RifleGun->weaponbody, RifleGun->weaponbody->GetWorldCenter());*/
         gunjoint.Initialize(snailbody, Weapons[aktWeapon]->weaponbody, Weapons[aktWeapon]->weaponbody->GetWorldCenter());
         gunjoint.localAnchor1=b2Vec2(Weapons[aktWeapon]->jointX, Weapons[aktWeapon]->jointY);
         gunjoint.localAnchor2=b2Vec2(0.0f, 0.0f);
         world->CreateJoint(&gunjoint);
-
-        //lightImg.LoadFromFile("contents/night-light.png");
-        //LightSp.SetImage(lightImg);
-        //LightSp.SetCenter(1000,782);
 	}
 
 	void Snail::FlipX(bool flip){
@@ -275,7 +271,6 @@
                 gunjoint.localAnchor2=b2Vec2(0.0f, 0.0f);
                 world->CreateJoint(&gunjoint);
                 Weapons[aktWeapon]->FlipX(true);
-                //LightSp.FlipX(true);
             }else{
                 fliped=true;
                 SnailSp.SetImage(houseImg);
@@ -434,7 +429,6 @@
                 gunjoint.localAnchor2=b2Vec2(0.0f, 0.0f);
                 world->CreateJoint(&gunjoint);
                 Weapons[aktWeapon]->FlipX(false);
-                //LightSp.FlipX(false);
 	        }else{
 	            fliped=false;
                 SnailSp.SetImage(houseImg);
@@ -528,9 +522,6 @@
         Window->Draw(Eye1Sp);
         Window->Draw(Eye2Sp);
         if(alive)Weapons[aktWeapon]->Show();
-        //if(controlled){
-        //    Window->Draw(LightSp);
-        //}
     }
 
     void Snail::Die(){
@@ -583,56 +574,36 @@
 
 	void Snail::InputHandling(){
 	    if(alive){
-            Weapons[aktWeapon]->InputHandling();
             if(controlled){
                 timer+=Window->GetFrameTime();
 
-                if(!turbo&&Stamina<100)Stamina+=0.1;
-                if(Window->GetInput().IsKeyDown(Key::LShift) && Stamina>50 && !turbo){/*turbo=true;Speed=60;*/UseTurbo();}
-                if(turbo && Stamina<1 && Stamina>=0){turbo=false;Speed=30;}
-                if(turbo){Stamina-=0.75;if(Stamina<0){Stamina=0;}}
+				if(Window->GetInput().IsKeyDown(Key::LShift) && Stamina>50 && !turbo){/*turbo=true;Speed=60;*/UseTurbo();}
+
 
                 if(Window->GetInput().IsKeyDown(Key::A)){
-                    //snailbody->SetLinearVelocity(b2Vec2(-Speed,snailbody->GetLinearVelocity().y));
                     MoveLeft();
                 }
                 if(Window->GetInput().IsKeyDown(Key::D)){
-                    //snailbody->SetLinearVelocity(b2Vec2(Speed,snailbody->GetLinearVelocity().y));
                     MoveRight();
                 }
                 if(Window->GetInput().IsKeyDown(Key::W) && jump){
-                    //snailbody->SetLinearVelocity(b2Vec2(snailbody->GetLinearVelocity().x,-Speed-30));
                     MoveUp();
                 }
                 if(Window->GetInput().IsKeyDown(Key::S)){
-                    //snailbody->SetLinearVelocity(b2Vec2(/*snailbody->GetLinearVelocity().x*/0,snailbody->GetLinearVelocity().y+0.5));
                     MoveDown();
                 }
                 if(Window->GetInput().IsKeyDown(Key::E)){
-                    //snailbody->SetAngularVelocity(0.5);
                     RollRight();
                 }
                 if(Window->GetInput().IsKeyDown(Key::Q)){
-                    //snailbody->SetAngularVelocity(-0.5);
                     RollLeft();
                 }
                 if(Window->GetInput().IsKeyDown(Key::R)){
-                    /*if(fliped){
-                        eye1->SetLinearVelocity(b2Vec2(-200,-100));
-                    }else{
-                        eye1->SetLinearVelocity(b2Vec2(200,-100));
-                    }*/
                     Eye1Attak();
                 }
                 if(Window->GetInput().IsKeyDown(Key::F)){
-                    /*if(fliped){
-                        eye2->SetLinearVelocity(b2Vec2(-200,-100));
-                    }else{
-                        eye2->SetLinearVelocity(b2Vec2(200,-100));
-                    }*/
                     Eye2Attak();
                 }
-                //cout<<abs(int(snailbody->GetAngle()*-57.29577951308232)%360)<<endl;
                 if(Window->GetInput().IsKeyDown(Key::C)){
                     if(!hid){
                         Hide(true);
@@ -642,134 +613,107 @@
                         Hide(false);
                     }
                 }
-
-                //Mouse = Window->ConvertCoords(Window->GetInput().GetMouseX(),Window->GetInput().GetMouseY());
                 SetTargetPoint(Window->GetInput().GetMouseX(),Window->GetInput().GetMouseY());
 
                 if(Window->GetInput().IsKeyDown(Key::G) && timer>grenadethrowspeed){
-                    /*Grenade* g=new Grenade(Window, world, TOH, snailbody->GetPosition().x+10, snailbody->GetPosition().y-70, (Mouse.x-(snailbody->GetPosition().x+10))/2,(Mouse.y-(snailbody->GetPosition().y-70))/2);
-                    TOH->Add(g);
-                    timer=0;*/
                     ThrowGrenade();
                 }
-
-                /*if(Window->GetInput().IsKeyDown(Key::X)){
-                    Damage(1);
-                }
-
-                if(Window->GetInput().IsKeyDown(Key::H)){
-                    Heal(1);
-                }*/
-
-                /*if((Mouse.x>snailbody->GetPosition().x) && (fliped)){
-                    FlipX(false);
-                }
-                if((Mouse.x<snailbody->GetPosition().x) && (!fliped)){
-                    FlipX(true);
-                }*/
 
                 if(Window->GetInput().IsMouseButtonDown(Mouse::Left)){
                     //Weapons[aktWeapon]->Shot();
                     Shot();
                 }
-
-                /*
-                if(ev.Type == Event::MouseButtonPressed){
-                    if(ev.Key.Code == 0){
-
-                    }
-                }*/
-
-            }
+             }
 	    }
         SnailSp.SetPosition(snailbody->GetPosition().x,snailbody->GetPosition().y);
         SnailSp.SetRotation(snailbody->GetAngle()*-57.29577951308232);
         Eye1Sp.SetPosition(eye1->GetPosition().x,eye1->GetPosition().y);
         Eye2Sp.SetPosition(eye2->GetPosition().x,eye2->GetPosition().y);
-        //LightSp.SetPosition(RifleGun->weaponbody->GetPosition().x,RifleGun->weaponbody->GetPosition().y);
-        //LightSp.SetRotation(RifleGun->weaponbody->GetAngle()*-57.29577951308232);
+        if(!turbo&&Stamina<100)Stamina+=0.1;
+        if(turbo && Stamina<1 && Stamina>=0){turbo=false;Speed=30;}
+        if(turbo){Stamina-=0.75;if(Stamina<0){Stamina=0;}}
+        if(controlled)Surface->SetStamina(Stamina);
+        if(alive){
+            Weapons[aktWeapon]->SetTargetPoint(Mouse.x, Mouse.y);
+            Weapons[aktWeapon]->InputHandling();
+        }
 	}
 
 	void Snail::EventHandling(Event ev){
 	    if(ev.Type == sf::Event::MouseWheelMoved && alive){
             if(ev.MouseWheel.Delta == 1 ){
-                Weapons[aktWeapon]->UnUse();
-                aktWeapon++;
-                if(aktWeapon>Weapons.size()-1){
-                    aktWeapon=0;
-                }
-                Weapons[aktWeapon]->Use(snailbody->GetWorldCenter().x, snailbody->GetWorldCenter().y);
-                if(fliped){
-                    gunjoint.Initialize(snailbody, Weapons[aktWeapon]->weaponbody, Weapons[aktWeapon]->weaponbody->GetWorldCenter());
-                    gunjoint.localAnchor1=b2Vec2(-Weapons[aktWeapon]->jointX, Weapons[aktWeapon]->jointY);
-                    gunjoint.localAnchor2=b2Vec2(0.0f, 0.0f);
-                    world->CreateJoint(&gunjoint);
-                    Weapons[aktWeapon]->FlipX(true);
-                }else{
-                    gunjoint.Initialize(snailbody, Weapons[aktWeapon]->weaponbody, Weapons[aktWeapon]->weaponbody->GetWorldCenter());
-                    gunjoint.localAnchor1=b2Vec2(Weapons[aktWeapon]->jointX, Weapons[aktWeapon]->jointY);
-                    gunjoint.localAnchor2=b2Vec2(0.0f, 0.0f);
-                    world->CreateJoint(&gunjoint);
-                    Weapons[aktWeapon]->FlipX(false);
-                }
+				int wep=aktWeapon+1;
+                ChangeWeapon(wep);
             }
             if(ev.MouseWheel.Delta == -1 ){
-                Weapons[aktWeapon]->UnUse();
-                aktWeapon--;
-                if(aktWeapon<0){
-                    aktWeapon=Weapons.size()-1;
-                }
-                Weapons[aktWeapon]->Use(snailbody->GetWorldCenter().x, snailbody->GetWorldCenter().y);
-                if(fliped){
-                    gunjoint.Initialize(snailbody, Weapons[aktWeapon]->weaponbody, Weapons[aktWeapon]->weaponbody->GetWorldCenter());
-                    gunjoint.localAnchor1=b2Vec2(-Weapons[aktWeapon]->jointX, Weapons[aktWeapon]->jointY);
-                    gunjoint.localAnchor2=b2Vec2(0.0f, 0.0f);
-                    world->CreateJoint(&gunjoint);
-                    Weapons[aktWeapon]->FlipX(true);
-                }else{
-                    gunjoint.Initialize(snailbody, Weapons[aktWeapon]->weaponbody, Weapons[aktWeapon]->weaponbody->GetWorldCenter());
-                    gunjoint.localAnchor1=b2Vec2(Weapons[aktWeapon]->jointX, Weapons[aktWeapon]->jointY);
-                    gunjoint.localAnchor2=b2Vec2(0.0f, 0.0f);
-                    world->CreateJoint(&gunjoint);
-                    Weapons[aktWeapon]->FlipX(false);
-                }
+				int wep=aktWeapon-1;
+				ChangeWeapon(wep);
             }
         }
     }
 
-    void Snail::SetTargetPoint(int x, int y){
-     //TargetPointChangeEvent létrehozása, ha megváltozott a TargetPoint
-        TargetPointChangeEvent* nev = new TargetPointChangeEvent(x,y);
-     //Pool MessagesToSend vektorához hozzáadni (static vector, csak a menün keresztül lehet)
-         poo->AddMess(nev);
+    void Snail::SetTargetPoint( int x, int y){
+//		if((int)NewMouse.x!=(int)Mouse.x || (int)NewMouse.y!=(int)Mouse.y){
+			if(!NET){
+				tpce = new TargetPointChangeEvent(x,y);
+			}
+			Mouse = Window->ConvertCoords(x,y);
+			if((Mouse.x>snailbody->GetPosition().x) && (fliped)){
+				FlipX(false);
+			}
+			if((Mouse.x<snailbody->GetPosition().x) && (!fliped)){
+				FlipX(true);
+			}
+	///	}
 
-        Mouse = Window->ConvertCoords(x,y);
-        if((Mouse.x>snailbody->GetPosition().x) && (fliped)){
-            FlipX(false);
-        }
-        if((Mouse.x<snailbody->GetPosition().x) && (!fliped)){
-            FlipX(true);
-        }
-    }
+	}
 
     void Snail::MoveLeft(){
+      if(!NET){
         MoveLeftEvent* mlev = new MoveLeftEvent();
+        poo->AddMess(tpce);
         poo->AddMess(mlev);
+      }
         snailbody->SetLinearVelocity(b2Vec2(-Speed,snailbody->GetLinearVelocity().y));
     }
     void Snail::MoveRight(){
+      if(!NET){
+        MoveRightEvent* mrev = new MoveRightEvent();
+        poo->AddMess(tpce);
+        poo->AddMess(mrev);
+      }
         snailbody->SetLinearVelocity(b2Vec2(Speed,snailbody->GetLinearVelocity().y));
     }
     void Snail::MoveUp(){
+      if(!NET){
+        MoveUpEvent* muev = new MoveUpEvent();
+        poo->AddMess(tpce);
+        poo->AddMess(muev);
+      }
         snailbody->SetLinearVelocity(b2Vec2(snailbody->GetLinearVelocity().x,-Speed-30));
     }
     void Snail::MoveDown(){
+        if(!NET){
+            MoveDownEvent* mdev = new MoveDownEvent();
+            poo->AddMess(tpce);
+            poo->AddMess(mdev);
+        }
         snailbody->SetLinearVelocity(b2Vec2(0,snailbody->GetLinearVelocity().y+0.5));
     }
     void Snail::RollLeft(){
+        if(!NET){
+            RollLeftEvent* rlev = new RollLeftEvent();
+            poo->AddMess(tpce);
+            poo->AddMess(rlev);
+        }
         snailbody->SetAngularVelocity(-0.5);
     }
     void Snail::RollRight(){
+        if(!NET){
+            RollRightEvent* rrev = new RollRightEvent();
+            poo->AddMess(tpce);
+            poo->AddMess(rrev);
+        }
         snailbody->SetAngularVelocity(0.5);
     }
     void Snail::Eye1Attak(){
@@ -787,43 +731,64 @@
         }
     }
     void Snail::Shot(){
+        if(!NET){
+            ShotEvent* sev = new ShotEvent();
+            poo->AddMess(tpce);
+            poo->AddMess(sev);
+
+        }
         Weapons[aktWeapon]->Shot();
+        Surface->SetAmmo(Weapons[aktWeapon]->ammunition);
+        Surface->SetClip(Weapons[aktWeapon]->clip);
     }
     void Snail::ThrowGrenade(){
-        Grenade* g=new Grenade(Window, world, TOH, snailbody->GetPosition().x+10, snailbody->GetPosition().y-70, (Mouse.x-(snailbody->GetPosition().x+10))/2,(Mouse.y-(snailbody->GetPosition().y-70))/2);
-        TOH->Add(g);
-        timer=0;
+		if(grenades>0){
+			if(!NET){
+				GranadeThrowedEvent* gtev = new GranadeThrowedEvent();
+				poo->AddMess(tpce);
+				poo->AddMess(gtev);
+			}
+			Grenade* g=new Grenade(Window, world, TOH, snailbody->GetPosition().x+10, snailbody->GetPosition().y-70, (Mouse.x-(snailbody->GetPosition().x+10))/2,(Mouse.y-(snailbody->GetPosition().y-70))/2);
+			TOH->Add(g);
+			timer=0;
+		}
     }
     void Snail::UseTurbo(){
         turbo=true;
         Speed=60;
     }
     void Snail::ChangeWeapon(int WeaponNumber){
-     //   poo->AddMess(WeaponChangeEvent e(WeaponNumber));
-        if(WeaponNumber>0 && WeaponNumber<Weapons.size()){
-            Weapons[aktWeapon]->UnUse();
-            aktWeapon=WeaponNumber;
-            Weapons[aktWeapon]->Use(snailbody->GetWorldCenter().x, snailbody->GetWorldCenter().y);
-            if(fliped){
-                gunjoint.Initialize(snailbody, Weapons[aktWeapon]->weaponbody, Weapons[aktWeapon]->weaponbody->GetWorldCenter());
-                gunjoint.localAnchor1=b2Vec2(-Weapons[aktWeapon]->jointX, Weapons[aktWeapon]->jointY);
-                gunjoint.localAnchor2=b2Vec2(0.0f, 0.0f);
-                world->CreateJoint(&gunjoint);
-                Weapons[aktWeapon]->FlipX(true);
-            }else{
-                gunjoint.Initialize(snailbody, Weapons[aktWeapon]->weaponbody, Weapons[aktWeapon]->weaponbody->GetWorldCenter());
-                gunjoint.localAnchor1=b2Vec2(Weapons[aktWeapon]->jointX, Weapons[aktWeapon]->jointY);
-                gunjoint.localAnchor2=b2Vec2(0.0f, 0.0f);
-                world->CreateJoint(&gunjoint);
-                Weapons[aktWeapon]->FlipX(false);
-            }
+        if(WeaponNumber<0){
+            WeaponNumber=Weapons.size()-1;
         }
+        if(WeaponNumber>Weapons.size()-1){
+            WeaponNumber=0;
+        }
+        Weapons[aktWeapon]->UnUse();
+        aktWeapon=WeaponNumber;
+        Weapons[aktWeapon]->Use(snailbody->GetWorldCenter().x, snailbody->GetWorldCenter().y);
+        if(fliped){
+            gunjoint.Initialize(snailbody, Weapons[aktWeapon]->weaponbody, Weapons[aktWeapon]->weaponbody->GetWorldCenter());
+            gunjoint.localAnchor1=b2Vec2(-Weapons[aktWeapon]->jointX, Weapons[aktWeapon]->jointY);
+            gunjoint.localAnchor2=b2Vec2(0.0f, 0.0f);
+            world->CreateJoint(&gunjoint);
+            Weapons[aktWeapon]->FlipX(true);
+        }else{
+            gunjoint.Initialize(snailbody, Weapons[aktWeapon]->weaponbody, Weapons[aktWeapon]->weaponbody->GetWorldCenter());
+            gunjoint.localAnchor1=b2Vec2(Weapons[aktWeapon]->jointX, Weapons[aktWeapon]->jointY);
+            gunjoint.localAnchor2=b2Vec2(0.0f, 0.0f);
+            world->CreateJoint(&gunjoint);
+            Weapons[aktWeapon]->FlipX(false);
+        }
+        //Weapons[aktWeapon]->SetTargetPoint(Mouse.x, Mouse.y);
+        Surface->SetAmmo(Weapons[aktWeapon]->ammunition);
+        Surface->SetClip(Weapons[aktWeapon]->clip);
     }
 
 	void Snail::Damage(int damage){
 	    if(alive){
             Health-=damage;
-            if(Health<=0)Die();
+            if(Health<=0){Health=0;Die();}
             else if(Health<10)aktImg=9;
             else if(Health<20)aktImg=8;
             else if(Health<30)aktImg=7;
@@ -833,12 +798,13 @@
             else if(Health<70)aktImg=3;
             else if(Health<80)aktImg=2;
             else if(Health<90)aktImg=1;
-            cout<<"Damaged: "<<damage<<"  Health: "<<Health<<endl;
+            //cout<<"Damaged: "<<damage<<"  Health: "<<Health<<endl;
             SnailSp.SetImage(snailImg[aktImg]);
+			if(controlled)Surface->SetHealth(Health);
 	    }
     }
 
-    void Snail::Heal(int heal){
+  void Snail::Heal(int heal){
         Health+=heal;
         if(Health>100)Health=100;
         if(Health<10)aktImg=9;
@@ -851,7 +817,7 @@
         else if(Health<80)aktImg=2;
         else if(Health<90)aktImg=1;
         else if(Health>90)aktImg=0;
-        //cout<<aktImg<<" "<<Health<<" "<<alive<<endl;
         SnailSp.SetImage(snailImg[aktImg]);
+        if(controlled)Surface->SetHealth(Health);
     }
 

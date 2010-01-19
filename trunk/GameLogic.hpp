@@ -13,6 +13,10 @@
 #include "Bullet.hpp"
 #include "Rocket.hpp"
 #include "DestroyableBody.hpp"
+#include "Package.hpp"
+#include "HealthPackage.hpp"
+#include "GrenadePackage.hpp"
+#include "RocketPackage.hpp"
 
 using namespace std;
 using namespace sf;

@@ -15,6 +15,7 @@
         bool once2=false;
         bool once3=false;
         bool once4=false;
+        bool once5=false;
         for (int32 i = 0; i < CL.m_pointCount; ++i){
 
 			ContactPoint* point = CL.m_points + i;
@@ -51,7 +52,7 @@
 
             if(data1->label=="snail" && data2->label=="bullet" && !once){
                 if(body2->GetLinearVelocity().x>100 || body2->GetLinearVelocity().x<-100 || body2->GetLinearVelocity().y>100 || body2->GetLinearVelocity().y<-100){
-                    cout<<"hurt"<<endl;
+                    //cout<<"hurt"<<endl;
                     nuke.push_back(body2);
                     Snail* snail=(Snail*) data1->object;
                     Bullet* bullet=(Bullet*) data2->object;
@@ -65,7 +66,7 @@
             }
             if(data1->label=="bullet" && data2->label=="snail" && !once){
                 if(body1->GetLinearVelocity().x>100 || body1->GetLinearVelocity().x<-100 || body1->GetLinearVelocity().y>100 || body1->GetLinearVelocity().y<-100){
-                    cout<<"hurt"<<endl;
+                    //cout<<"hurt"<<endl;
                     nuke.push_back(body1);
                     Snail* snail=(Snail*) data2->object;
                     Bullet* bullet=(Bullet*) data1->object;
@@ -124,6 +125,53 @@
                 }
             }
 
+            if(data1->label=="package" && data2->label=="snail" && !once5){
+                Snail* snail=(Snail*) data2->object;
+                Package* pack=(Package*) data1->object;
+                if(pack->subcaste=="health"){
+                    if(snail->Health<100){
+                        nuke.push_back(body1);
+                        HealthPackage* Hpack=(HealthPackage*) data1->object;
+                        snail->Heal(Hpack->addHeal);
+                    }
+                }
+                if(pack->subcaste=="grenade"){
+                        nuke.push_back(body1);
+                        GrenadePackage* Gpack=(GrenadePackage*) data1->object;
+                        snail->grenades+=Gpack->addGrenade;
+                }
+                if(pack->subcaste=="rocket"){
+                        nuke.push_back(body1);
+                        RocketPackage* Rpack=(RocketPackage*) data1->object;
+                        snail->Weapons[3]->AddAmmo(Rpack->addRocket);
+                        snail->Surface->SetAmmo(snail->Weapons[snail->aktWeapon]->ammunition);
+                }
+                once5=true;
+            }
+            if(data1->label=="snail" && data2->label=="package" && !once5){
+                Snail* snail=(Snail*) data1->object;
+                Package* pack=(Package*) data2->object;
+                if(pack->subcaste=="health"){
+                    if(snail->Health<100){
+                        nuke.push_back(body2);
+                        HealthPackage* Hpack=(HealthPackage*) data2->object;
+                        snail->Heal(Hpack->addHeal);
+                    }
+                }
+                if(pack->subcaste=="grenade"){
+                        nuke.push_back(body2);
+                        GrenadePackage* Gpack=(GrenadePackage*) data2->object;
+                        snail->grenades+=Gpack->addGrenade;
+                }
+                if(pack->subcaste=="rocket"){
+                        nuke.push_back(body2);
+                        RocketPackage* Rpack=(RocketPackage*) data1->object;
+                        snail->Weapons[3]->AddAmmo(Rpack->addRocket);
+                        snail->Surface->SetAmmo(snail->Weapons[snail->aktWeapon]->ammunition);
+                }
+                once5=true;
+            }
+
 /*
             if((data1->label=="snail" && data2->label=="wall1")||(data1->label=="wall1" && data2->label=="snail")){
                 if(data1->label=="snail" && data2->label=="wall1"){
@@ -158,7 +206,12 @@
 		    if(d->label=="rocket"){
 		        Rocket* r=(Rocket*) d->object;
 		        r->DestroyRocket();
-            }else{
+            }
+            if(d->label=="package"){
+                Package* p=(Package*) d->object;
+                p->DestroyPackage();
+            }
+            if(d->label=="bullet"){
                 Bullet* b=(Bullet*) d->object;
                 b->DestroyBullet();
             }

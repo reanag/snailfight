@@ -7,6 +7,7 @@
 #include <math.h>
 #include "Object.hpp"
 #include "TempObjectHandler.hpp"
+#include "GameSurface.hpp"
 #include "Weapon.hpp"
 #include "Rifle.hpp"
 #include "Rifle2.hpp"
@@ -14,8 +15,16 @@
 #include "RocketLauncher.hpp"
 #include "Grenade.hpp"
 #include "TargetPointChangeEvent.hpp"
+#include "MoveUpEvent.hpp"
 #include "MoveLeftEvent.hpp"
+#include "MoveRightEvent.hpp"
+#include "MoveDownEvent.hpp"
+#include "GranadeThrowedEvent.hpp"
+#include "RollLeftEvent.hpp"
+#include "RollRightEvent.hpp"
+#include "ShotEvent.hpp"
 #include "Pool.cpp"
+#include "GameSurface.hpp"
 //#include "Menu.hpp"
 
 using namespace std;
@@ -32,6 +41,7 @@ class Snail : public Object{
         RenderWindow* Window;
         b2World* world;
         TempObjectHandler* TOH;
+		GameSurface* Surface;
 
         int Health;
         float Stamina;
@@ -39,6 +49,7 @@ class Snail : public Object{
         bool alive;
         bool turbo;
 
+		int grenades;
         float grenadethrowspeed;
         float timer;
 
@@ -50,6 +61,7 @@ class Snail : public Object{
         bool once;
         float mx;
         float my;
+        bool NET;
 
         b2BodyDef snailbodyDef;
         b2Body* snailbody;
@@ -90,7 +102,7 @@ class Snail : public Object{
         //Image lightImg;
         //Sprite LightSp;
 
-        Snail(RenderWindow* window, b2World* World, TempObjectHandler* toh, float PositionX, float PositionY, bool Controlled, Pool* p, Menu* m);
+        Snail(RenderWindow* window, b2World* World, TempObjectHandler* toh, GameSurface* surface, float PositionX, float PositionY, bool Controlled, Pool* p, bool b);
 
         void FlipX(bool flip);
         void Hide(bool hide);
@@ -116,6 +128,7 @@ class Snail : public Object{
         void Damage(int damage);
         void Heal(int heal);
 
+        TargetPointChangeEvent* tpce;
 };
 
 #endif

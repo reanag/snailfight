@@ -8,6 +8,7 @@
 #include "Bullet.hpp"
 #include "Rocket.hpp"
 #include "DestroyableBody.hpp"
+#include "Package.hpp"
 
 using namespace std;
 using namespace sf;
@@ -16,6 +17,7 @@ class Grenade;
 class Bullet;
 class Rocket;
 class DestroyableBody;
+class Package;
 
 class TempObjectHandler{
 
@@ -24,6 +26,7 @@ class TempObjectHandler{
         vector<Bullet* > Bullets;
         vector<Rocket* > Rockets;
         vector<DestroyableBody* > DBodyes;
+        vector<Package* > Packages;
 
         Image grenadeImg;
         Image detonation[3];
@@ -39,6 +42,7 @@ class TempObjectHandler{
         void ShowRockets();
         void ShowRocketsDetonation();
         void ShowDBodyes();
+        void ShowPackages();
 
         void InputHandling();
 
@@ -50,6 +54,8 @@ class TempObjectHandler{
         void Remove(Rocket* bullet);
         void Add(DestroyableBody* dbody);
         void Remove(DestroyableBody* dbody);
+        void Add(Package* package);
+        void Remove(Package* package);
 
 };
 

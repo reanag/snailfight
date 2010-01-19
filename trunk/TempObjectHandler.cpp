@@ -43,6 +43,12 @@
         }
     }
 
+    void TempObjectHandler::ShowPackages(){
+        for(int i=0;i<Packages.size();i++){
+            Packages[i]->Show();
+        }
+    }
+
 	void TempObjectHandler::InputHandling(){
 	    for(int i=0;i<Grenades.size();i++){
             Grenades[i]->InputHandling();
@@ -55,6 +61,9 @@
         }
         for(int i=0;i<DBodyes.size();i++){
             DBodyes[i]->InputHandling();
+        }
+        for(int i=0;i<Packages.size();i++){
+            Packages[i]->InputHandling();
         }
 	}
 
@@ -108,4 +117,17 @@
             DBodyes[i]->SetNumber(i-1);
         }
         DBodyes.erase(DBodyes.begin()+num);
+    }
+
+    void TempObjectHandler::Add(Package* package){
+        package->SetNumber(Packages.size());
+        Packages.push_back(package);
+    }
+
+    void TempObjectHandler::Remove(Package* package){
+        int num=package->GetNumber();
+        for(int i=num+1;i<Packages.size();i++){
+            Packages[i]->SetNumber(i-1);
+        }
+        Packages.erase(Packages.begin()+num);
     }

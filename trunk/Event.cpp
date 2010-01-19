@@ -10,7 +10,7 @@ GameEvent::GameEvent(string s) {
 }
 
 string GameEvent::EventToString(){
-    return EventName;
+    return EventName+"!";
 }
 
 

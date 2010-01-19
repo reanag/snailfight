@@ -8,6 +8,11 @@
 #include "Event.hpp"
 #include "TargetPointChangeEvent.hpp"
 #include "MoveLeftEvent.hpp"
+#include "MoveRightEvent.hpp"
+#include "MoveUpEvent.hpp"
+#include "RollLeftEvent.hpp"
+#include "RollRightEvent.hpp"
+#include "ShotEvent.hpp"
 #include "Menu.hpp"
 
 
@@ -15,16 +20,16 @@ using namespace std;
 using namespace sf;
 
 static SocketTCP mSocket;
-static vector<GameEvent*>* Messages = new vector<GameEvent*>();
-static vector<GameEvent*>* MessagesToSend = new vector<GameEvent*>();
-static int messageIndex;
-
+static vector<GameEvent*>* Messages;
+static vector<GameEvent*>* MessagesToSend;
 
 class Pool {
 
 public:
-
+    int id;
     Pool() {
+        Messages = new vector<GameEvent*>();
+        MessagesToSend = new vector<GameEvent*>();
         cout<<"\nPOOL created\n";
     }
 
@@ -32,20 +37,22 @@ public:
         cout<<"\n\tSTART\n";
         SocketTCP* pSocket;
         GameEvent* ev = new GameEvent("INIT");
+        GameEvent* iv = new GameEvent("INIT");
         MessagesToSend->push_back(ev);
+        Messages->push_back(iv);
         Thread* ThreadSendMess = new Thread(&ThreadSendMessFunc);
-        Thread* ThreadReceiveMess = new Thread(&ThreadReceiveMessFunc);
+        Thread* ThreadReceiveMess = new Thread(&ThreadReceiveMessFunc, this);
         ThreadSendMess -> Launch();
         ThreadReceiveMess -> Launch();
         cout<<"\n\tstart END\n";
     }
 
 //Figyeli a socket-et, ha stringet kap cast-olja a megfelelő típusú üzenetté, és a Messages vektorba teszi.
-    static void ThreadReceiveMessFunc(void* UserData) {
+     void static ThreadReceiveMessFunc(void* UserData) {
         cout << "\nReceiveThread START\n";
         while (true) {
             string s = ReceiveMess(mSocket);
-            cout << "\nReceiveThread IN\n";
+            cout<<"ezt kaptam: "<<s;
             if(s.at(0) == '1'){
                 TargetPointChangeEvent* ge = new TargetPointChangeEvent(s);
                 Messages->push_back(ge);
@@ -53,58 +60,99 @@ public:
             if(s.at(0) == '2'){
                 MoveLeftEvent* mle = new MoveLeftEvent();
                 Messages->push_back(mle);
-            } else {
+            }
+            if(s.at(0) =='3'){
+                MoveRightEvent* mre = new MoveRightEvent();
+                Messages->push_back(mre);
+            }
+            if(s.at(0) =='4'){
+                MoveUpEvent* mue = new MoveUpEvent();
+                Messages->push_back(mue);
+            }
+              if(s.at(0) =='5'){
+                MoveDownEvent* mde = new MoveDownEvent();
+                Messages->push_back(mde);
+            }
+            if(s.at(0) =='7'){
+                RollLeftEvent* rle = new RollLeftEvent();
+                Messages->push_back(rle);
+            }
+            if(s.at(0) =='8'){
+                RollRightEvent* rre = new RollRightEvent();
+                Messages->push_back(rre);
+            }
+            if(s.at(0) =='9'){
+                GranadeThrowedEvent* gte = new GranadeThrowedEvent();
+                Messages->push_back(gte);
+            }
+
+            if(s.at(0)=='#'){//"#ShotEvent"){
+                cout<<"Loves van";
+                ShotEvent* se = new ShotEvent();
+                Messages->push_back(se);
+            }
+             else {
                 GameEvent* ge = new GameEvent(s);
                 Messages->push_back(ge);
-          //      cout<<ge->EventToString();
+
             }
-           Sleep(1.0f);
         }
     }
 
+//visszatér a Messages vektor méretével
+    int GetMessSize(){
+        return Messages->size();
+    }
     void static ThreadSendMessFunc(void* UserData) {
-  //     vector<GameEvent*>* Object = static_cast<vector<GameEvent*>*>(UserData) ;
-  //      MessagesToSend = Object;
         cout << "\nSendThread Start\n";
         while(true){
-       //     cout<<"\n\nPoolban ekkora a vektor merete: "<<MessagesToSend->size();
             if(MessagesToSend->size() > 0){
                GameEvent* ev;
-               ev = GetFirstFromMessagesToSend();
+               if(MessagesToSend->size()>0){
+                    ev = MessagesToSend->at(0);
+                } else {
+                    ev = new GameEvent("NULL");
+                }
                string s;
                s = ev->EventToString();
+            //   cout<<"ezt kuldom: "<<s;
                if(s.at(0)!='N'){
                   SendMess(mSocket, s);
-                  DelFirstFromMessagesToSend();
+                  vector<GameEvent*>::iterator i = MessagesToSend->begin();
+                  MessagesToSend->erase(i);
                }
-
             }
-           Sleep(1.0f);
+          //Sleep(1.0f);
         }
-        cout << "\nSendThread End\n";
     }
 
+//MessagesToSend vektorba beletesz egy eventet
     static void  AddMess(GameEvent* ev){
-   //     cout<<endl<<"Ezt adom hozza: "<<ev->EventToString()<<" - ";
-        MessagesToSend->push_back(ev);
-   //     cout<<"az uj meret: "<<MessagesToSend->size()<<endl;
-
+          MessagesToSend->push_back(ev);
+         // cout<<ev->EventToString()<<" lett hozzaadva\n\n";
+    }
+//Messages vektorba beletesz egy eventet
+    static void AddMess2(GameEvent* ev){
+        Messages->push_back(ev);
     }
 
-    static GameEvent*  GetFirstFromMessagesToSend(){
-        GameEvent* p;
-        if(MessagesToSend->size()>0){
-            p = MessagesToSend->at(0);
+
+
+//Visszatér a Messages vektor első elemével, majd kitörli azt
+   static GameEvent* GetMess(){
+        GameEvent* tp;
+        if(Messages->size()>0){
+            tp = Messages->at(0);
         } else {
-            p = new GameEvent("NULL");
+            tp = new GameEvent("NULL");
         }
-        return p;
-    }
 
-    static void DelFirstFromMessagesToSend(){
-        vector<GameEvent*>::iterator i = MessagesToSend->begin();
-        MessagesToSend->erase(i);
-
+        if(tp->EventToString().at(1) == 'N'){
+        } else {
+            vector<GameEvent*>::iterator i = Messages->begin();
+            Messages->erase(i);
+        }
+        return tp;
     }
 
     static void SendMess(SocketTCP mSock, string s) {
@@ -117,7 +165,7 @@ public:
         if (mSock.Send(ToSend, sizeof(ToSend)) != sf::Socket::Done) {
             cout<< "\n\nError in SendMess";
         } else {
-            cout<< "Message sent";
+     //       cout<< "Message sent";
         }
     }
 
@@ -131,7 +179,6 @@ public:
         for (int i = 0; i<40; i++) {
             s+= Message[i];
         }
-    //    cout<<"\t\tReceived message: " <<s;
         return s;
     }
 

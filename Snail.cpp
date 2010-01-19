@@ -615,7 +615,8 @@
                 }
                 SetTargetPoint(Window->GetInput().GetMouseX(),Window->GetInput().GetMouseY());
 
-                if(Window->GetInput().IsKeyDown(Key::G) && timer>grenadethrowspeed){
+                if(Window->GetInput().IsKeyDown(Key::G) && timer>grenadethrowspeed)
+                {
                     ThrowGrenade();
                 }
 
